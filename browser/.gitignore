@@ -1,0 +1,5 @@
+*.o
+moc_*
+Makefile
+./browser
+browser.pro.user
