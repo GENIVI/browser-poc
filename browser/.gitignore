@@ -3,3 +3,7 @@ moc_*
 Makefile
 ./browser
 browser.pro.user
+browser.desktop
+browser64.png
+browser80.png
+browser_harmattan.desktop
