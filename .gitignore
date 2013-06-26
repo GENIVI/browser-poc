@@ -2,7 +2,7 @@
 moc_*
 Makefile
 ./browser
-browser.pro.user
+*.pro.user
 browser.desktop
 browser64.png
 browser80.png
