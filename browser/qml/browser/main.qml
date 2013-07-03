@@ -1,27 +1,13 @@
 import QtQuick 2.0
-//import QtWebKit 3.0
+import QtWebKit 3.0
 
 Rectangle {
-    width: 360
-    height: 360
+    width: 800
+    height: 600
     color: "blue"
-    Text {
-        text: qsTr("Hello World")
-        font.pixelSize: 20
-        color: "white"
-        anchors.centerIn: parent
-    }
 
-//    WebView {
-//        anchors.fill: parent
-////        anchors.margins: 10
-//        url: "http://www.pelagicore.com"
-//    }
-
-    MouseArea {
+    WebView {
         anchors.fill: parent
-        onClicked: {
-            Qt.quit();
-        }
+        url: "http://www.genivi.org"
     }
 }
