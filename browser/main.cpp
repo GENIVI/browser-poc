@@ -4,9 +4,14 @@
 #include <QtDBus/QDBusConnection>
 #include "ibookmarkmanager_adaptor.h"
 
+
+#include <QDBusMetaType>
+
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+
+    qDBusRegisterMetaType<ERROR_IDS>();
 
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
