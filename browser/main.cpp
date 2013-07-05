@@ -1,21 +1,22 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
-#include "bookmarkmanager.h"
+
 #include <QtDBus/QDBusConnection>
+#include <QDBusMetaType>
+
+#include "bookmarkmanager.h"
 #include "ibookmarkmanager_adaptor.h"
 
-
-#include <QDBusMetaType>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
-    qDBusRegisterMetaType<ERROR_IDS>();
-
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
     viewer.showExpanded();
+
+    qDBusRegisterMetaType<ERROR_IDS>();
 
     bookmarkmanager *bm = new bookmarkmanager();
 
