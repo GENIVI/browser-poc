@@ -3,8 +3,6 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-#include <QTime>
-
 #include <QDebug>
 
 Widget::Widget(QWidget *parent)
