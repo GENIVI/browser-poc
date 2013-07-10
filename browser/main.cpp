@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
 
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
+    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
 
     bookmarkmanager *bm = new bookmarkmanager();
 

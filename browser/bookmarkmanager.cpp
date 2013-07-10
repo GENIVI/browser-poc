@@ -22,7 +22,7 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, uint index, uint count) {
-    qDebug() << __PRETTY_FUNCTION__ << path << type << index << count;
+conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint index, uint count) {
+    qDebug() << __PRETTY_FUNCTION__ << path << type << a_eSortingOrder << index << count;
     return conn::brw::EID_NOT_IMPLEMENTED;
 }

@@ -84,7 +84,7 @@ void Widget::deleteAllItems() {
 void Widget::getItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->getItems("hallo", 1, 1, 1);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->getItems("hallo", 1, conn::brw::BST_UNSORTED, 1, 1);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();

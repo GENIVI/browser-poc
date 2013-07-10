@@ -69,9 +69,48 @@ namespace conn {
         return argument;
     }
 
+    
+    /*!
+        * Defines sorting order of bookmarks:
+        BST_UNSORTED - the bookmarks item are provided in the order how they have been added by the user.
+        BST_TITLE_ASCENDING - the bookmarks are sorted by the title in ascending order;
+        BST_TITLE_DESCENDING - the bookmarks are sorted by the title in descending order;
+        BST_URL_ASCENDING - the bookmarks are sorted by the url in ascending order;
+        BST_URL_DESCENDING - the bookmarks are sorted by the url in descending order;
+        */
+        //## type BOOKMARK_SORT_TYPE
+        enum BOOKMARK_SORT_TYPE {
+            BST_UNSORTED = 0,
+            BST_TITLE_ASCENDING = 1,
+            BST_TITLE_DESCENDING = 2,
+            BST_URL_ASCENDING = 3,
+            BST_URL_DESCENDING = 4
+        };
+    
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BOOKMARK_SORT_TYPE &bookmarksorttype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            int i;
+            argument.beginStructure();
+            argument >> i;
+            bookmarksorttype = static_cast<conn::brw::BOOKMARK_SORT_TYPE>(i);
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BOOKMARK_SORT_TYPE &bookmarksorttype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << static_cast<int>(bookmarksorttype);
+            argument.endStructure();
+            return argument;
+        }
+
     }
 }
 
 Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
+Q_DECLARE_METATYPE(conn::brw::BOOKMARK_SORT_TYPE)
 
 #endif // BROWSERDEFS_H

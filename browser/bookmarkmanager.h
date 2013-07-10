@@ -22,7 +22,7 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS addItem();
     conn::brw::ERROR_IDS deleteAllItems(int a_i32BookmarkItemType);
     conn::brw::ERROR_IDS deleteItem(int a_i32Uid);
-    conn::brw::ERROR_IDS getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, uint a_u32StartIndex, uint a_u32ItemsCount);
+    conn::brw::ERROR_IDS getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint a_u32StartIndex, uint a_u32ItemsCount);
     
 };
 
