@@ -19,10 +19,10 @@ public:
 signals:
     
 public Q_SLOTS:
-    ERROR_IDS addItem();
-    ERROR_IDS deleteAllItems(int a_i32BookmarkItemType);
-    ERROR_IDS deleteItem(int a_i32Uid);
-    ERROR_IDS getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, uint a_u32StartIndex, uint a_u32ItemsCount);
+    conn::brw::ERROR_IDS addItem();
+    conn::brw::ERROR_IDS deleteAllItems(int a_i32BookmarkItemType);
+    conn::brw::ERROR_IDS deleteItem(int a_i32Uid);
+    conn::brw::ERROR_IDS getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, uint a_u32StartIndex, uint a_u32ItemsCount);
     
 };
 

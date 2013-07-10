@@ -20,7 +20,7 @@ private slots:
     void deleteAllItems();
 
 private:
-    ConnBrwIBookmarkManagerInterface *bookmark;
+    conn::brw::IBookmarkManager *bookmark;
 };
 
 #endif // WIDGET_H

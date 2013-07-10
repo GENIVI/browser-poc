@@ -8,9 +8,8 @@
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
-    bookmark = new ConnBrwIBookmarkManagerInterface("conn.brw.IBookmarkManager", "/bookmarkmanager",
+    bookmark = new conn::brw::IBookmarkManager("conn.brw.IBookmarkManager", "/bookmarkmanager",
                            QDBusConnection::sessionBus(), this);
-
 
     QPushButton *b1 = new QPushButton("AddItem");
     b1->setFixedHeight(70);
@@ -31,7 +30,6 @@ Widget::Widget(QWidget *parent)
     connect(b2, SIGNAL(clicked()), this, SLOT(deleteItem()));
     connect(b3, SIGNAL(clicked()), this, SLOT(deleteAllItems()));
     connect(b4, SIGNAL(clicked()), this, SLOT(getItems()));
-
 }
 
 Widget::~Widget()
@@ -42,10 +40,10 @@ Widget::~Widget()
 void Widget::addItem() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<ERROR_IDS> reply = bookmark->addItem();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem();
     reply.waitForFinished();
     if(reply.isValid()) {
-        ERROR_IDS ret = reply.value();
+        conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "reply " << ret;
     } else {
         QDBusError error = reply.error();
@@ -58,10 +56,10 @@ void Widget::addItem() {
 void Widget::deleteItem() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<ERROR_IDS> reply = bookmark->deleteItem(1);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteItem(1);
     reply.waitForFinished();
     if(reply.isValid()) {
-        ERROR_IDS ret = reply.value();
+        conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "reply " << ret;
     } else {
         QDBusError error = reply.error();
@@ -72,10 +70,10 @@ void Widget::deleteItem() {
 void Widget::deleteAllItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<ERROR_IDS> reply = bookmark->deleteAllItems(1);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(1);
     reply.waitForFinished();
     if(reply.isValid()) {
-        ERROR_IDS ret = reply.value();
+        conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "reply " << ret;
     } else {
         QDBusError error = reply.error();
@@ -86,10 +84,10 @@ void Widget::deleteAllItems() {
 void Widget::getItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<ERROR_IDS> reply = bookmark->getItems("hallo", 1, 1, 1);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->getItems("hallo", 1, 1, 1);
     reply.waitForFinished();
     if(reply.isValid()) {
-        ERROR_IDS ret = reply.value();
+        conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "reply " << ret;
     } else {
         QDBusError error = reply.error();

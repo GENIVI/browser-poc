@@ -1,14 +1,12 @@
 #ifndef BROWSERDEFS_H
 #define BROWSERDEFS_H
 
-
 #include <QDBusArgument>
-#include <QTime>
 
+namespace conn {
+    namespace brw {
 
-
-
-/*!
+    /*!
         * Browser errors definition.
 
         EID_NO_ERROR - No error
@@ -29,83 +27,51 @@
         EID_DB_DISK_OUT_OF_SPACE - DB cannot create file on drive because there is not enough space
         EID_DB_NO_PERMISSION - DB cannot write to file - lack of permission
         */
-//## type ERROR_IDS
-enum ERROR_IDS {
-    EID_NO_ERROR,
-    EID_ALREADY_EXIST,
-    EID_GENERAL_ERROR,
-    EID_NOT_IMPLEMENTED,
-    EID_NULL_POINTER,
-    EID_INVALID_STATE,
-    EID_MAX_NUMBER_REACHED,
-    EID_INVALID_ARGUMENT,
-    EID_NOT_EXISTS,
-    EID_DB_ITEM_NOT_EXISTS,
-    EID_DB_ITEM_ALREADY_EXISTS,
-    EID_DB_CLOSED_HANDLE,
-    EID_DB_QUERY_FAILS,
-    EID_DB_EXEC_FAILS,
-    EID_DB_FILE_EXISTS,
-    EID_DB_DISK_OUT_OF_SPACE,
-    EID_DB_NO_PERMISSION,
-    EID_FILESYSTEM_ERROR // TODO added
-};
+    //## type ERROR_IDS
+    enum ERROR_IDS {
+        EID_NO_ERROR,
+        EID_ALREADY_EXIST,
+        EID_GENERAL_ERROR,
+        EID_NOT_IMPLEMENTED,
+        EID_NULL_POINTER,
+        EID_INVALID_STATE,
+        EID_MAX_NUMBER_REACHED,
+        EID_INVALID_ARGUMENT,
+        EID_NOT_EXISTS,
+        EID_DB_ITEM_NOT_EXISTS,
+        EID_DB_ITEM_ALREADY_EXISTS,
+        EID_DB_CLOSED_HANDLE,
+        EID_DB_QUERY_FAILS,
+        EID_DB_EXEC_FAILS,
+        EID_DB_FILE_EXISTS,
+        EID_DB_DISK_OUT_OF_SPACE,
+        EID_DB_NO_PERMISSION,
+        EID_FILESYSTEM_ERROR // TODO added
+    };
 
-inline const QDBusArgument &operator>>(const QDBusArgument &argument, ERROR_IDS &errorid)
-{
-    qDebug() << __PRETTY_FUNCTION__;
-    int i;
-    argument.beginStructure();
-    argument >> i;
-    errorid = static_cast<ERROR_IDS>(i);
-    argument.endStructure();
-    return argument;
+    inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::ERROR_IDS &errorid)
+    {
+        qDebug() << __PRETTY_FUNCTION__;
+        int i;
+        argument.beginStructure();
+        argument >> i;
+        errorid = static_cast<conn::brw::ERROR_IDS>(i);
+        argument.endStructure();
+        return argument;
+    }
+
+    inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::ERROR_IDS &errorid)
+    {
+        qDebug() << __PRETTY_FUNCTION__;
+        argument.beginStructure();
+        argument << static_cast<int>(errorid);
+        argument.endStructure();
+        return argument;
+    }
+
+    }
 }
 
-inline QDBusArgument &operator<<(QDBusArgument &argument, const ERROR_IDS &errorid)
-{
-    qDebug() << __PRETTY_FUNCTION__;
-    argument.beginStructure();
-    argument << static_cast<int>(errorid);
-    argument.endStructure();
-    return argument;
-}
-
-Q_DECLARE_METATYPE(ERROR_IDS)
-
-///*!
-//        * Defines sorting order of bookmarks:
-//        BST_UNSORTED - the bookmarks item are provided in the order how they have been added by the user.
-//        BST_TITLE_ASCENDING - the bookmarks are sorted by the title in ascending order;
-//        BST_TITLE_DESCENDING - the bookmarks are sorted by the title in descending order;
-//        BST_URL_ASCENDING - the bookmarks are sorted by the url in ascending order;
-//        BST_URL_DESCENDING - the bookmarks are sorted by the url in descending order;
-//        */
-////## type BOOKMARK_SORT_TYPE
-//enum BOOKMARK_SORT_TYPE {
-//    BST_UNSORTED = 0,
-//    BST_TITLE_ASCENDING = 1,
-//    BST_TITLE_DESCENDING = 2,
-//    BST_URL_ASCENDING = 3,
-//    BST_URL_DESCENDING = 4
-//};
-
-//inline const QDBusArgument &operator>>(const QDBusArgument &argument, BOOKMARK_SORT_TYPE sortingtype)
-//{
-//    argument.beginStructure();
-//    argument >> sortingtype;
-//    argument.endStructure();
-//    return argument;
-//}
-
-//inline QDBusArgument &operator<<(QDBusArgument &argument, const BOOKMARK_SORT_TYPE sortingtype)
-//{
-//    argument.beginStructure();
-//    argument << (int)sortingtype;
-//    argument.endStructure();
-//    return argument;
-//}
-
-//Q_DECLARE_METATYPE(BOOKMARK_SORT_TYPE)
+Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
 
 #endif // BROWSERDEFS_H

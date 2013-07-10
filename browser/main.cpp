@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
     viewer.showExpanded();
 
-    qDBusRegisterMetaType<ERROR_IDS>();
+    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
 
     bookmarkmanager *bm = new bookmarkmanager();
 
@@ -24,7 +24,6 @@ int main(int argc, char *argv[])
     QDBusConnection connection = QDBusConnection::sessionBus();
     connection.registerService("conn.brw.IBookmarkManager");
     connection.registerObject("/bookmarkmanager", bm);
-
 
     return app.exec();
 }
