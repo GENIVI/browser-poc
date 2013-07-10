@@ -14,7 +14,7 @@ SOURCES += main.cpp \
 
 HEADERS += \
     bookmarkmanager.h \
-    browserdefs.h
+    ../browserdefs.h
 
 # Installation path
 # target.path =

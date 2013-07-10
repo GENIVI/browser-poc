@@ -4,8 +4,7 @@
 #include <QObject>
 #include <QDebug>
 
-#include "browserdefs.h"
-
+#include "../browserdefs.h"
 
 
 
