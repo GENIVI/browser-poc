@@ -11,8 +11,9 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = testapp
 TEMPLATE = app
 
-
-DBUS_INTERFACES += ../IBookmarkManager.xml
+my_dbus_adaptors.files = ../IBookmarkManager.xml
+my_dbus_adaptors.header_flags = -i ../browserdefs.h
+DBUS_INTERFACES += my_dbus_adaptors
 
 SOURCES += main.cpp\
         widget.cpp
