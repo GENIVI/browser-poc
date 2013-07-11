@@ -31,6 +31,7 @@ int main(int argc, char *argv[])
 
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
 
     bookmarkmanager *bm = new bookmarkmanager();
 

@@ -120,10 +120,76 @@ namespace conn {
             return argument;
         }
 
+        /*!
+                *
+                */
+        //## type BookmarkItem
+        struct BookmarkItem {
+            /*!
+                    *
+                    */
+            int i32Uid;		//## attribute i32Uid
+            /*!
+                    *
+                    */
+            int i32Type;		//## attribute eType
+            /*!
+                    *
+                    */
+            QString strParentFolderPath;		//## attribute strParentFolderPath
+            /*!
+                    *
+                    */
+            QString strTitle;		//## attribute strTitle
+            /*!
+                    *
+                    */
+            QString strUrl;		//## attribute strUrl
+            /*!
+                    *
+                    */
+            QString strIconPath;		//## attribute strIconPath
+            /*!
+                    *
+                    */
+            QString strThumbnailPath;		//## attribute strThumbnailPath
+
+            BookmarkItem()
+                : i32Uid(0)
+                , i32Type(0)
+                , strParentFolderPath("")
+                , strTitle("")
+                , strUrl("")
+                , strIconPath("")
+                , strThumbnailPath("")
+            {}
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BookmarkItem &bookmarkitem)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument >> bookmarkitem.i32Uid >> bookmarkitem.i32Type >> bookmarkitem.strParentFolderPath >>
+                        bookmarkitem.strTitle >> bookmarkitem.strUrl >> bookmarkitem.strIconPath >> bookmarkitem.strThumbnailPath;
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BookmarkItem &bookmarkitem)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << bookmarkitem.i32Uid << bookmarkitem.i32Type << bookmarkitem.strParentFolderPath <<
+                        bookmarkitem.strTitle << bookmarkitem.strUrl << bookmarkitem.strIconPath << bookmarkitem.strThumbnailPath;
+            argument.endStructure();
+            return argument;
+        }
+
     }
 }
 
 Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
 Q_DECLARE_METATYPE(conn::brw::BOOKMARK_SORT_TYPE)
+Q_DECLARE_METATYPE(conn::brw::BookmarkItem)
 
 #endif // BROWSERDEFS_H

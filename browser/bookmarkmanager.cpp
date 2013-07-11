@@ -20,8 +20,9 @@ bookmarkmanager::bookmarkmanager(QObject *parent) :
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-conn::brw::ERROR_IDS bookmarkmanager::addItem() {
-    qDebug() << __PRETTY_FUNCTION__;
+conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_oItem) {
+    qDebug() << __PRETTY_FUNCTION__ << a_oItem.i32Uid << a_oItem.i32Type << a_oItem.strParentFolderPath << a_oItem.strTitle
+                << a_oItem.strUrl << a_oItem.strIconPath << a_oItem.strThumbnailPath;
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 

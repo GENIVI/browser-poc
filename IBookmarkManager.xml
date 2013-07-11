@@ -10,16 +10,16 @@
         <arg name="a_u32StartIndex" type="u" direction="in"/>
         <arg name="a_u32ItemsCount" type="u" direction="in"/>
         <arg name="retval" type="(i)" direction="out"/>
-        <!--        <arg name="a_oItems" type="a(iisssss)" direction="out"/>        -->
+        <!--    <arg name="a_oItems" type="a(iisssss)" direction="out"/>    -->
         <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="conn::brw::BOOKMARK_SORT_TYPE" />
         <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-        <!--    <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::BookmarkItemList" />      -->
+        <!--    <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::BookmarkItemList" />  -->
     </method>
     
     <method name="addItem">
-<!--        <arg name="a_oItem" type="(iisssss)" direction="in"/>         -->
+        <arg name="a_oItem" type="(iisssss)" direction="in"/>
         <arg name="retval" type="(i)" direction="out"/>
-<!--    <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::BookmarkItem &amp;" />       --> 
+        <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::BookmarkItem &amp;" />
         <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
@@ -37,4 +37,3 @@
 
   </interface>
 </node>
-

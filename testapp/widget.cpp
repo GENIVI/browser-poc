@@ -53,7 +53,16 @@ Widget::~Widget()
 void Widget::addItem() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem();
+    conn::brw::BookmarkItem test;
+    test.i32Uid = 1;
+    test.i32Type = 2;
+    test.strParentFolderPath = "AAAA";
+    test.strTitle = "BBBB";
+    test.strUrl = "CCCC";
+    test.strIconPath = "DDDD";
+    test.strThumbnailPath = "EEEE";
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(test);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
