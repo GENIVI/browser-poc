@@ -1,0 +1,98 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+  <interface name="conn.brw.IWebPageWindow">
+    <version>1.0.0</version>
+
+    <doc>
+      <line>Page view</line>
+    </doc>
+
+    <method name="getBrowserActionsState">
+      <arg name="retval" type="(i)" direction="out"/>
+      <!--      <arg name="a_browserActionsState" type="(yyyyyyy(yyyy)(yyyy)(yyyy))" direction="out"/>    -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+      <!--      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::BrowserActions" />  -->
+    </method>
+
+    <method name="getContentSize">
+      <arg name="retval" type="(i)" direction="out"/>
+      <!--  <arg name="a_u32Width" type="u" direction="out"/>
+      <arg name="a_u32Height" type="u" direction="out"/>    -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="getGeometry">
+      <arg name="retval" type="(i)" direction="out"/>
+      <!--      <arg name="a_sRect" type="(iiii)" direction="out"/>   -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+      <!--  <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::Rect" />      -->
+    </method>
+    
+    <method name="setGeometry">
+      <arg name="a_sRect" type="(iiii)" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::Rect &amp;" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="getVisible">
+      <arg name="retval" type="b" direction="out"/>
+    </method>
+
+    <method name="setVisible">
+      <arg name="a_bVisible" type="b" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="load">
+      <arg name="a_Url" type="s" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="back">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="forward">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="reload">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="stop">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="scroll">
+      <arg name="a_eScrollDirection" type="(i)" direction="in"/>
+      <arg name="a_eScrollType" type="(i)" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::SCROLL_DIRECTION" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="conn::brw::SCROLL_TYPE" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <signal name="onLoadStarted">
+    </signal>
+
+    <signal name="onLoadProgress">
+      <arg name="a_i32Progress" type="i"/>
+    </signal>
+
+    <signal name="onLoadFinished">
+      <arg name="a_fState" type="b"/>
+    </signal>
+
+    <signal name="onClose"/>
+
+  </interface>
+</node>

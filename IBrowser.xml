@@ -1,0 +1,52 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+  <interface name="conn.brw.IBrowser">
+    <version>1.0.0</version>
+
+    <doc>
+      <line>Web browser</line>
+    </doc>
+
+    <method name="createPageWindow">
+      <arg name="a_eDeviceId" type="i" direction="in"/>
+      <arg name="a_oGeometry" type="(iiii)" direction="in"/>
+
+      <arg name="retval" type="(i)" direction="out"/>
+      <!--      <arg name="a_hPageWindowHandle" type="x" direction="out"/>      -->
+
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::DEVICE_ID" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="const conn::brw::Rect &amp;" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+      <!--      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::OBJECT_HANDLE" />     -->
+    </method>
+
+    <method name="destroyPageWindow">
+      <arg name="a_hPageWindowHandle" type="x" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::OBJECT_HANDLE" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="getPageWindows">
+      <arg name="retval" type="(i)" direction="out"/>
+      <!--  <arg name="a_oPageWindowIds" type="ax" direction="out"/>    -->
+
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+      <!--  <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::ObjectHandleList" />      -->
+    </method>
+
+    <signal name="onPageWindowCreated">
+      <arg name="a_hPageWindowHandle" type="x"/>
+      <arg name="a_eErrorId" type="(i)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::OBJECT_HANDLE" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="conn::brw::ERROR_IDS" />
+    </signal>
+
+    <signal name="onPageWindowDestroyed">
+      <arg name="a_hPageWindowHandle" type="x"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::OBJECT_HANDLE" />
+    </signal>
+
+  </interface>
+</node>

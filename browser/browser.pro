@@ -8,16 +8,26 @@ QML_IMPORT_PATH =
 
 QT += dbus
 
-my_dbus_adaptors.files = ../IBookmarkManager.xml
+my_dbus_adaptors.files += ../IBookmarkManager.xml \
+    ../IUserInput.xml \
+    ../IWebPageWindow.xml \
+    ../IBrowser.xml
+
 my_dbus_adaptors.header_flags = -i ../browserdefs.h
 DBUS_ADAPTORS += my_dbus_adaptors
 
 SOURCES += main.cpp \
-    bookmarkmanager.cpp
+    bookmarkmanager.cpp \
+    userinput.cpp \
+    webpagewindow.cpp \
+    browser.cpp
 
 HEADERS += \
     bookmarkmanager.h \
-    ../browserdefs.h
+    ../browserdefs.h \
+    userinput.h \
+    webpagewindow.h \
+    browser.h
 
 # Installation path
 # target.path =

@@ -185,11 +185,216 @@ namespace conn {
             return argument;
         }
 
+
+
+        /*!
+                * Result of dialog.
+                DR_OK - Prompt is accepted
+                DR_CANCEL - Prompt is canceled
+                */
+        //## type DIALOG_RESULT
+        enum DIALOG_RESULT {
+            DR_OK,
+            DR_CANCEL
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::DIALOG_RESULT &dialogresult)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            int i;
+            argument.beginStructure();
+            argument >> i;
+            dialogresult = static_cast<conn::brw::DIALOG_RESULT>(i);
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::DIALOG_RESULT &dialogresult)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << static_cast<int>(dialogresult);
+            argument.endStructure();
+            return argument;
+        }
+
+        /*!
+                * Types of input element. See HTML5.
+
+                IET_TEXT - The text input type defines a one-line input field that a user can enter text into.
+                IET_COLOR - The color input type is used to specify a color.
+                IET_DATE - The date input type is used to specify data, month and year
+                IET_MONTH - The month input type is used to specify month and year
+                IET_WEEK - The week input type is used to specify a week and year
+                IET_TIME - The time input type is used to specify a time(hour and minute)
+                IET_DATETIME - The datetime  input type is used to specify time, date, month and year (UTC time)
+                IET_DATETIME_LOCAL - The datetime-local  input type is used to specify time, date, month and year (local time).
+                IET_EMAIL - The email input type is used for input fields that should contain an e-mail address.
+                IET_FILE - The file input type is used for file uploads.
+                IET_NUMBER - The number input type is used for input fields that should contain a numeric value.
+                IET_PASSWORD - The password input type defines a password field. The characters in a password field are masked (shown as asterisks or circles).
+                IET_TEL - The tel input type is used for input fields that should contain a telephone number.
+                IET_URL - The url input type is used for input fields that should contain a URL address.
+                */
+        //## type INPUT_ELEMENT_TYPE
+        enum INPUT_ELEMENT_TYPE {
+            IET_TEXT = 0,
+            IET_COLOR = 1,
+            IET_DATE = 2,
+            IET_MONTH = 3,
+            IET_WEEK = 4,
+            IET_TIME = 5,
+            IET_DATETIME = 6,
+            IET_DATETIME_LOCAL = 7,
+            IET_EMAIL = 8,
+            IET_FILE = 9,
+            IET_NUMBER = 10,
+            IET_PASSWORD = 11,
+            IET_TEL = 12,
+            IET_URL = 13
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::INPUT_ELEMENT_TYPE &inputtype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            int i;
+            argument.beginStructure();
+            argument >> i;
+            inputtype = static_cast<conn::brw::INPUT_ELEMENT_TYPE>(i);
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::INPUT_ELEMENT_TYPE &inputtype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << static_cast<int>(inputtype);
+            argument.endStructure();
+            return argument;
+        }
+
+
+
+        /*!
+                * Direction of scrolling or link selection.
+                */
+        //## type SCROLL_DIRECTION
+        enum SCROLL_DIRECTION {
+            SD_LEFT,
+            SD_RIGHT,
+            SD_TOP,
+            SD_BOTTOM
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::SCROLL_DIRECTION &scrolldirection)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            int i;
+            argument.beginStructure();
+            argument >> i;
+            scrolldirection = static_cast<conn::brw::SCROLL_DIRECTION>(i);
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::SCROLL_DIRECTION &scrolldirection)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << static_cast<int>(scrolldirection);
+            argument.endStructure();
+            return argument;
+        }
+
+        /*!
+                * Type of scrolling.
+                ST_SYMBOL - Scrolling line by line.
+                ST_PAGE - Scroll to the next or previous page.
+                ST_LINK - Jump to the link.
+                */
+        //## type SCROLL_TYPE
+        enum SCROLL_TYPE {
+            ST_SYMBOL = 0,
+            ST_PAGE = 1,
+            ST_LINK = 2
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::SCROLL_TYPE &scrolltype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            int i;
+            argument.beginStructure();
+            argument >> i;
+            scrolltype = static_cast<conn::brw::SCROLL_TYPE>(i);
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::SCROLL_TYPE &scrolltype)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << static_cast<int>(scrolltype);
+            argument.endStructure();
+            return argument;
+        }
+
+        /*!
+                *
+                */
+        //## type Rect
+        struct Rect {
+            /*!
+                    *
+                    */
+            int i32X;		//## attribute i32X
+            /*!
+                    *
+                    */
+            int i32Y;		//## attribute i32Y
+            /*!
+                    *
+                    */
+            int i32Width;		//## attribute i32Width
+            /*!
+                    *
+                    */
+            int i32Height;		//## attribute i32Height
+
+            Rect() : i32X(0), i32Y(0), i32Width(0), i32Height(0) {}
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::Rect &rect)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument >> rect.i32X >> rect.i32Y >> rect.i32Width >> rect.i32Height;
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::Rect &rect)
+        {
+            qDebug() << __PRETTY_FUNCTION__;
+            argument.beginStructure();
+            argument << rect.i32X << rect.i32Y << rect.i32Width << rect.i32Height;
+            argument.endStructure();
+            return argument;
+        }
+
     }
 }
 
 Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
 Q_DECLARE_METATYPE(conn::brw::BOOKMARK_SORT_TYPE)
 Q_DECLARE_METATYPE(conn::brw::BookmarkItem)
+
+Q_DECLARE_METATYPE(conn::brw::DIALOG_RESULT)
+Q_DECLARE_METATYPE(conn::brw::INPUT_ELEMENT_TYPE)
+
+Q_DECLARE_METATYPE(conn::brw::SCROLL_DIRECTION)
+Q_DECLARE_METATYPE(conn::brw::SCROLL_TYPE)
+Q_DECLARE_METATYPE(conn::brw::Rect)
 
 #endif // BROWSERDEFS_H

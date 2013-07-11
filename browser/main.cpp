@@ -20,6 +20,14 @@
 #include "bookmarkmanager.h"
 #include "ibookmarkmanager_adaptor.h"
 
+#include "userinput.h"
+#include "iuserinput_adaptor.h"
+
+#include "webpagewindow.h"
+#include "iwebpagewindow_adaptor.h"
+
+#include "browser.h"
+#include "ibrowser_adaptor.h"
 
 int main(int argc, char *argv[])
 {
@@ -39,6 +47,29 @@ int main(int argc, char *argv[])
     QDBusConnection connection = QDBusConnection::sessionBus();
     connection.registerService("conn.brw.IBookmarkManager");
     connection.registerObject("/bookmarkmanager", bm);
+
+
+    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
+    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
+
+    userinput *ui = new userinput();
+
+    new IUserInputAdaptor(ui);
+
+
+    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
+    qDBusRegisterMetaType<conn::brw::Rect>();
+
+    webpagewindow *wpw = new webpagewindow();
+
+    new IWebPageWindowAdaptor(wpw);
+
+
+    browser *br = new browser();
+
+    new IBrowserAdaptor(br);
+
 
     return app.exec();
 }

@@ -1,0 +1,31 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+  <interface name="conn.brw.IUserInput">
+    <version>1.0.0</version>
+
+    <doc>
+      <line>User input interface</line>
+    </doc>
+
+    <method name="inputText">
+      <arg name="a_eResult" type="(i)" direction="in"/>
+      <arg name="a_strInputValue" type="s" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::DIALOG_RESULT" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <signal name="onInputText">
+      <arg name="a_strInputName" type="s"/>
+      <arg name="a_strDefaultInputValue" type="s"/>
+      <arg name="a_i32InputValueType" type="(i)"/>  
+      <arg name="a_s32MaxLength" type="i"/>
+      <arg name="a_s32Max" type="i"/>
+      <arg name="a_s32Min" type="i"/>
+      <arg name="a_s32Step" type="i"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="conn::brw::INPUT_ELEMENT_TYPE" />
+    </signal>
+
+  </interface>
+</node>
