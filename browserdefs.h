@@ -64,7 +64,7 @@ namespace conn {
 
     inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::ERROR_IDS &errorid)
     {
-        qDebug() << __PRETTY_FUNCTION__;
+//        qDebug() << __PRETTY_FUNCTION__;
         int i;
         argument.beginStructure();
         argument >> i;
@@ -75,7 +75,7 @@ namespace conn {
 
     inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::ERROR_IDS &errorid)
     {
-        qDebug() << __PRETTY_FUNCTION__;
+//        qDebug() << __PRETTY_FUNCTION__;
         argument.beginStructure();
         argument << static_cast<int>(errorid);
         argument.endStructure();
@@ -102,7 +102,7 @@ namespace conn {
     
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BOOKMARK_SORT_TYPE &bookmarksorttype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             int i;
             argument.beginStructure();
             argument >> i;
@@ -113,7 +113,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BOOKMARK_SORT_TYPE &bookmarksorttype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << static_cast<int>(bookmarksorttype);
             argument.endStructure();
@@ -167,7 +167,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BookmarkItem &bookmarkitem)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument >> bookmarkitem.i32Uid >> bookmarkitem.i32Type >> bookmarkitem.strParentFolderPath >>
                         bookmarkitem.strTitle >> bookmarkitem.strUrl >> bookmarkitem.strIconPath >> bookmarkitem.strThumbnailPath;
@@ -177,7 +177,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BookmarkItem &bookmarkitem)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << bookmarkitem.i32Uid << bookmarkitem.i32Type << bookmarkitem.strParentFolderPath <<
                         bookmarkitem.strTitle << bookmarkitem.strUrl << bookmarkitem.strIconPath << bookmarkitem.strThumbnailPath;
@@ -200,7 +200,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::DIALOG_RESULT &dialogresult)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             int i;
             argument.beginStructure();
             argument >> i;
@@ -211,7 +211,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::DIALOG_RESULT &dialogresult)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << static_cast<int>(dialogresult);
             argument.endStructure();
@@ -256,7 +256,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::INPUT_ELEMENT_TYPE &inputtype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             int i;
             argument.beginStructure();
             argument >> i;
@@ -267,7 +267,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::INPUT_ELEMENT_TYPE &inputtype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << static_cast<int>(inputtype);
             argument.endStructure();
@@ -289,7 +289,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::SCROLL_DIRECTION &scrolldirection)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             int i;
             argument.beginStructure();
             argument >> i;
@@ -300,7 +300,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::SCROLL_DIRECTION &scrolldirection)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << static_cast<int>(scrolldirection);
             argument.endStructure();
@@ -322,7 +322,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::SCROLL_TYPE &scrolltype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             int i;
             argument.beginStructure();
             argument >> i;
@@ -333,7 +333,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::SCROLL_TYPE &scrolltype)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << static_cast<int>(scrolltype);
             argument.endStructure();
@@ -367,7 +367,7 @@ namespace conn {
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::Rect &rect)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument >> rect.i32X >> rect.i32Y >> rect.i32Width >> rect.i32Height;
             argument.endStructure();
@@ -376,7 +376,7 @@ namespace conn {
 
         inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::Rect &rect)
         {
-            qDebug() << __PRETTY_FUNCTION__;
+//            qDebug() << __PRETTY_FUNCTION__;
             argument.beginStructure();
             argument << rect.i32X << rect.i32Y << rect.i32Width << rect.i32Height;
             argument.endStructure();
