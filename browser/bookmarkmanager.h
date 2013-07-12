@@ -15,7 +15,6 @@
 #define BOOKMARKMANAGER_H
 
 #include <QObject>
-#include <QDebug>
 
 #include "../browserdefs.h"
 

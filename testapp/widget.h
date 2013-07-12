@@ -17,6 +17,10 @@
 #include <QWidget>
 
 #include "ibookmarkmanager_interface.h"
+#include "iuserinput_interface.h"
+#include "iwebpagewindow_interface.h"
+#include "ibrowser_interface.h"
+
 
 class Widget : public QWidget
 {
@@ -31,9 +35,14 @@ private slots:
     void getItems();
     void deleteItem();
     void deleteAllItems();
+    void input();
+    void reload();
 
 private:
     conn::brw::IBookmarkManager *bookmark;
+    conn::brw::IUserInput *userinput;
+    conn::brw::IWebPageWindow *webpagewindow;
+    conn::brw::IBrowser *browser;
 };
 
 #endif // WIDGET_H

@@ -42,19 +42,25 @@ int main(int argc, char *argv[])
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
 
     bookmarkmanager *bm = new bookmarkmanager();
-
     new IBookmarkManagerAdaptor(bm);
+
     QDBusConnection connection = QDBusConnection::sessionBus();
-    connection.registerService("conn.brw.IBookmarkManager");
-    connection.registerObject("/bookmarkmanager", bm);
+    if(!connection.registerService("conn.brw.IBookmarkManager"))
+        qDebug() << "failed register service conn.brw.IBookmarkManager";
+    if(!connection.registerObject("/bookmarkmanager", bm))
+        qDebug() << "failed register object bookmarkmanager";
 
 
     qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
     qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
 
     userinput *ui = new userinput();
-
     new IUserInputAdaptor(ui);
+
+    if(!connection.registerService("conn.brw.IUserInput"))
+        qDebug() << "failed register service conn.brw.IUserInput";
+    if(!connection.registerObject("/userinput", ui))
+        qDebug() << "failed register object userinput";
 
 
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
@@ -62,13 +68,21 @@ int main(int argc, char *argv[])
     qDBusRegisterMetaType<conn::brw::Rect>();
 
     webpagewindow *wpw = new webpagewindow();
-
     new IWebPageWindowAdaptor(wpw);
+
+    if(!connection.registerService("conn.brw.IWebPageWindow"))
+        qDebug() << "failed register service conn.brw.IWebPageWindow";
+    if(!connection.registerObject("/webpagewindow", wpw))
+        qDebug() << "failed register object userinput";
 
 
     browser *br = new browser();
-
     new IBrowserAdaptor(br);
+
+    if(!connection.registerService("conn.brw.IBrowser"))
+        qDebug() << "failed register service conn.brw.IBrowser";
+    if(!connection.registerObject("/browser", br))
+        qDebug() << "failed register object browser";
 
 
     return app.exec();
