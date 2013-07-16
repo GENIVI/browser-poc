@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
 
     bookmarkmanager *bm = new bookmarkmanager();
     new IBookmarkManagerAdaptor(bm);
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-    qDBusRegisterMetaType<conn::brw::Rect>();
+//    qDBusRegisterMetaType<conn::brw::Rect>();
 
     webpagewindow *wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);

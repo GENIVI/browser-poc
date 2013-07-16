@@ -72,11 +72,11 @@ Widget::Widget(QWidget *parent)
     bookmarkdeletebuttonlayout->addWidget(deletebookmark2);
     bookmarkdeletebuttonlayout->addWidget(deletebookmark3);
 
-
-    QPushButton *b3 = new QPushButton("DeleteAllItems");
+    QPushButton *b3 = new QPushButton("Delete All Bookmarks");
     b3->setFixedHeight(BUTTONHEIGHT);
-    QPushButton *b4 = new QPushButton("GetItems");
+    QPushButton *b4 = new QPushButton("Get All Bookmarks");
     b4->setFixedHeight(BUTTONHEIGHT);
+
     QPushButton *b5 = new QPushButton("UserInput");
     b5->setFixedHeight(BUTTONHEIGHT);
     QPushButton *b6 = new QPushButton("Reload");
@@ -191,11 +191,14 @@ void Widget::deleteAllItems() {
 void Widget::getItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->getItems("hallo", 1, conn::brw::BST_UNSORTED, 1, 1);
+    QDBusPendingReply<conn::brw::BookmarkItemList> reply = bookmark->getItems("hallo", 1, conn::brw::BST_UNSORTED, 1, 1);
     reply.waitForFinished();
     if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "reply " << ret;
+        conn::brw::BookmarkItemList ret = reply.value();
+
+        for (int i = 0; i < ret.size(); ++i) {
+            qDebug() << "reply " << ret.at(i).strTitle << ret.at(i).strUrl;
+        }
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();

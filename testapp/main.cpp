@@ -25,13 +25,14 @@ int main(int argc, char *argv[])
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
 
     qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
     qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
 
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-    qDBusRegisterMetaType<conn::brw::Rect>();
+//    qDBusRegisterMetaType<conn::brw::Rect>();
 
     Widget w;
     w.setGeometry(0,0,600,600);

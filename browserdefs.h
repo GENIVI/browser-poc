@@ -180,6 +180,15 @@ namespace conn {
         }
 
 
+        
+        //## class BookmarkItemList
+        /*!
+        * 
+        */
+        typedef QList<conn::brw::BookmarkItem> BookmarkItemList;
+        
+        
+        
 
         /*!
                 * Result of dialog.
@@ -326,32 +335,34 @@ namespace conn {
             return argument;
         }
 
+        
         /*!
                 *
                 */
         //## type Rect
-        struct Rect {
+        typedef QRect Rect;
+//        struct Rect {
             /*!
                     *
                     */
-            int i32X;		//## attribute i32X
+//            int i32X;		//## attribute i32X
             /*!
                     *
                     */
-            int i32Y;		//## attribute i32Y
+//            int i32Y;		//## attribute i32Y
             /*!
                     *
                     */
-            int i32Width;		//## attribute i32Width
+//            int i32Width;		//## attribute i32Width
             /*!
                     *
                     */
-            int i32Height;		//## attribute i32Height
+//            int i32Height;		//## attribute i32Height
 
-            Rect() : i32X(0), i32Y(0), i32Width(0), i32Height(0) {}
-        };
+//            Rect() : i32X(0), i32Y(0), i32Width(0), i32Height(0) {}
+//        };
 
-        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::Rect &rect)
+/*        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::Rect &rect)
         {
             argument.beginStructure();
             argument >> rect.i32X >> rect.i32Y >> rect.i32Width >> rect.i32Height;
@@ -366,19 +377,20 @@ namespace conn {
             argument.endStructure();
             return argument;
         }
-
+*/
     }
 }
 
 Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
 Q_DECLARE_METATYPE(conn::brw::BOOKMARK_SORT_TYPE)
 Q_DECLARE_METATYPE(conn::brw::BookmarkItem)
+Q_DECLARE_METATYPE(conn::brw::BookmarkItemList)
 
 Q_DECLARE_METATYPE(conn::brw::DIALOG_RESULT)
 Q_DECLARE_METATYPE(conn::brw::INPUT_ELEMENT_TYPE)
 
 Q_DECLARE_METATYPE(conn::brw::SCROLL_DIRECTION)
 Q_DECLARE_METATYPE(conn::brw::SCROLL_TYPE)
-Q_DECLARE_METATYPE(conn::brw::Rect)
+//Q_DECLARE_METATYPE(conn::brw::Rect)
 
 #endif // BROWSERDEFS_H
