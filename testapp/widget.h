@@ -31,18 +31,28 @@ public:
     ~Widget();
 
 private slots:
-    void addItem();
     void getItems();
-    void deleteItem();
     void deleteAllItems();
     void input();
     void reload();
+    void B1addpressed();
+    void B2addpressed();
+    void B3addpressed();
+    void B1deletepressed();
+    void B2deletepressed();
+    void B3deletepressed();
 
 private:
     conn::brw::IBookmarkManager *bookmark;
     conn::brw::IUserInput *userinput;
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IBrowser *browser;
+
+    void addItem(int bookmarknumber);
+    void deleteItem(int bookmarknumber);
+
+    QList<conn::brw::BookmarkItem> bookmarklist;
+    void initializebookmarks();
 };
 
 #endif // WIDGET_H

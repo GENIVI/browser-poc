@@ -20,14 +20,16 @@ SOURCES += main.cpp \
     bookmarkmanager.cpp \
     userinput.cpp \
     webpagewindow.cpp \
-    browser.cpp
+    browser.cpp \
+    bookmark.cpp
 
 HEADERS += \
     bookmarkmanager.h \
     ../browserdefs.h \
     userinput.h \
     webpagewindow.h \
-    browser.h
+    browser.h \
+    bookmark.h
 
 # Installation path
 # target.path =

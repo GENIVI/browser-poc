@@ -19,6 +19,8 @@
 #include "../browserdefs.h"
 
 
+#include "bookmark.h"
+
 
 class bookmarkmanager : public QObject
 {
@@ -26,7 +28,6 @@ class bookmarkmanager : public QObject
 
 public:
     explicit bookmarkmanager(QObject *parent = 0);
-    
 
 signals:
     
@@ -36,6 +37,10 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS deleteItem(int a_i32Uid);
     conn::brw::ERROR_IDS getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint a_u32StartIndex, uint a_u32ItemsCount);
     
+private:
+    QList<Bookmark*> bookmarklist;
+
+    void printbookmarklist();
 };
 
 #endif // BOOKMARKMANAGER_H
