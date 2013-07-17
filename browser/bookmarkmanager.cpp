@@ -88,19 +88,30 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
 conn::brw::BookmarkItemList bookmarkmanager::getItems(const QString &path, int type, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint index, uint count) {
     qDebug() << __PRETTY_FUNCTION__ << path << type << a_eSortingOrder << index << count;
 
+    // TODO: sorting
     conn::brw::BookmarkItem *test = new conn::brw::BookmarkItem();
     QList<conn::brw::BookmarkItem> bmlist;
 
-    for (int i = 0; i < bookmarklist.size(); ++i) {
-        test->i32Type = bookmarklist.at(i)->type();
-        test->i32Uid = bookmarklist.at(i)->uid();
-        test->strIconPath = bookmarklist.at(i)->iconpath();
-        test->strParentFolderPath = bookmarklist.at(i)->folderpath();
-        test->strThumbnailPath = bookmarklist.at(i)->thumbnailpath();
-        test->strTitle = bookmarklist.at(i)->title();
-        test->strUrl = bookmarklist.at(i)->url();
+    uint added = 0;
+    uint found = 0;
 
-        bmlist.append(*test);
+    for (int i = 0; i < bookmarklist.size(); ++i) {
+        if (bookmarklist.at(i)->folderpath() == path && bookmarklist.at(i)->type() == type && added < count) {
+
+            found++;
+            if(found >= index) {
+                test->i32Type = bookmarklist.at(i)->type();
+                test->i32Uid = bookmarklist.at(i)->uid();
+                test->strIconPath = bookmarklist.at(i)->iconpath();
+                test->strParentFolderPath = bookmarklist.at(i)->folderpath();
+                test->strThumbnailPath = bookmarklist.at(i)->thumbnailpath();
+                test->strTitle = bookmarklist.at(i)->title();
+                test->strUrl = bookmarklist.at(i)->url();
+
+                bmlist.append(*test);
+                added++;
+            }
+        }
     }
 
     return bmlist;

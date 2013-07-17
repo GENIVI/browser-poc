@@ -247,7 +247,7 @@ void Widget::deleteAllItems(int type) {
 void Widget::getItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::BookmarkItemList> reply = bookmark->getItems("hallo", 1, conn::brw::BST_UNSORTED, 1, 1);
+    QDBusPendingReply<conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 2, 2);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::BookmarkItemList ret = reply.value();
