@@ -32,19 +32,19 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState() {
+conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getContentSize() {
+conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32Height) {
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getGeometry() {
+conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;

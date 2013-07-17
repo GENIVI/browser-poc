@@ -16,6 +16,8 @@
 
 #include <QObject>
 
+#include "../browserdefs.h"
+
 class browser : public QObject
 {
     Q_OBJECT
@@ -24,7 +26,10 @@ public:
     
 signals:
     
-public slots:
+public Q_SLOTS:
+    conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle);
+    conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);
+    conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
     
 };
 

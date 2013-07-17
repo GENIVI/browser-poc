@@ -341,6 +341,145 @@ namespace conn {
                 */
         //## type Rect
         typedef QRect Rect;
+        
+        /*!
+        * Defines type of the object handlers.
+        */
+        //## type OBJECT_HANDLE
+        typedef qlonglong OBJECT_HANDLE;
+        
+        //## class ObjectHandleList
+        /*!
+        * 
+        */
+        typedef QList<conn::brw::OBJECT_HANDLE> ObjectHandleList;
+        
+        
+        /*!
+        * Browser scroll directions structure.
+        */
+        //## type BrowserScrollDirections
+        struct BrowserScrollDirections {
+            /*!
+            * 
+            */
+            uchar u8Left;       //## attribute u8Left
+            /*!
+            * 
+            */
+            uchar u8Right;      //## attribute u8Right
+            /*!
+            * 
+            */
+            uchar u8Top;        //## attribute u8Top
+            /*!
+            * 
+            */
+            uchar u8Bottom;     //## attribute u8Bottom
+
+            BrowserScrollDirections()
+                : u8Left(0)
+                , u8Right(0)
+                , u8Top(0)
+                , u8Bottom(0)
+            {}
+        };
+        
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BrowserScrollDirections &browserscrolldirection)
+        {
+            argument.beginStructure();
+            argument >> browserscrolldirection.u8Left >> browserscrolldirection.u8Right >> browserscrolldirection.u8Top >>
+                        browserscrolldirection.u8Bottom;
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BrowserScrollDirections &browserscrolldirection)
+        {
+            argument.beginStructure();
+            argument << browserscrolldirection.u8Left << browserscrolldirection.u8Right << browserscrolldirection.u8Top <<
+                        browserscrolldirection.u8Bottom;
+            argument.endStructure();
+            return argument;
+        }
+
+
+
+        /*!
+        * Structure describes availability of the actions in the browser. For example, if the BrowserActions::u8Back=0x03, the HMI could highlight the "back" button, if the state is 0x00 the "back" action is not available, HMI could show the "back" button in the disabled state.
+        */
+        //## type BrowserActions
+        struct BrowserActions {
+            /*!
+            * Defines state of IPageView::back method/button.
+            */
+            uchar u8Back;       //## attribute u8Back
+            /*!
+            * Defines state of IPageView::forward method/button.
+            */
+            uchar u8Forward;        //## attribute u8Forward
+            /*!
+            * Defines state of IPageView::reload method/button.
+            */
+            uchar u8Reload;     //## attribute u8Reload
+            /*!
+            * Defines state of IPageView::stop method/button.
+            */
+            uchar u8Stop;       //## attribute u8Stop
+            /*!
+            * Defines state of IPageView::loadUrl method/button.
+            */
+            uchar u8LoadUrl;        //## attribute u8LoadUrl
+            /*!
+            * Defines state of IPageView::select method/button.
+            */
+            uchar u8Select;     //## attribute u8Select
+            /*!
+            * Defines state of IPageView::scroll(*, ST_SYMBOL) method/button.
+            */
+            BrowserScrollDirections sScrollSymbol;      //## attribute sScrollSymbol
+            /*!
+            * Defines state of IPageView::scroll(*, ST_PAGE) method/button.
+            */
+            BrowserScrollDirections sScrollPage;        //## attribute sScrollPage
+            /*!
+            * Defines state of IPageView::scroll(*, ST_LINK) method/button.
+            */
+            BrowserScrollDirections sScrollLink;        //## attribute sScrollLink
+
+            BrowserActions()
+            : u8Back(0)
+            , u8Forward(0)
+            , u8Reload(0)
+            , u8Stop(0)
+            , u8LoadUrl(0)
+            , u8Select(0)
+            , sScrollSymbol()
+            , sScrollPage()
+            , sScrollLink()
+            {}
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::BrowserActions &browseractions)
+        {
+            argument.beginStructure();
+            argument >> browseractions.u8Back >> browseractions.u8Forward >> browseractions.u8Reload >>
+                        browseractions.u8Stop >> browseractions.u8LoadUrl >> browseractions.u8Select >>
+                        browseractions.sScrollSymbol >> browseractions.sScrollPage >> browseractions.sScrollLink;
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::BrowserActions &browseractions)
+        {
+            argument.beginStructure();
+            argument << browseractions.u8Back << browseractions.u8Forward << browseractions.u8Reload <<
+                        browseractions.u8Stop << browseractions.u8LoadUrl << browseractions.u8Select <<
+                        browseractions.sScrollSymbol << browseractions.sScrollPage << browseractions.sScrollLink;
+            argument.endStructure();
+            return argument;
+        }
+        
     }
 }
 
@@ -354,5 +493,9 @@ Q_DECLARE_METATYPE(conn::brw::INPUT_ELEMENT_TYPE)
 
 Q_DECLARE_METATYPE(conn::brw::SCROLL_DIRECTION)
 Q_DECLARE_METATYPE(conn::brw::SCROLL_TYPE)
+
+Q_DECLARE_METATYPE(conn::brw::BrowserScrollDirections)
+Q_DECLARE_METATYPE(conn::brw::BrowserActions)
+
 
 #endif // BROWSERDEFS_H

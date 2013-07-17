@@ -19,3 +19,18 @@ browser::browser(QObject *parent) :
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
+
+conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle) {
+    qDebug() << __PRETTY_FUNCTION__;
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}
+
+conn::brw::ERROR_IDS browser::destroyPageWindow(qlonglong a_hPageWindowHandle) {
+    qDebug() << __PRETTY_FUNCTION__;
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}
+
+conn::brw::ERROR_IDS browser::getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds) {
+    qDebug() << __PRETTY_FUNCTION__;
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}

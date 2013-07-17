@@ -29,9 +29,9 @@ signals:
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();
     conn::brw::ERROR_IDS forward();
-    conn::brw::ERROR_IDS getBrowserActionsState();
-    conn::brw::ERROR_IDS getContentSize();
-    conn::brw::ERROR_IDS getGeometry();
+    conn::brw::ERROR_IDS getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState);
+    conn::brw::ERROR_IDS getContentSize(uint &a_u32Width, uint &a_u32Height);
+    conn::brw::ERROR_IDS getGeometry(conn::brw::Rect &a_sRect);
     bool getVisible();
     conn::brw::ERROR_IDS load(const QString &a_Url);
     conn::brw::ERROR_IDS reload();

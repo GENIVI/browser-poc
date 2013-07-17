@@ -10,23 +10,23 @@
 
     <method name="getBrowserActionsState">
       <arg name="retval" type="(i)" direction="out"/>
-      <!--      <arg name="a_browserActionsState" type="(yyyyyyy(yyyy)(yyyy)(yyyy))" direction="out"/>    -->
+      <arg name="a_browserActionsState" type="(yyyyyyy(yyyy)(yyyy)(yyyy))" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-      <!--      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::BrowserActions" />  -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::BrowserActions" />
     </method>
 
     <method name="getContentSize">
       <arg name="retval" type="(i)" direction="out"/>
-      <!--  <arg name="a_u32Width" type="u" direction="out"/>
-      <arg name="a_u32Height" type="u" direction="out"/>    -->
+      <arg name="a_u32Width" type="u" direction="out"/>
+      <arg name="a_u32Height" type="u" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
     <method name="getGeometry">
       <arg name="retval" type="(i)" direction="out"/>
-      <!--      <arg name="a_sRect" type="(iiii)" direction="out"/>   -->
+      <arg name="a_sRect" type="(iiii)" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-      <!--  <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::Rect" />      -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::Rect" />
     </method>
     
     <method name="setGeometry">

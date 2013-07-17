@@ -13,12 +13,12 @@
       <arg name="a_oGeometry" type="(iiii)" direction="in"/>
 
       <arg name="retval" type="(i)" direction="out"/>
-      <!--      <arg name="a_hPageWindowHandle" type="x" direction="out"/>      -->
+      <arg name="a_hPageWindowHandle" type="x" direction="out"/>
 
       <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="conn::brw::DEVICE_ID" />
       <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="const conn::brw::Rect &amp;" />
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-      <!--      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::OBJECT_HANDLE" />     -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::OBJECT_HANDLE" />
     </method>
 
     <method name="destroyPageWindow">
@@ -30,10 +30,10 @@
 
     <method name="getPageWindows">
       <arg name="retval" type="(i)" direction="out"/>
-      <!--  <arg name="a_oPageWindowIds" type="ax" direction="out"/>    -->
+      <arg name="a_oPageWindowIds" type="ax" direction="out"/>
 
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-      <!--  <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::ObjectHandleList" />      -->
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::ObjectHandleList" />
     </method>
 
     <signal name="onPageWindowCreated">
