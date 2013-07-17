@@ -38,9 +38,13 @@ private slots:
     void B1addpressed();
     void B2addpressed();
     void B3addpressed();
+    void B4addpressed();
+    void B5addpressed();
     void B1deletepressed();
     void B2deletepressed();
     void B3deletepressed();
+    void B4deletepressed();
+    void B5deletepressed();
 
 private:
     conn::brw::IBookmarkManager *bookmark;
