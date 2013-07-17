@@ -59,14 +59,16 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
 conn::brw::ERROR_IDS bookmarkmanager::deleteAllItems(int type) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    // ignore type
-    Q_UNUSED(type);
+    bool success = false;
 
-    // delete all items
-    while (!bookmarklist.isEmpty())
-        bookmarklist.clear();
-
-    return conn::brw::EID_NO_ERROR;
+    // find bookmarks for type and delete
+    for (int i = 0; i < bookmarklist.size(); ++i) {
+        if (bookmarklist.at(i)->type() == type) {
+            bookmarklist.removeAt(i--);
+            success = true;
+        }
+    }
+    return success ? conn::brw::EID_NO_ERROR : conn::brw::EID_NOT_EXISTS;
 }
 
 conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {

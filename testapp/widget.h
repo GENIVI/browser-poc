@@ -32,7 +32,6 @@ public:
 
 private slots:
     void getItems();
-    void deleteAllItems();
     void input();
     void reload();
     void B1addpressed();
@@ -45,6 +44,9 @@ private slots:
     void B3deletepressed();
     void B4deletepressed();
     void B5deletepressed();
+    void B1deleteallpressed();
+    void B2deleteallpressed();
+    void B3deleteallpressed();
 
 private:
     conn::brw::IBookmarkManager *bookmark;
@@ -54,6 +56,7 @@ private:
 
     void addItem(int bookmarknumber);
     void deleteItem(int bookmarknumber);
+    void deleteAllItems(int type);
 
     QList<conn::brw::BookmarkItem> bookmarklist;
     void initializebookmarks();

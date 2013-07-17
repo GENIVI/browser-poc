@@ -88,8 +88,23 @@ Widget::Widget(QWidget *parent)
     bookmarkdeletebuttonlayout->addWidget(deletebookmark4);
     bookmarkdeletebuttonlayout->addWidget(deletebookmark5);
 
-    QPushButton *b3 = new QPushButton("Delete All Bookmarks");
-    b3->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *deleteallbookmark1 = new QPushButton("Delete all type 0");
+    deleteallbookmark1->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *deleteallbookmark2 = new QPushButton("Delete all type 1");
+    deleteallbookmark2->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *deleteallbookmark3 = new QPushButton("Delete all type 2");
+    deleteallbookmark3->setFixedHeight(BUTTONHEIGHT);
+
+    connect(deleteallbookmark1, SIGNAL(clicked()), this, SLOT(B1deleteallpressed()));
+    connect(deleteallbookmark2, SIGNAL(clicked()), this, SLOT(B2deleteallpressed()));
+    connect(deleteallbookmark3, SIGNAL(clicked()), this, SLOT(B3deleteallpressed()));
+
+    QHBoxLayout *bookmarkdeleteallbuttonlayout = new QHBoxLayout();
+    bookmarkdeleteallbuttonlayout->addWidget(deleteallbookmark1);
+    bookmarkdeleteallbuttonlayout->addWidget(deleteallbookmark2);
+    bookmarkdeleteallbuttonlayout->addWidget(deleteallbookmark3);
+
+
     QPushButton *b4 = new QPushButton("Get All Bookmarks");
     b4->setFixedHeight(BUTTONHEIGHT);
 
@@ -101,13 +116,11 @@ Widget::Widget(QWidget *parent)
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addLayout(bookmarkaddbuttonlayout);
     layout->addLayout(bookmarkdeletebuttonlayout);
-    layout->addWidget(b3);
+    layout->addLayout(bookmarkdeleteallbuttonlayout);
     layout->addWidget(b4);
     layout->addWidget(b5);
     layout->addWidget(b6);
 
-
-    connect(b3, SIGNAL(clicked()), this, SLOT(deleteAllItems()));
     connect(b4, SIGNAL(clicked()), this, SLOT(getItems()));
     connect(b5, SIGNAL(clicked()), this, SLOT(input()));
     connect(b6, SIGNAL(clicked()), this, SLOT(reload()));
@@ -152,7 +165,7 @@ void Widget::initializebookmarks() {
     bookmarklist.append(test);
 
     test.i32Uid = 4;
-    test.i32Type = 1;
+    test.i32Type = 2;
     test.strParentFolderPath = "auto";
     test.strTitle = "BMW";
     test.strUrl = "www.bmw.com";
@@ -162,7 +175,7 @@ void Widget::initializebookmarks() {
     bookmarklist.append(test);
 
     test.i32Uid = 5;
-    test.i32Type = 1;
+    test.i32Type = 2;
     test.strParentFolderPath = "auto";
     test.strTitle = "Continental";
     test.strUrl = "www.continental.com";
@@ -182,6 +195,9 @@ void Widget::B2deletepressed() { deleteItem(1); }
 void Widget::B3deletepressed() { deleteItem(2); }
 void Widget::B4deletepressed() { deleteItem(3); }
 void Widget::B5deletepressed() { deleteItem(4); }
+void Widget::B1deleteallpressed() { deleteAllItems(0); }
+void Widget::B2deleteallpressed() { deleteAllItems(1); }
+void Widget::B3deleteallpressed() { deleteAllItems(2); }
 
 
 void Widget::addItem(int bookmarknumber) {
@@ -214,10 +230,10 @@ void Widget::deleteItem(int bookmarknumber) {
     }
 }
 
-void Widget::deleteAllItems() {
+void Widget::deleteAllItems(int type) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(1);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(type);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
