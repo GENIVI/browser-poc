@@ -85,7 +85,8 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
     return conn::brw::EID_NOT_EXISTS;
 }
 
-conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint index, uint count, conn::brw::BookmarkItemList &a_oItems) {
+conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder,
+                                               uint index, uint count, conn::brw::BookmarkItemList &a_oItems) {
     qDebug() << __PRETTY_FUNCTION__ << path << type << a_eSortingOrder << index << count;
 
     // TODO: sorting
@@ -114,9 +115,12 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
         }
     }
 
-//    return bmlist;
+    if(added != 0) {
+        a_oItems = bmlist;\
+        return conn::brw::EID_NO_ERROR;
+    }
 
-    return conn::brw::EID_NO_ERROR;
+    return conn::brw::EID_NOT_EXISTS;
 }
 
 void bookmarkmanager::printbookmarklist() {

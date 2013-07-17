@@ -247,14 +247,16 @@ void Widget::deleteAllItems(int type) {
 void Widget::getItems() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 2, 2);
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 2, 2);
     reply.waitForFinished();
     if(reply.isValid()) {
-        conn::brw::BookmarkItemList ret = reply.value();
+        conn::brw::ERROR_IDS ret = reply.value();
+        conn::brw::BookmarkItemList ret2 = reply.argumentAt<1>();
 
-        for (int i = 0; i < ret.size(); ++i) {
-            qDebug() << "reply " << ret.at(i).i32Uid << ret.at(i).strTitle << ret.at(i).strUrl << ret.at(i).strParentFolderPath;
+        for (int i = 0; i < ret2.size(); ++i) {
+            qDebug() << "BookmarkItemList " << ret2.at(i).i32Uid << ret2.at(i).strTitle << ret2.at(i).strUrl << ret2.at(i).strParentFolderPath;
         }
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -268,7 +270,7 @@ void Widget::input() {
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "reply " << ret;
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -282,7 +284,7 @@ void Widget::reload() {
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "reply " << ret;
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
