@@ -66,7 +66,6 @@ int main(int argc, char *argv[])
 
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-//    qDBusRegisterMetaType<conn::brw::Rect>();
 
     webpagewindow *wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
