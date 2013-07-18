@@ -18,13 +18,21 @@
 
 #include "../browserdefs.h"
 
+
+#include <QQuickItem>
+
 class webpagewindow : public QObject
 {
     Q_OBJECT
 public:
     explicit webpagewindow(QObject *parent = 0);
-    
+
 signals:
+    void reloadrequested();
+    void backrequested();
+    void forwardrequested();
+    void stoprequested();
+    void loadurlrequested(QString url);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

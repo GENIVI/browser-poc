@@ -16,6 +16,9 @@
 #include <QBoxLayout>
 #include <QPushButton>
 
+#include <QLabel>
+
+
 #include <QDebug>
 
 #define BUTTONHEIGHT 50
@@ -108,22 +111,50 @@ Widget::Widget(QWidget *parent)
     QPushButton *b4 = new QPushButton("Get All Bookmarks");
     b4->setFixedHeight(BUTTONHEIGHT);
 
-    QPushButton *b5 = new QPushButton("UserInput");
-    b5->setFixedHeight(BUTTONHEIGHT);
-    QPushButton *b6 = new QPushButton("Reload");
-    b6->setFixedHeight(BUTTONHEIGHT);
+    connect(b4, SIGNAL(clicked()), this, SLOT(getItems()));
+
+
+    textedit = new QTextEdit("http://");
+    textedit->setFixedHeight(BUTTONHEIGHT);
+    textedit->setFixedWidth(500);
+    QPushButton *go = new QPushButton("GO");
+    go->setFixedHeight(BUTTONHEIGHT);
+
+    connect(go, SIGNAL(clicked()), this, SLOT(loadurl()));
+
+    QHBoxLayout *urlinput = new QHBoxLayout();
+    urlinput->addWidget(textedit);
+    urlinput->addWidget(go);
+
+
+    QPushButton *reload = new QPushButton("Reload");
+    reload->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *back = new QPushButton("Back");
+    back->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *forward = new QPushButton("Forward");
+    forward->setFixedHeight(BUTTONHEIGHT);
+    QPushButton *stop = new QPushButton("Stop");
+    stop->setFixedHeight(BUTTONHEIGHT);
+
+    connect(reload, SIGNAL(clicked()), this, SLOT(reload()));
+    connect(back, SIGNAL(clicked()), this, SLOT(back()));
+    connect(forward, SIGNAL(clicked()), this, SLOT(forward()));
+    connect(stop, SIGNAL(clicked()), this, SLOT(stop()));
+
+    QHBoxLayout *browsercontrolbuttons = new QHBoxLayout();
+    browsercontrolbuttons->addWidget(reload);
+    browsercontrolbuttons->addWidget(back);
+    browsercontrolbuttons->addWidget(forward);
+    browsercontrolbuttons->addWidget(stop);
+
 
     QVBoxLayout *layout = new QVBoxLayout(this);
     layout->addLayout(bookmarkaddbuttonlayout);
     layout->addLayout(bookmarkdeletebuttonlayout);
     layout->addLayout(bookmarkdeleteallbuttonlayout);
     layout->addWidget(b4);
-    layout->addWidget(b5);
-    layout->addWidget(b6);
-
-    connect(b4, SIGNAL(clicked()), this, SLOT(getItems()));
-    connect(b5, SIGNAL(clicked()), this, SLOT(input()));
-    connect(b6, SIGNAL(clicked()), this, SLOT(reload()));
+    layout->addLayout(browsercontrolbuttons);
+    layout->addLayout(urlinput);
 }
 
 Widget::~Widget()
@@ -263,10 +294,10 @@ void Widget::getItems() {
     }
 }
 
-void Widget::input() {
+void Widget::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = userinput->inputText(conn::brw::DR_OK, "test");
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->reload();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -277,10 +308,52 @@ void Widget::input() {
     }
 }
 
-void Widget::reload() {
+void Widget::back() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->reload();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->back();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void Widget::forward() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->forward();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void Widget::stop() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->stop();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void Widget::loadurl() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->load(textedit->toPlainText());
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();

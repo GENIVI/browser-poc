@@ -21,6 +21,7 @@
 #include "iwebpagewindow_interface.h"
 #include "ibrowser_interface.h"
 
+#include <QTextEdit>
 
 class Widget : public QWidget
 {
@@ -32,8 +33,10 @@ public:
 
 private slots:
     void getItems();
-    void input();
     void reload();
+    void back();
+    void forward();
+    void stop();
     void B1addpressed();
     void B2addpressed();
     void B3addpressed();
@@ -47,6 +50,7 @@ private slots:
     void B1deleteallpressed();
     void B2deleteallpressed();
     void B3deleteallpressed();
+    void loadurl();
 
 private:
     conn::brw::IBookmarkManager *bookmark;
@@ -60,6 +64,8 @@ private:
 
     QList<conn::brw::BookmarkItem> bookmarklist;
     void initializebookmarks();
+
+    QTextEdit *textedit;
 };
 
 #endif // WIDGET_H

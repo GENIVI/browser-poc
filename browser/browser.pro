@@ -31,7 +31,8 @@ SOURCES += main.cpp \
     userinput.cpp \
     webpagewindow.cpp \
     browser.cpp \
-    bookmark.cpp
+    bookmark.cpp \
+    browserhelper.cpp
 
 HEADERS += \
     bookmarkmanager.h \
@@ -39,7 +40,8 @@ HEADERS += \
     userinput.h \
     webpagewindow.h \
     browser.h \
-    bookmark.h
+    bookmark.h \
+    browserhelper.h
 
 # Installation path
 # target.path =

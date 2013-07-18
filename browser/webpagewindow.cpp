@@ -23,13 +23,17 @@ webpagewindow::webpagewindow(QObject *parent) :
 conn::brw::ERROR_IDS webpagewindow::back() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    emit backrequested();
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::forward() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    emit forwardrequested();
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
@@ -57,15 +61,20 @@ bool webpagewindow::getVisible() {
 }
 
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << a_Url;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    emit loadurlrequested(a_Url);
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+
+    emit reloadrequested();
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {
@@ -89,5 +98,7 @@ conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
 conn::brw::ERROR_IDS webpagewindow::stop() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    emit stoprequested();
+
+    return conn::brw::EID_NO_ERROR;
 }
