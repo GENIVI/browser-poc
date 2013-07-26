@@ -5,6 +5,8 @@
 
 #include <QQuickItem>
 
+#include "webpagewindow.h"
+
 class browserhelper : public QObject
 {
     Q_OBJECT
@@ -21,6 +23,10 @@ public slots:
     void browserstop();
     void browserloadurl(QString url);
 
+    void test();
+
+private:
+    webpagewindow *wpw;
 
     
 };

@@ -102,3 +102,17 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
 
     return conn::brw::EID_NO_ERROR;
 }
+
+//conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString url) {
+conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    emit test();
+
+//    url = "www.test.de";
+//    title = "jfhgls;djg;osj";
+    url = localurl;
+    title = localtitle;
+
+    return conn::brw::EID_NO_ERROR;
+}

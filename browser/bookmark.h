@@ -16,6 +16,8 @@
 
 #include <QObject>
 
+#include <QDateTime>
+
 class Bookmark : public QObject
 {
     Q_OBJECT
@@ -51,5 +53,14 @@ private:
     QString strIconPath;
     QString strThumbnailPath;
 };
+
+class ApplicationData : public QObject
+ {
+     Q_OBJECT
+ public:
+     Q_INVOKABLE QDateTime getCurrentDateTime() const {
+         return QDateTime::currentDateTime();
+     }
+ };
 
 #endif // BOOKMARK_H

@@ -1,3 +1,4 @@
 TEMPLATE = subdirs
 SUBDIRS = browser \
-	  testapp
+	  testapp \
+    demoui

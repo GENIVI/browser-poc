@@ -9,7 +9,7 @@
 #include "userinput.h"
 #include "iuserinput_adaptor.h"
 
-#include "webpagewindow.h"
+//#include "webpagewindow.h"
 #include "iwebpagewindow_adaptor.h"
 
 #include "browser.h"
@@ -49,7 +49,7 @@ browserhelper::browserhelper(QObject *parent) :
 //    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
 //    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
 
-    webpagewindow *wpw = new webpagewindow();
+    wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
 
     if(!connection.registerService("conn.brw.IWebPageWindow"))
@@ -73,6 +73,7 @@ browserhelper::browserhelper(QObject *parent) :
     connect(wpw, SIGNAL(forwardrequested()), this, SLOT(browserforward()));
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
 
+    connect(wpw, SIGNAL(test()), this, SLOT(test()));
 }
 
 void browserhelper::browserreload() {
@@ -93,4 +94,10 @@ void browserhelper::browserstop() {
 
 void browserhelper::browserloadurl(QString url) {
     item->setProperty("url", url);
+}
+
+void browserhelper::test() {
+    qDebug() << item->property("url") << item->property("title");
+    wpw->localurl = item->property("url").toString();
+    wpw->localtitle = item->property("title").toString();
 }

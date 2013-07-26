@@ -6,7 +6,7 @@ WebView {
     id: root
 
     width: 800
-    height: 600
+    height: 520
 
     url: "http://www.genivi.org"
 }

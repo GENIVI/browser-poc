@@ -116,7 +116,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
     }
 
     if(added != 0) {
-        a_oItems = bmlist;\
+        a_oItems = bmlist;
         return conn::brw::EID_NO_ERROR;
     }
 

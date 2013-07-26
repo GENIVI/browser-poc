@@ -81,6 +81,13 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
+   <method name="getCurrentUrlTitle">
+       <arg name="retval" type="(i)" direction="out"/>
+       <arg name="strCurrentUrl" type="s" direction="out"/>
+       <arg name="strCurrentTitle" type="s" direction="out"/> 
+       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+   </method>    
+       
     <signal name="onLoadStarted">
     </signal>
 
