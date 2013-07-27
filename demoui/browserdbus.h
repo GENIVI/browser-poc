@@ -12,8 +12,8 @@ class browserdbus : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString _bookmarktitle READ bookmarktitle WRITE setBookmarkTitle)
-    Q_PROPERTY(QString name READ name WRITE setName)
+    Q_PROPERTY(QString _title READ title WRITE setTitle)
+    Q_PROPERTY(QString _url READ url WRITE setUrl)
 public:
     explicit browserdbus(QObject *parent = 0);
     
@@ -22,14 +22,14 @@ public:
     Q_INVOKABLE void reload();
     Q_INVOKABLE void loadurl(QString url);
     Q_INVOKABLE void getBookmarks();
-    Q_INVOKABLE void addBookmark(QString bookmarkurl, QString bookmarktitle);
-    Q_INVOKABLE void test();
+    Q_INVOKABLE void addBookmark(QString url, QString title);
+    Q_INVOKABLE void getCurrentUrlAndTitle();
 
-    QString bookmarktitle() { return _bookmarktitle; }
-    void setBookmarkTitle(QString bookmark) { _bookmarktitle = bookmark; }
+    QString title() { return _title; }
+    void setTitle(QString bookmark) { _title = bookmark; }
 
-    QString name() const { return m_name; }
-    void setName(const QString &n)  { m_name = n; }
+    QString url() const { return _url; }
+    void setUrl(const QString &n)  { _url = n; }
 
 signals:
     
@@ -41,8 +41,8 @@ private:
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IBrowser *browser;
 
-    QString _bookmarktitle;
-    QString m_name;
+    QString _title;
+    QString _url;
     
 };
 

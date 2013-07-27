@@ -16,7 +16,7 @@
 
 
 bookmarkmanager::bookmarkmanager(QObject *parent) :
-    QObject(parent)
+    QObject(parent), lastgivenUID(0)
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
@@ -33,15 +33,15 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
         }
 
         // check if uid already exists
-        for (int i = 0; i < bookmarklist.size(); ++i) {
-             if (bookmarklist.at(i)->uid() == a_oItem.i32Uid) {
-                 return conn::brw::EID_ALREADY_EXIST;
-             }
-         }
+//        for (int i = 0; i < bookmarklist.size(); ++i) {
+//             if (bookmarklist.at(i)->uid() == a_oItem.i32Uid) {
+//                 return conn::brw::EID_ALREADY_EXIST;
+//             }
+//         }
 
         // add item
         Bookmark *temp_bookmark = new Bookmark();
-        temp_bookmark->setUid(a_oItem.i32Uid);
+        temp_bookmark->setUid(++lastgivenUID);
         temp_bookmark->setType(a_oItem.i32Type);
         temp_bookmark->setParentFolderPath(a_oItem.strParentFolderPath);
         temp_bookmark->setTitle(a_oItem.strTitle);
@@ -125,5 +125,5 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
 
 void bookmarkmanager::printbookmarklist() {
     for (int i = 0; i < bookmarklist.size(); ++i)
-        qDebug() << i << bookmarklist.at(i)->url();
+        qDebug() << i << bookmarklist.at(i)->uid() << bookmarklist.at(i)->title() << bookmarklist.at(i)->url();
 }

@@ -95,7 +95,7 @@ void browserdbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
 
     conn::brw::BookmarkItem test;
 
-    test.i32Uid = 1;
+    test.i32Uid = 0;
     test.i32Type = 1;
     test.strParentFolderPath = "";
     test.strTitle = bookmarktitle;
@@ -133,7 +133,7 @@ void browserdbus::getBookmarks() {
     }
 }
 
-void browserdbus::test() {
+void browserdbus::getCurrentUrlAndTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = webpagewindow->getCurrentUrlTitle();
@@ -145,7 +145,7 @@ void browserdbus::test() {
 
         qDebug() << "ERROR_IDS " << ret << ret2 << ret3;
 
-        setName(ret3);
-        setBookmarkTitle(ret3);
+        setUrl(ret2);
+        setTitle(ret3);
         }
 }

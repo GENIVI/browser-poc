@@ -113,9 +113,8 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                testbrowser.test()
-                console.log(testbrowser._bookmarktitle)
-//                testbrowser.addBookmark(txturl.text, testbrowser.bookmarktitle)
+                testbrowser.getCurrentUrlAndTitle()
+                testbrowser.addBookmark(testbrowser._url, testbrowser._title)
             }
             onPressed: parent.color = "lightblue"
             onReleased: parent.color = "darkgray"

@@ -40,6 +40,8 @@ private:
     QList<Bookmark*> bookmarklist;
 
     void printbookmarklist();
+
+    int lastgivenUID;
 };
 
 #endif // BOOKMARKMANAGER_H
