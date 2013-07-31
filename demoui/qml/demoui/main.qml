@@ -199,10 +199,16 @@ Item {
             width: parent.width
             height: 70
             MouseArea {
-                anchors.fill: parent
+                anchors.top: parent.top
+                anchors.bottom: parent.bottom
+                anchors.left: deletebutton.right
+                anchors.leftMargin: 10
+                anchors.right: parent.right
                 onClicked: {
-                    //                        itemClicked(index)
                     list.currentIndex = index
+                    browserinterface.loadurl(model.modelData.url)
+                    bookmarklist.state = ""
+                    bookmarklistopen = false
                 }
             }
             Image {
@@ -227,7 +233,7 @@ Item {
             Text {
                 id: bookmarktitle
                 text: model.modelData.title
-                color: (list.currentIndex == index) ? "black" : "white"
+                color: "white"
                 elide: Text.ElideRight
                 font.pixelSize: 20
                 anchors.top: parent.top
@@ -239,7 +245,7 @@ Item {
             Text {
                 id: bookmarkurl
                 text: model.modelData.url
-                color: (list.currentIndex == index) ? "black" : "white"
+                color: "white"
                 elide: Text.ElideRight
                 font.pixelSize: 16
                 anchors.top: bookmarktitle.bottom
@@ -258,17 +264,18 @@ Item {
 
         }
 
-        highlight: Item {
-            width: list.width
-            height: 70
+//        highlight: Item {
+//            width: list.width
+//            height: 70
 
-            Rectangle {
-                anchors.fill: parent
-                color: "lightblue"
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.bottom: parent.bottom
-            }
-        }
+//            Rectangle {
+//                anchors.fill: parent
+//                color: "lightblue"
+//                radius: 5
+//                anchors.left: parent.left
+//                anchors.right: parent.right
+//                anchors.bottom: parent.bottom
+//            }
+//        }
     }
 }
