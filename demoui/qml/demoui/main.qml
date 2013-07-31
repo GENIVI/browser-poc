@@ -187,7 +187,7 @@ Item {
         id: list
 
         anchors.fill: bookmarklist
-        anchors.margins: 20
+        anchors.margins: 10
         clip: true
         highlightFollowsCurrentItem: true
         z: 10
@@ -208,29 +208,44 @@ Item {
             Image {
                 id: deletebutton
                 anchors.left: parent.left
-                anchors.leftMargin: 2
+                anchors.leftMargin: 20
                 anchors.verticalCenter: parent.verticalCenter
                 source: "../../images/list-remove.png"
                 MouseArea {
                     anchors.fill: parent
+                    anchors.margins: -10
                     onClicked: console.log("delete clicked")
                 }
                 Rectangle {
                     anchors.fill: parent
+                    anchors.margins: -10
                     color: "darkgray"
                     radius: 5
                     z: -1
                 }
             }
             Text {
-                id: bookmarktext
-                text: model.modelData.title  + " (" + model.modelData.url + ")"
+                id: bookmarktitle
+                text: model.modelData.title
                 color: (list.currentIndex == index) ? "black" : "white"
+                elide: Text.ElideRight
                 font.pixelSize: 20
-                anchors.verticalCenter: parent.verticalCenter
+                anchors.top: parent.top
+                anchors.topMargin: 10
                 anchors.left: deletebutton.right
                 anchors.leftMargin: 30
-
+                anchors.right: parent.right
+            }
+            Text {
+                id: bookmarkurl
+                text: model.modelData.url
+                color: (list.currentIndex == index) ? "black" : "white"
+                elide: Text.ElideRight
+                font.pixelSize: 16
+                anchors.top: bookmarktitle.bottom
+                anchors.topMargin: 5
+                anchors.left: bookmarktitle.left
+                anchors.right: parent.right
             }
 
             Rectangle {
