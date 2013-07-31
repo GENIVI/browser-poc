@@ -157,6 +157,23 @@ void browserdbus::getBookmarks() {
     }
 }
 
+
+void browserdbus::deleteAllBookmarks() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(1);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        m_bookmarkList.clear();
+        emit bookmarkListChanged();
+        qDebug() << "reply " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 void browserdbus::getCurrentUrlAndTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 

@@ -66,6 +66,7 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteAllItems(int type) {
         if (bookmarklist.at(i)->type() == type) {
             bookmarklist.removeAt(i--);
             success = true;
+            lastgivenUID = 0;
         }
     }
     return success ? conn::brw::EID_NO_ERROR : conn::brw::EID_NOT_EXISTS;

@@ -159,14 +159,12 @@ Item {
     }
     Rectangle {
         id: bookmarklist
-        x: parent.width - 20
-        width: 0
-        visible: width > 0
+        x: parent.width
+        width: 500
         opacity: 0.7
         anchors.top: bookmarks.bottom
         anchors.topMargin: 1
         anchors.bottom: parent.bottom
-        anchors.right: parent.right
         color: "darkgray"
         radius: 10
         border.color: "black"
@@ -174,26 +172,68 @@ Item {
         states: [
             State {
                 name: "open"
-                PropertyChanges { target: bookmarklist; width: 500 }
+                PropertyChanges { target: bookmarklist; x: parent.width - bookmarklist.width }
                 PropertyChanges { target: bookmarks; color: "lightblue" }
             }
         ]
-        Behavior on width {
-            NumberAnimation { duration: 300; easing.type: Easing.OutQuad }
+        Behavior on x {
+            NumberAnimation { duration: 500; easing.type: Easing.OutBounce }
+        }
+    }
+
+    Rectangle {
+        id: deleteallbutton
+        width: 400
+        height: 50
+        opacity: 1.0
+        color: "red"
+        radius: 10
+        border.color: "black"
+        border.width: 2
+        anchors.bottom: bookmarklist.bottom
+        anchors.bottomMargin: 5
+        anchors.horizontalCenter: bookmarklist.horizontalCenter
+        z:1
+        Image {
+            source: "../../images/task-attention.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.left: parent.left
+            anchors.leftMargin: 40
+        }
+        Text {
+            text: "Delete all bookmarks"
+            color: "white"
+            font.pixelSize: 20
+            anchors.centerIn: parent
+        }
+        Image {
+            source: "../../images/task-attention.png"
+            anchors.verticalCenter: parent.verticalCenter
+            anchors.right: parent.right
+            anchors.rightMargin: 40
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                bookmarklist.state = ""
+                bookmarklistopen = false
+                browserinterface.deleteAllBookmarks()
+            }
         }
     }
 
     ListView {
         id: list
 
-        anchors.fill: bookmarklist
+        anchors.top: bookmarklist.top
+        anchors.left: bookmarklist.left
+        anchors.right: bookmarklist.right
+        anchors.bottom: deleteallbutton.top
         anchors.margins: 10
         clip: true
         highlightFollowsCurrentItem: true
-        z: 10
+        z: 1
         model: browserinterface.bookmarkList
-
-
 
         delegate: Item {
             width: parent.width

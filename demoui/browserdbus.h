@@ -43,6 +43,7 @@ public:
     Q_INVOKABLE void loadurl(QString url);
     Q_INVOKABLE void getBookmarks();
     Q_INVOKABLE void addBookmark(QString url, QString title);
+    Q_INVOKABLE void deleteAllBookmarks();
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
     QString title() { return m_title; }
@@ -68,6 +69,5 @@ private:
     QString m_url;
     QList<Bookmark*> m_bookmarkList;
 };
-
 
 #endif // BROWSERDBUS_H
