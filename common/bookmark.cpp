@@ -13,8 +13,6 @@
 
 #include "bookmark.h"
 
-#include <QDebug>
-
 Bookmark::Bookmark(QObject *parent) :
     QObject(parent), i32Uid(0)
   , i32Type(0)

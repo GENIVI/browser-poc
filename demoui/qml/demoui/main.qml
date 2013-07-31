@@ -1,10 +1,14 @@
 import QtQuick 2.0
+import browserdbusinterface 1.0
 
 Item {
     id: root
     width: 800
     height: 600
 
+    BrowserInterface {
+        id: browserinterface
+    }
 
     Rectangle {
         id: bg
@@ -26,7 +30,7 @@ Item {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: testbrowser.goBack()
+            onClicked: browserinterface.goBack()
             onPressed: parent.color = "lightblue"
             onReleased: parent.color = "darkgray"
         }
@@ -47,7 +51,7 @@ Item {
         }
         MouseArea {
             anchors.fill: parent
-            onClicked: testbrowser.goForward()
+            onClicked: browserinterface.goForward()
             onPressed: parent.color = "lightblue"
             onReleased: parent.color = "darkgray"
         }
@@ -78,7 +82,11 @@ Item {
                 anchors.right: parent.right
                 anchors.rightMargin: 5
 
-                onAccepted: testbrowser.loadurl(text)
+                onAccepted: {
+                    bookmarklist.state = ""
+                    bookmarklistopen = false
+                    browserinterface.loadurl(text)
+                }
             }
             Rectangle {
                 height: parent.height
@@ -91,7 +99,7 @@ Item {
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: testbrowser.reload()
+                    onClicked: browserinterface.reload()
                 }
             }
         }
@@ -113,14 +121,14 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                testbrowser.getCurrentUrlAndTitle()
-                testbrowser.addBookmark(testbrowser._url, testbrowser._title)
+                browserinterface.getCurrentUrlAndTitle()
+                browserinterface.addBookmark(browserinterface.url, browserinterface.title)
             }
             onPressed: parent.color = "lightblue"
             onReleased: parent.color = "darkgray"
         }
     }
-    property bool open: false
+    property bool bookmarklistopen: false
 
     Rectangle {
         id: bookmarks
@@ -138,13 +146,13 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                if(open) {
+                if(bookmarklistopen) {
                     bookmarklist.state = ""
-                    open = false
+                    bookmarklistopen = false
                 } else {
-                    testbrowser.getBookmarks()
+                    browserinterface.getBookmarks()
                     bookmarklist.state = "open"
-                    open = true
+                    bookmarklistopen = true
                 }
             }
         }
@@ -183,7 +191,9 @@ Item {
         clip: true
         highlightFollowsCurrentItem: true
         z: 10
-        model: bookmarkModel
+        model: browserinterface.bookmarkList
+
+
 
         delegate: Item {
             width: parent.width
@@ -214,7 +224,7 @@ Item {
             }
             Text {
                 id: bookmarktext
-                text: model.modelData.name + " (" + model.modelData.url + ")"
+                text: model.modelData.title  + " (" + model.modelData.url + ")"
                 color: (list.currentIndex == index) ? "black" : "white"
                 font.pixelSize: 20
                 anchors.verticalCenter: parent.verticalCenter
@@ -234,7 +244,7 @@ Item {
         }
 
         highlight: Item {
-            width: parent.width
+            width: list.width
             height: 70
 
             Rectangle {

@@ -17,7 +17,7 @@
 #include <QObject>
 
 #include "../browserdefs.h"
-#include "bookmark.h"
+#include "../common/bookmark.h"
 
 
 class bookmarkmanager : public QObject

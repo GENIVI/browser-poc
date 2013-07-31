@@ -1,13 +1,32 @@
+/**
+ * Copyright (C) 2013, Pelagicore
+ *
+ * Author: Marcel Schuette <marcel.schuette@pelagicore.com>
+ *
+ * This file is part of the GENIVI project Browser Proof-Of-Concept
+ * For further information, see http://genivi.org/
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "browserdbus.h"
 
 #include "../browserdefs.h"
 
 #include <QDBusMetaType>
+#include <QtQml>
 
+
+#define NUMBER_OF_BOOKMARKS 20
 
 browserdbus::browserdbus(QObject *parent) :
     QObject(parent)
 {
+    qmlRegisterType<browserdbus>("browserdbusinterface",1,0,"BrowserInterface");
+    qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
+
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
@@ -91,7 +110,7 @@ void browserdbus::loadurl(QString url) {
 
 
 void browserdbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << bookmarkurl << bookmarktitle;
 
     conn::brw::BookmarkItem test;
 
@@ -117,14 +136,19 @@ void browserdbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
 void browserdbus::getBookmarks() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 1, 2);
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 1, NUMBER_OF_BOOKMARKS);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        conn::brw::BookmarkItemList ret2 = reply.argumentAt<1>();
+        conn::brw::BookmarkItemList bookmarklist = reply.argumentAt<1>();
 
-        for (int i = 0; i < ret2.size(); ++i) {
-            qDebug() << "BookmarkItemList " << ret2.at(i).i32Uid << ret2.at(i).strTitle << ret2.at(i).strUrl << ret2.at(i).strParentFolderPath;
+        m_bookmarkList.clear();
+
+        for (int i = 0; i < bookmarklist.size(); ++i) {
+            qDebug() << "BookmarkItemList " << bookmarklist.at(i).i32Uid << bookmarklist.at(i).strTitle << bookmarklist.at(i).strUrl << bookmarklist.at(i).strParentFolderPath;
+
+            m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl));
+            emit bookmarkListChanged();
         }
         qDebug() << "ERROR_IDS " << ret;
     } else {
@@ -140,12 +164,7 @@ void browserdbus::getCurrentUrlAndTitle() {
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        QString ret2 = reply.argumentAt<1>();
-        QString ret3 = reply.argumentAt<2>();
-
-        qDebug() << "ERROR_IDS " << ret << ret2 << ret3;
-
-        setUrl(ret2);
-        setTitle(ret3);
+        setUrl(reply.argumentAt<1>());
+        setTitle(reply.argumentAt<2>());
         }
 }

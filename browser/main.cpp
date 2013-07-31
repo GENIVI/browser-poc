@@ -39,10 +39,6 @@
 
 #include "browserhelper.h"
 
-
-
-#include "bookmark.h"
-
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
@@ -51,14 +47,12 @@ int main(int argc, char *argv[])
 
 
     QtQuick2ApplicationViewer viewer;
-
-//     ApplicationData data;
-//     viewer.rootContext()->setContextProperty("applicationData", &data);
-     //    viewer.rootContext()->setContextProperty("currentDateTime", QDateTime::currentDateTime());
-
-
-
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
+
+//    QObject *object = viewer.rootObject();
+//   QObject::connect(object, SIGNAL(sendsignal()), &bh, SLOT(browserreload()));
+
+
     viewer.showExpanded();
 
     bh.item = viewer.contentItem()->childItems().at(0);

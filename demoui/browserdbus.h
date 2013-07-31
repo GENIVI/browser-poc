@@ -1,19 +1,39 @@
+/**
+ * Copyright (C) 2013, Pelagicore
+ *
+ * Author: Marcel Schuette <marcel.schuette@pelagicore.com>
+ *
+ * This file is part of the GENIVI project Browser Proof-Of-Concept
+ * For further information, see http://genivi.org/
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #ifndef BROWSERDBUS_H
 #define BROWSERDBUS_H
 
 #include <QObject>
+#include <QQmlListProperty>
 
 #include "ibookmarkmanager_interface.h"
 #include "iuserinput_interface.h"
 #include "iwebpagewindow_interface.h"
 #include "ibrowser_interface.h"
 
+#include "../common/bookmark.h"
+
+class DataObject;
+
 class browserdbus : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString _title READ title WRITE setTitle)
-    Q_PROPERTY(QString _url READ url WRITE setUrl)
+    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(QString url READ url)
+    Q_PROPERTY(QQmlListProperty<Bookmark> bookmarkList READ getBookmarkList NOTIFY bookmarkListChanged)
+
 public:
     explicit browserdbus(QObject *parent = 0);
     
@@ -25,14 +45,17 @@ public:
     Q_INVOKABLE void addBookmark(QString url, QString title);
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
-    QString title() { return _title; }
-    void setTitle(QString bookmark) { _title = bookmark; }
+    QString title() { return m_title; }
+    void setTitle(QString title) { m_title = title; }
 
-    QString url() const { return _url; }
-    void setUrl(const QString &n)  { _url = n; }
+    QString url() const { return m_url; }
+    void setUrl(const QString &url)  { m_url = url; }
+
+    QQmlListProperty<Bookmark> getBookmarkList() { return QQmlListProperty<Bookmark>(this, m_bookmarkList); }
 
 signals:
-    
+    void bookmarkListChanged();
+
 public slots:
 
 private:
@@ -41,33 +64,10 @@ private:
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IBrowser *browser;
 
-    QString _title;
-    QString _url;
-    
+    QString m_title;
+    QString m_url;
+    QList<Bookmark*> m_bookmarkList;
 };
-
-#include <QString>
-
-class DataObject : public QObject
- {
-     Q_OBJECT
-
-     Q_PROPERTY(QString name READ getName WRITE setName)
-     Q_PROPERTY(QString url READ getUrl WRITE setUrl)
-
-public:
-    DataObject(QString aname, QString aurl) { name = aname; url = aurl;}
-
-    QString getName() { return name; }
-    QString getUrl() { return url; }
-
-    void setName(QString name1) { name = name1; }
-    void setUrl(QString url1) { url= url1; }
-
-private:
-    QString name;
-    QString url;
- };
 
 
 #endif // BROWSERDBUS_H

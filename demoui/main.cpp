@@ -1,7 +1,18 @@
+/**
+ * Copyright (C) 2013, Pelagicore
+ *
+ * Author: Marcel Schuette <marcel.schuette@pelagicore.com>
+ *
+ * This file is part of the GENIVI project Browser Proof-Of-Concept
+ * For further information, see http://genivi.org/
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
-
-#include <QQmlContext>
 
 #include "browserdbus.h"
 
@@ -13,17 +24,7 @@ int main(int argc, char *argv[])
 
     browserdbus browserdbushelper;
 
-    QList<QObject*> dataList;
-    dataList.append(new DataObject("Genivi", "http://www.genivi.org"));
-    dataList.append(new DataObject("Pelagicore", "http://www.pelagicore.com"));
-    dataList.append(new DataObject("BMW", "http://bmw.com"));
-    dataList.append(new DataObject("XXX", "http://www.xxx.com"));
-    dataList.append(new DataObject("YYY", "http://www.y.com"));
-
-    viewer.rootContext()->setContextProperty("bookmarkModel", QVariant::fromValue(dataList));
-
-
-    viewer.rootContext()->setContextProperty("testbrowser", &browserdbushelper);
+//    viewer.rootContext()->setContextProperty("testbrowser", &browserdbushelper);
 
     viewer.setMainQmlFile(QStringLiteral("qml/demoui/main.qml"));
     viewer.showExpanded();

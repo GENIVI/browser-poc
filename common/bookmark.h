@@ -21,8 +21,13 @@
 class Bookmark : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(QString url READ url)
+
 public:
     explicit Bookmark(QObject *parent = 0);
+    explicit Bookmark(QString aname, QString aurl) { strTitle = aname; strUrl = aurl;}
     
     void setUid(int uid) { i32Uid = uid; }
     void setType(int type) { i32Type = type; }
@@ -53,14 +58,5 @@ private:
     QString strIconPath;
     QString strThumbnailPath;
 };
-
-class ApplicationData : public QObject
- {
-     Q_OBJECT
- public:
-     Q_INVOKABLE QDateTime getCurrentDateTime() const {
-         return QDateTime::currentDateTime();
-     }
- };
 
 #endif // BOOKMARK_H

@@ -6,6 +6,7 @@ DEPLOYMENTFOLDERS = folder_01
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
 
+
 QT += dbus
 
 my_dbus_bookmark_adaptors.files += ../IBookmarkManager.xml
@@ -25,13 +26,13 @@ my_dbus_browser_adaptors.source_flags = -l browser
 
 DBUS_ADAPTORS += my_dbus_bookmark_adaptors my_dbus_userinput_adaptors my_dbus_webpagewindow_adaptors my_dbus_browser_adaptors
 
+include(../common/common.pri)
 
 SOURCES += main.cpp \
     bookmarkmanager.cpp \
     userinput.cpp \
     webpagewindow.cpp \
     browser.cpp \
-    bookmark.cpp \
     browserhelper.cpp
 
 HEADERS += \
@@ -40,7 +41,6 @@ HEADERS += \
     userinput.h \
     webpagewindow.h \
     browser.h \
-    bookmark.h \
     browserhelper.h
 
 # Installation path

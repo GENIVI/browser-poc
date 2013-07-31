@@ -16,13 +16,14 @@ DBUS_INTERFACES += my_dbus_interfaces
 
 QT += core dbus
 
+include(../common/common.pri)
 
 SOURCES += main.cpp \
     browserdbus.cpp
 
 HEADERS += \
     browserdbus.h \
-        ../browserdefs.h
+    ../browserdefs.h
 
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
