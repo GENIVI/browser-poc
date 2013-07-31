@@ -16,7 +16,7 @@
 
 #include <QDBusMetaType>
 
-#include "../browserdefs.h"
+#include "../common/browserdefs.h"
 
 int main(int argc, char *argv[])
 {

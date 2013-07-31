@@ -13,7 +13,7 @@
 
 #include "browserdbus.h"
 
-#include "../browserdefs.h"
+#include "../common/browserdefs.h"
 
 #include <QDBusMetaType>
 #include <QtQml>

@@ -16,7 +16,7 @@
 
 #include <QObject>
 
-#include "../browserdefs.h"
+#include "../common/browserdefs.h"
 
 class browser : public QObject
 {

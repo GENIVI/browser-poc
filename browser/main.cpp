@@ -14,23 +14,10 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
 
-#include "../browserdefs.h"
+#include "../common/browserdefs.h"
 
 //#include <QtDBus/QDBusConnection>
 #include <QDBusMetaType>
-
-//#include "bookmarkmanager.h"
-//#include "ibookmarkmanager_adaptor.h"
-
-//#include "userinput.h"
-//#include "iuserinput_adaptor.h"
-
-//#include "webpagewindow.h"
-//#include "iwebpagewindow_adaptor.h"
-
-//#include "browser.h"
-//#include "ibrowser_adaptor.h"
-
 
 #include <QQmlContext>
 #include <QQmlEngine>

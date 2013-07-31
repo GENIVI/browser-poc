@@ -11,7 +11,7 @@ my_dbus_interfaces.files += ../IBookmarkManager.xml \
     ../IUserInput.xml \
     ../IWebPageWindow.xml \
     ../IBrowser.xml
-my_dbus_interfaces.header_flags = -i ../browserdefs.h
+my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
 DBUS_INTERFACES += my_dbus_interfaces
 
 QT += core dbus
@@ -21,9 +21,7 @@ include(../common/common.pri)
 SOURCES += main.cpp \
     browserdbus.cpp
 
-HEADERS += \
-    browserdbus.h \
-    ../browserdefs.h
+HEADERS += browserdbus.h \
 
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)
