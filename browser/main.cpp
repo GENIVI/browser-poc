@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
 
-//    QObject *object = viewer.rootObject();
-//   QObject::connect(object, SIGNAL(sendsignal()), &bh, SLOT(browserreload()));
+    QObject *object = viewer.rootObject();
+    QObject::connect(object, SIGNAL(urlChanged(int, QString)), &bh, SLOT(urlChanged(int,QString)));
 
 
     viewer.showExpanded();

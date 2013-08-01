@@ -74,6 +74,9 @@ browserhelper::browserhelper(QObject *parent) :
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
 
     connect(wpw, SIGNAL(test()), this, SLOT(test()));
+
+    connect(this, SIGNAL(urlChanged(QString)), wpw, SLOT(loadforward(QString)));
+
 }
 
 void browserhelper::browserreload() {
@@ -100,4 +103,10 @@ void browserhelper::test() {
     qDebug() << item->property("url") << item->property("title");
     wpw->localurl = item->property("url").toString();
     wpw->localtitle = item->property("title").toString();
+}
+
+void browserhelper::urlChanged(int status, QString url) {
+    qDebug() << status << url;
+
+    emit urlChanged(url);
 }

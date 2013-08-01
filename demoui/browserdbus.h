@@ -31,7 +31,7 @@ class browserdbus : public QObject
     Q_OBJECT
 
     Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(QString url READ url)
+    Q_PROPERTY(QString url READ url NOTIFY urlChanged)
     Q_PROPERTY(QQmlListProperty<Bookmark> bookmarkList READ getBookmarkList NOTIFY bookmarkListChanged)
 
 public:
@@ -56,8 +56,10 @@ public:
 
 signals:
     void bookmarkListChanged();
+    void urlChanged();
 
 public slots:
+    void testSlot(QString url);
 
 private:
     conn::brw::IBookmarkManager *bookmark;

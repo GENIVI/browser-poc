@@ -4,8 +4,9 @@ import QtWebKit 3.0
 WebView {
     id: root
 
-//    onLoadingChanged: console.log("OOOOOOOOOOO " + loadRequest.status + " " + loadRequest.url)
-//    onLinkHovered:console.log("IIIIIIIIII" + hoveredUrl)
+    signal urlChanged(int status, string url)
+
+    onLoadingChanged: urlChanged(loadRequest.status, loadRequest.url)
 
     width: 800
     height: 520

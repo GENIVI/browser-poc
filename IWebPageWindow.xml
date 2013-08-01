@@ -89,6 +89,7 @@
    </method>    
        
     <signal name="onLoadStarted">
+        <arg name="strUrl" type="s"/>
     </signal>
 
     <signal name="onLoadProgress">

@@ -15,6 +15,7 @@ public:
     
     QQuickItem *item;
 signals:
+    void urlChanged(QString url);
     
 public slots:
     void browserreload();
@@ -24,6 +25,8 @@ public slots:
     void browserloadurl(QString url);
 
     void test();
+
+    void urlChanged(int status, QString url);
 
 private:
     webpagewindow *wpw;

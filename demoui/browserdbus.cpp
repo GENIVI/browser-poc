@@ -49,6 +49,18 @@ browserdbus::browserdbus(QObject *parent) :
 
     browser = new conn::brw::IBrowser("conn.brw.IBrowser", "/browser",
                                       QDBusConnection::sessionBus(), this);
+
+
+    connect(webpagewindow, SIGNAL(onLoadStarted(QString)),this,SLOT(testSlot(QString)));
+
+}
+
+
+void browserdbus::testSlot(QString url) {
+    qDebug() << __PRETTY_FUNCTION__ << url;
+
+    setUrl(url);
+    emit urlChanged();
 }
 
 

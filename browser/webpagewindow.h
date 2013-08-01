@@ -37,6 +37,8 @@ signals:
     void stoprequested();
     void loadurlrequested(QString url);
     void test();
+
+    void onLoadStarted(QString url);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();
@@ -52,8 +54,7 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
     conn::brw::ERROR_IDS getCurrentUrlTitle(QString &url, QString &title);
-//    conn::brw::ERROR_IDS getCurrentUrlTitle(QString url);
-//    QString getCurrentUrlTitle(QString &test);
+    void loadforward(QString url);
 };
 
 #endif // WEBPAGEWINDOW_H

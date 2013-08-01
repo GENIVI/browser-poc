@@ -73,7 +73,7 @@ Item {
             anchors.margins: 20
             TextInput {
                 id: txturl
-                text: "http://"
+                text: browserinterface.url
                 font.pixelSize: 20
                 clip: true
                 anchors.verticalCenter: parent.verticalCenter
