@@ -30,6 +30,10 @@ int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
 
+    QCoreApplication::setOrganizationName("Genivi");
+    QCoreApplication::setOrganizationDomain("genivi.org");
+    QCoreApplication::setApplicationName("Browser PoC");
+
     browserhelper bh;
 
 

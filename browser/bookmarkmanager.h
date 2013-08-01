@@ -19,6 +19,7 @@
 #include "../common/browserdefs.h"
 #include "../common/bookmark.h"
 
+#include <QSettings>
 
 class bookmarkmanager : public QObject
 {
@@ -42,6 +43,8 @@ private:
     void printbookmarklist();
 
     int lastgivenUID;
+
+    QSettings bookmarksettings;
 };
 
 #endif // BOOKMARKMANAGER_H

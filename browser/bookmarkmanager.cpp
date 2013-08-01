@@ -12,6 +12,7 @@
  */
 
 #include "bookmarkmanager.h"
+
 #include <QDebug>
 
 
@@ -19,6 +20,26 @@ bookmarkmanager::bookmarkmanager(QObject *parent) :
     QObject(parent), lastgivenUID(0)
 {
     qDebug() << __PRETTY_FUNCTION__;
+
+    // read stored bookmarks
+    lastgivenUID = bookmarksettings.value("lastgivenUID").toInt();
+
+    int size = bookmarksettings.beginReadArray("bookmarks");
+    for (int i = 0; i < size; ++i) {
+        bookmarksettings.setArrayIndex(i);
+        Bookmark *temp_bookmark = new Bookmark();
+
+        temp_bookmark->setUid(bookmarksettings.value("i32Uid").toInt());
+        temp_bookmark->setType(bookmarksettings.value("i32Type").toInt());
+        temp_bookmark->setParentFolderPath(bookmarksettings.value("strParentFolderPath").toString());
+        temp_bookmark->setTitle(bookmarksettings.value("strTitle").toString());
+        temp_bookmark->setUrl(bookmarksettings.value("strUrl").toString());
+        temp_bookmark->setIconPath(bookmarksettings.value("strIconPath").toString());
+        temp_bookmark->setThumbnailPath(bookmarksettings.value("strThumbnailPath").toString());
+
+        bookmarklist.append(temp_bookmark);
+    }
+    bookmarksettings.endArray();
 }
 
 conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_oItem) {
@@ -51,6 +72,23 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
 
         bookmarklist.append(temp_bookmark);
 
+
+        // store bookmark
+        bookmarksettings.setValue("lastgivenUID",lastgivenUID);
+
+        bookmarksettings.beginWriteArray("bookmarks");
+        for (int i = 0; i < bookmarklist.size(); ++i) {
+            bookmarksettings.setArrayIndex(i);
+            bookmarksettings.setValue("i32Uid", bookmarklist.at(i)->uid());
+            bookmarksettings.setValue("i32Type", bookmarklist.at(i)->type());
+            bookmarksettings.setValue("strParentFolderPath", bookmarklist.at(i)->folderpath());
+            bookmarksettings.setValue("strTitle", bookmarklist.at(i)->title());
+            bookmarksettings.setValue("strUrl", bookmarklist.at(i)->url());
+            bookmarksettings.setValue("strIconPath", bookmarklist.at(i)->iconpath());
+            bookmarksettings.setValue("strThumbnailPath", bookmarklist.at(i)->thumbnailpath());
+        }
+        bookmarksettings.endArray();
+
         return conn::brw::EID_NO_ERROR;
     }
     return conn::brw::EID_INVALID_ARGUMENT;
@@ -67,6 +105,8 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteAllItems(int type) {
             bookmarklist.removeAt(i--);
             success = true;
             lastgivenUID = 0;
+
+            bookmarksettings.clear();
         }
     }
     return success ? conn::brw::EID_NO_ERROR : conn::brw::EID_NOT_EXISTS;
