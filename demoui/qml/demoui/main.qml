@@ -260,7 +260,7 @@ Item {
                 MouseArea {
                     anchors.fill: parent
                     anchors.margins: -10
-                    onClicked: console.log("delete clicked")
+                    onClicked: browserinterface.deleteBookmark(index)
                 }
                 Rectangle {
                     anchors.fill: parent

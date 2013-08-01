@@ -27,7 +27,7 @@ class Bookmark : public QObject
 
 public:
     explicit Bookmark(QObject *parent = 0);
-    explicit Bookmark(QString aname, QString aurl) { strTitle = aname; strUrl = aurl;}
+    explicit Bookmark(QString aname, QString aurl, int uid) { strTitle = aname; strUrl = aurl; i32Uid = uid; }
     
     void setUid(int uid) { i32Uid = uid; }
     void setType(int type) { i32Type = type; }

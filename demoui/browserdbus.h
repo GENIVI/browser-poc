@@ -46,6 +46,8 @@ public:
     Q_INVOKABLE void deleteAllBookmarks();
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
+    Q_INVOKABLE void deleteBookmark(int index);
+
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
 

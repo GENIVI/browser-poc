@@ -159,7 +159,7 @@ void browserdbus::getBookmarks() {
         for (int i = 0; i < bookmarklist.size(); ++i) {
             qDebug() << "BookmarkItemList " << bookmarklist.at(i).i32Uid << bookmarklist.at(i).strTitle << bookmarklist.at(i).strUrl << bookmarklist.at(i).strParentFolderPath;
 
-            m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl));
+            m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl, bookmarklist.at(i).i32Uid));
             emit bookmarkListChanged();
         }
         qDebug() << "ERROR_IDS " << ret;
@@ -184,6 +184,23 @@ void browserdbus::deleteAllBookmarks() {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
     }
+}
+
+void browserdbus::deleteBookmark(int index) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteItem(m_bookmarkList.at(index)->uid());
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "reply " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+
+    m_bookmarkList.removeAt(index);
+    emit bookmarkListChanged();
 }
 
 void browserdbus::getCurrentUrlAndTitle() {
