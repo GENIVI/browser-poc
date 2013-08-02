@@ -11,30 +11,28 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <QDBusMetaType>
+#include <QtQml>
+
 #include "browserdbus.h"
 
 #include "../common/browserdefs.h"
 
-#include <QDBusMetaType>
-#include <QtQml>
-
 
 #define NUMBER_OF_BOOKMARKS 20
 
-browserdbus::browserdbus(QObject *parent) :
+BrowserDbus::BrowserDbus(QObject *parent) :
     QObject(parent)
 {
-    qmlRegisterType<browserdbus>("browserdbusinterface",1,0,"BrowserInterface");
+    qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
     qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
 
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
     qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
-
     qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
     qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
-
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
 
@@ -51,12 +49,14 @@ browserdbus::browserdbus(QObject *parent) :
                                       QDBusConnection::sessionBus(), this);
 
 
-    connect(webpagewindow, SIGNAL(onLoadStarted(QString)),this,SLOT(testSlot(QString)));
 
+
+
+    connect(webpagewindow, SIGNAL(onLoadStarted(QString)),this,SLOT(testSlot(QString)));
 }
 
 
-void browserdbus::testSlot(QString url) {
+void BrowserDbus::testSlot(QString url) {
     qDebug() << __PRETTY_FUNCTION__ << url;
 
     setUrl(url);
@@ -64,7 +64,7 @@ void browserdbus::testSlot(QString url) {
 }
 
 
-void browserdbus::goBack() {
+void BrowserDbus::goBack() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->back();
@@ -78,7 +78,7 @@ void browserdbus::goBack() {
     }
 }
 
-void browserdbus::goForward() {
+void BrowserDbus::goForward() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->forward();
@@ -92,7 +92,7 @@ void browserdbus::goForward() {
     }
 }
 
-void browserdbus::reload() {
+void BrowserDbus::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->reload();
@@ -106,7 +106,7 @@ void browserdbus::reload() {
     }
 }
 
-void browserdbus::loadurl(QString url) {
+void BrowserDbus::loadurl(QString url) {
     qDebug() << __PRETTY_FUNCTION__ << url;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->load(url);
@@ -120,21 +120,19 @@ void browserdbus::loadurl(QString url) {
     }
 }
 
-
-void browserdbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
+void BrowserDbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
     qDebug() << __PRETTY_FUNCTION__ << bookmarkurl << bookmarktitle;
 
-    conn::brw::BookmarkItem test;
+    conn::brw::BookmarkItem tmpbookmark;
+    tmpbookmark.i32Uid = 0;
+    tmpbookmark.i32Type = 1;
+    tmpbookmark.strParentFolderPath = "";
+    tmpbookmark.strTitle = bookmarktitle;
+    tmpbookmark.strUrl = bookmarkurl;
+    tmpbookmark.strIconPath = "";
+    tmpbookmark.strThumbnailPath = "";
 
-    test.i32Uid = 0;
-    test.i32Type = 1;
-    test.strParentFolderPath = "";
-    test.strTitle = bookmarktitle;
-    test.strUrl = bookmarkurl;
-    test.strIconPath = "";
-    test.strThumbnailPath = "";
-
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(test);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(tmpbookmark);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -145,7 +143,7 @@ void browserdbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
     }
 }
 
-void browserdbus::getBookmarks() {
+void BrowserDbus::getBookmarks() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems("", 1, conn::brw::BST_UNSORTED, 1, NUMBER_OF_BOOKMARKS);
@@ -155,10 +153,8 @@ void browserdbus::getBookmarks() {
         conn::brw::BookmarkItemList bookmarklist = reply.argumentAt<1>();
 
         m_bookmarkList.clear();
-
         for (int i = 0; i < bookmarklist.size(); ++i) {
             qDebug() << "BookmarkItemList " << bookmarklist.at(i).i32Uid << bookmarklist.at(i).strTitle << bookmarklist.at(i).strUrl << bookmarklist.at(i).strParentFolderPath;
-
             m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl, bookmarklist.at(i).i32Uid));
             emit bookmarkListChanged();
         }
@@ -169,8 +165,7 @@ void browserdbus::getBookmarks() {
     }
 }
 
-
-void browserdbus::deleteAllBookmarks() {
+void BrowserDbus::deleteAllBookmarks() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(1);
@@ -186,7 +181,7 @@ void browserdbus::deleteAllBookmarks() {
     }
 }
 
-void browserdbus::deleteBookmark(int index) {
+void BrowserDbus::deleteBookmark(int index) {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteItem(m_bookmarkList.at(index)->uid());
@@ -203,7 +198,7 @@ void browserdbus::deleteBookmark(int index) {
     emit bookmarkListChanged();
 }
 
-void browserdbus::getCurrentUrlAndTitle() {
+void BrowserDbus::getCurrentUrlAndTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = webpagewindow->getCurrentUrlTitle();
@@ -212,5 +207,5 @@ void browserdbus::getCurrentUrlAndTitle() {
         conn::brw::ERROR_IDS ret = reply.value();
         setUrl(reply.argumentAt<1>());
         setTitle(reply.argumentAt<2>());
-        }
+    }
 }

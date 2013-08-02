@@ -21,21 +21,18 @@
 #include "iuserinput_interface.h"
 #include "iwebpagewindow_interface.h"
 #include "ibrowser_interface.h"
-
 #include "../common/bookmark.h"
 
-class DataObject;
-
-class browserdbus : public QObject
+class BrowserDbus : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString title READ title)
+    Q_PROPERTY(QString title READ title NOTIFY titleChanged)
     Q_PROPERTY(QString url READ url NOTIFY urlChanged)
     Q_PROPERTY(QQmlListProperty<Bookmark> bookmarkList READ getBookmarkList NOTIFY bookmarkListChanged)
 
 public:
-    explicit browserdbus(QObject *parent = 0);
+    explicit BrowserDbus(QObject *parent = 0);
     
     Q_INVOKABLE void goBack();
     Q_INVOKABLE void goForward();
@@ -50,7 +47,6 @@ public:
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
-
     QString url() const { return m_url; }
     void setUrl(const QString &url)  { m_url = url; }
 
@@ -59,6 +55,7 @@ public:
 signals:
     void bookmarkListChanged();
     void urlChanged();
+    void titleChanged();
 
 public slots:
     void testSlot(QString url);

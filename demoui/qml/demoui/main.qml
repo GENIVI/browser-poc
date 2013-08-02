@@ -16,46 +16,19 @@ Item {
         height: 80
     }
 
-    Rectangle {
+    Button {
         id: backbutton
-        height: 80
-        width: 50
-        color: "darkgray"
-        radius: 10
-        border.color: "black"
-        border.width: 2
-        Image {
-            source: "../../images/go-previous-view.png"
-            anchors.centerIn: parent
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: browserinterface.goBack()
-            onPressed: parent.color = "lightblue"
-            onReleased: parent.color = "darkgray"
-        }
+        imagesource: "../../images/go-previous-view.png"
+        onButtonClicked: browserinterface.goBack()
     }
-    Rectangle {
+    Button {
         id: forwardbutton
-        height: 80
-        width: backbutton.width
-        color: "darkgray"
-        radius: 10
-        border.color: "black"
-        border.width: 2
         anchors.left: backbutton.right
         anchors.leftMargin: 1
-        Image {
-            source: "../../images/go-next-view.png"
-            anchors.centerIn: parent
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: browserinterface.goForward()
-            onPressed: parent.color = "lightblue"
-            onReleased: parent.color = "darkgray"
-        }
+        imagesource: "../../images/go-next-view.png"
+        onButtonClicked: browserinterface.goForward()
     }
+
     Rectangle {
         id: urlbar
         height: 80
@@ -104,59 +77,38 @@ Item {
             }
         }
     }
-    Rectangle {
+
+    Button {
         id: addbookmark
-        height: 80
         width: 70
-        color: "darkgray"
-        radius: 10
-        border.color: "black"
-        border.width: 2
         anchors.right: bookmarks.left
         anchors.rightMargin: 1
-        Image {
-            source: "../../images/bookmarks.png"
-            anchors.centerIn: parent
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                browserinterface.getCurrentUrlAndTitle()
-                browserinterface.addBookmark(browserinterface.url, browserinterface.title)
-            }
-            onPressed: parent.color = "lightblue"
-            onReleased: parent.color = "darkgray"
+        imagesource: "../../images/bookmarks.png"
+        onButtonClicked: {
+            browserinterface.getCurrentUrlAndTitle()
+            browserinterface.addBookmark(browserinterface.url, browserinterface.title)
         }
     }
+
     property bool bookmarklistopen: false
 
-    Rectangle {
+    Button {
         id: bookmarks
-        height: 80
         width: 70
-        color: "darkgray"
-        radius: 10
-        border.color: "black"
-        border.width: 2
         anchors.right: parent.right
-        Image {
-            source: "../../images/bookmark-new-list.png"
-            anchors.centerIn: parent
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-                if(bookmarklistopen) {
-                    bookmarklist.state = ""
-                    bookmarklistopen = false
-                } else {
-                    browserinterface.getBookmarks()
-                    bookmarklist.state = "open"
-                    bookmarklistopen = true
-                }
+        imagesource: "../../images/bookmark-new-list.png"
+        onButtonClicked: {
+            if(bookmarklistopen) {
+                bookmarklist.state = ""
+                bookmarklistopen = false
+            } else {
+                browserinterface.getBookmarks()
+                bookmarklist.state = "open"
+                bookmarklistopen = true
             }
         }
     }
+
     Rectangle {
         id: bookmarklist
         x: parent.width
@@ -231,7 +183,6 @@ Item {
         anchors.bottom: deleteallbutton.top
         anchors.margins: 10
         clip: true
-        highlightFollowsCurrentItem: true
         z: 1
         model: browserinterface.bookmarkList
 
@@ -250,6 +201,14 @@ Item {
                     bookmarklist.state = ""
                     bookmarklistopen = false
                 }
+                onPressed: {
+                    bookmarkurl.color = "lightblue"
+                    bookmarktitle.color = "lightblue"
+                }
+                onReleased: {
+                    bookmarkurl.color = "white"
+                    bookmarktitle.color = "white"
+                }
             }
             Image {
                 id: deletebutton
@@ -261,8 +220,11 @@ Item {
                     anchors.fill: parent
                     anchors.margins: -10
                     onClicked: browserinterface.deleteBookmark(index)
+                    onPressed: bookmarkdeletebutton.color = "lightblue"
+                    onReleased: bookmarkdeletebutton.color = "darkgray"
                 }
                 Rectangle {
+                    id: bookmarkdeletebutton
                     anchors.fill: parent
                     anchors.margins: -10
                     color: "darkgray"
@@ -293,7 +255,6 @@ Item {
                 anchors.left: bookmarktitle.left
                 anchors.right: parent.right
             }
-
             Rectangle {
                 anchors.left: parent.left
                 anchors.right: parent.right
@@ -301,21 +262,6 @@ Item {
                 height: 1
                 color: "black"
             }
-
         }
-
-//        highlight: Item {
-//            width: list.width
-//            height: 70
-
-//            Rectangle {
-//                anchors.fill: parent
-//                color: "lightblue"
-//                radius: 5
-//                anchors.left: parent.left
-//                anchors.right: parent.right
-//                anchors.bottom: parent.bottom
-//            }
-//        }
     }
 }

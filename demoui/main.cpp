@@ -22,9 +22,7 @@ int main(int argc, char *argv[])
 
     QtQuick2ApplicationViewer viewer;
 
-    browserdbus browserdbushelper;
-
-//    viewer.rootContext()->setContextProperty("testbrowser", &browserdbushelper);
+    BrowserDbus browserdbushelper;
 
     viewer.setMainQmlFile(QStringLiteral("qml/demoui/main.qml"));
     viewer.showExpanded();
