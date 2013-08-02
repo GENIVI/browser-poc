@@ -120,6 +120,20 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
         if (bookmarklist.at(i)->uid() == uid) {
             bookmarklist.removeAt(i);
 
+            bookmarksettings.beginWriteArray("bookmarks");
+            for (int i = 0; i < bookmarklist.size(); ++i) {
+                bookmarksettings.setArrayIndex(i);
+                bookmarksettings.setValue("i32Uid", bookmarklist.at(i)->uid());
+                bookmarksettings.setValue("i32Type", bookmarklist.at(i)->type());
+                bookmarksettings.setValue("strParentFolderPath", bookmarklist.at(i)->folderpath());
+                bookmarksettings.setValue("strTitle", bookmarklist.at(i)->title());
+                bookmarksettings.setValue("strUrl", bookmarklist.at(i)->url());
+                bookmarksettings.setValue("strIconPath", bookmarklist.at(i)->iconpath());
+                bookmarksettings.setValue("strThumbnailPath", bookmarklist.at(i)->thumbnailpath());
+            }
+            bookmarksettings.endArray();
+
+
             return conn::brw::EID_NO_ERROR;
         }
     }
