@@ -30,7 +30,9 @@ public:
     webpagewindow *wpw;
 
 signals:
-    
+    void onLoadStarted(QString url);
+    void onLoadProgress(int progress);
+
 public slots:
     void browserreload();
     void browserback();
@@ -40,8 +42,12 @@ public slots:
 
     void getUrlTitle();
 
-private:
+    void reportprogress();
 
+    void browserStartLoading(QString url);
+
+private:
+    QTimer *progresstimer;
     
 };
 

@@ -38,6 +38,8 @@ signals:
     void urlTitleReady();
 
     void onLoadStarted(QString url);
+    void onLoadFinished(bool a_fState);
+    void onLoadProgress(int a_i32Progress);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

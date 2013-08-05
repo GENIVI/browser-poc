@@ -87,6 +87,11 @@ browserhelper::browserhelper(QObject *parent) :
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
 
     connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
+
+    connect(this, SIGNAL(onLoadStarted(QString)), wpw, SIGNAL(onLoadStarted(QString)));
+
+    connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
+
 }
 
 void browserhelper::browserreload() {
@@ -114,4 +119,28 @@ void browserhelper::getUrlTitle() {
 
     wpw->localurl = webitem->property("url").toString();
     wpw->localtitle = webitem->property("title").toString();
+}
+
+void browserhelper::reportprogress() {
+    int progress;
+
+    progress = webitem->property("loadProgress").toInt();
+
+    qDebug() << progress;
+    emit onLoadProgress(progress);
+
+    if(progress >= 100)
+        progresstimer->stop();
+
+
+}
+
+void browserhelper::browserStartLoading(QString url) {
+    qDebug() << __PRETTY_FUNCTION__;
+    emit onLoadStarted(url);
+
+
+    progresstimer = new QTimer(this);
+    connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
+    progresstimer->start(250);
 }

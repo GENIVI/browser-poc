@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("genivi.org");
     QCoreApplication::setApplicationName("Browser PoC");
 
-    browserhelper bh;
+    browserhelper bhelper;
 
 
     QtQuick2ApplicationViewer viewer;
@@ -33,34 +33,28 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
 
     QObject *object = viewer.rootObject();
-    QObject::connect(object, SIGNAL(urlChanged(QString)), bh.wpw, SIGNAL(onLoadStarted(QString)));
+    QObject::connect(object, SIGNAL(pageLoadStarted(QString)), &bhelper, SLOT(browserStartLoading(QString)));
+    QObject::connect(object, SIGNAL(pageLoadFinished(bool)), bhelper.wpw, SIGNAL(onLoadFinished(bool)));
 
-    bh.webitem = viewer.contentItem()->childItems().at(0);
+    bhelper.webitem = viewer.contentItem()->childItems().at(0);
 
-    qDebug()  << "A" << bh.webitem <<  bh.webitem->childItems();
+    qDebug()  << "A" << bhelper.webitem <<  bhelper.webitem->childItems();
 
 //    QQuickItem *test = viewer.contentItem()->childItems().at(0);
 //    qDebug()  << "A" << test << test->childItems();
-
 //    qDebug() << test->setProperty("url", "http://www.google.de");
-//    bh.item->setProperty("test", 3);
 //    qDebug() << "E" << test->metaObject()->methodCount() << test->metaObject()->propertyCount();
 //    int j = test->metaObject()->propertyCount();
-
 //    for (int i = 0; i < j; i++)
 //        qDebug() << i << " " << test->metaObject()->property(i).name();
-
 
 //    int k = test->metaObject()->methodCount();
 //    for (int l = 0; l < k; l++)
 //        qDebug() << l  << " " << test->metaObject()->method(l).name() << k;
-
 //    qDebug() << "F" << test->metaObject()->property(79).name();
 
 //    char array[5] = "stop";
 //    qDebug() << "G" << test->metaObject()->indexOfMethod(array);
-
-//    test->metaObject()->method(99);
 
     return app.exec();
 }
