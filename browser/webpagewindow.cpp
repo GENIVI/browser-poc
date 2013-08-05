@@ -115,9 +115,3 @@ conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &ti
 
     return conn::brw::EID_NO_ERROR;
 }
-
-void webpagewindow::loadforward(int status, QString url) {
-    qDebug() << __PRETTY_FUNCTION__;
-
-    emit onLoadStarted(url);
-}

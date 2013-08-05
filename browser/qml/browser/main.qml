@@ -4,9 +4,9 @@ import QtWebKit 3.0
 WebView {
     id: root
 
-    signal urlChanged(int status, string url)
+    signal urlChanged(string url)
 
-    onLoadingChanged: urlChanged(loadRequest.status, loadRequest.url)
+    onLoadingChanged: urlChanged(loadRequest.url)
 
     width: 800
     height: 520

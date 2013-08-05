@@ -22,8 +22,8 @@ class Bookmark : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString title READ title)
-    Q_PROPERTY(QString url READ url)
+    Q_PROPERTY(QString title READ title NOTIFY titleChanged)
+    Q_PROPERTY(QString url READ url NOTIFY urlChanged)
 
 public:
     explicit Bookmark(QObject *parent = 0);
@@ -46,7 +46,9 @@ public:
     QString thumbnailpath() { return strThumbnailPath; }
 
 signals:
-    
+    void urlChanged();
+    void titleChanged();
+
 public slots:
     
 private:

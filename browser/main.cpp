@@ -15,15 +15,6 @@
 #include "qtquick2applicationviewer.h"
 
 #include "../common/browserdefs.h"
-
-//#include <QtDBus/QDBusConnection>
-#include <QDBusMetaType>
-
-#include <QQmlContext>
-#include <QQmlEngine>
-#include <QQmlComponent>
-#include <QQuickItem>
-
 #include "browserhelper.h"
 
 int main(int argc, char *argv[])
@@ -42,8 +33,7 @@ int main(int argc, char *argv[])
     viewer.showExpanded();
 
     QObject *object = viewer.rootObject();
-    QObject::connect(object, SIGNAL(urlChanged(int, QString)), &bh, SIGNAL(urlChanged(int, QString)));
-
+    QObject::connect(object, SIGNAL(urlChanged(QString)), bh.wpw, SIGNAL(onLoadStarted(QString)));
 
     bh.webitem = viewer.contentItem()->childItems().at(0);
 
@@ -71,57 +61,6 @@ int main(int argc, char *argv[])
 //    qDebug() << "G" << test->metaObject()->indexOfMethod(array);
 
 //    test->metaObject()->method(99);
-
-
-
-
-    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
-    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
-    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
-    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
-
-//    bookmarkmanager *bm = new bookmarkmanager();
-//    new IBookmarkManagerAdaptor(bm);
-
-//    QDBusConnection connection = QDBusConnection::sessionBus();
-//    if(!connection.registerService("conn.brw.IBookmarkManager"))
-//        qDebug() << "failed register service conn.brw.IBookmarkManager";
-//    if(!connection.registerObject("/bookmarkmanager", bm))
-//        qDebug() << "failed register object bookmarkmanager";
-
-
-    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
-    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
-
-//    userinput *ui = new userinput();
-//    new IUserInputAdaptor(ui);
-
-//    if(!connection.registerService("conn.brw.IUserInput"))
-//        qDebug() << "failed register service conn.brw.IUserInput";
-//    if(!connection.registerObject("/userinput", ui))
-//        qDebug() << "failed register object userinput";
-
-
-    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
-    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-
-//    webpagewindow *wpw = new webpagewindow();
-//    new IWebPageWindowAdaptor(wpw);
-
-//    if(!connection.registerService("conn.brw.IWebPageWindow"))
-//        qDebug() << "failed register service conn.brw.IWebPageWindow";
-//    if(!connection.registerObject("/webpagewindow", wpw))
-//        qDebug() << "failed register object userinput";
-
-
-//    browser *br = new browser();
-//    new IBrowserAdaptor(br);
-
-//    if(!connection.registerService("conn.brw.IBrowser"))
-//        qDebug() << "failed register service conn.brw.IBrowser";
-//    if(!connection.registerObject("/browser", br))
-//        qDebug() << "failed register object browser";
-
 
     return app.exec();
 }

@@ -53,7 +53,6 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
     conn::brw::ERROR_IDS getCurrentUrlTitle(QString &url, QString &title);
-    void loadforward(int status, QString url);
 };
 
 #endif // WEBPAGEWINDOW_H

@@ -27,9 +27,9 @@ public:
     explicit browserhelper(QObject *parent = 0);
 
     QQuickItem *webitem;
-    
+    webpagewindow *wpw;
+
 signals:
-    void urlChanged(int status, QString url);
     
 public slots:
     void browserreload();
@@ -41,7 +41,6 @@ public slots:
     void getUrlTitle();
 
 private:
-    webpagewindow *wpw;
 
     
 };

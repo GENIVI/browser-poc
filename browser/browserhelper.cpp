@@ -32,10 +32,10 @@ browserhelper::browserhelper(QObject *parent) :
     QObject(parent)
 {
 
-//    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
-//    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
-//    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
-//    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
+    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
+    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
 
     bookmarkmanager *bm = new bookmarkmanager();
     new IBookmarkManagerAdaptor(bm);
@@ -47,8 +47,8 @@ browserhelper::browserhelper(QObject *parent) :
         qDebug() << "failed register object bookmarkmanager";
 
 
-//    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
-//    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
+    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
 
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
@@ -59,8 +59,8 @@ browserhelper::browserhelper(QObject *parent) :
         qDebug() << "failed register object userinput";
 
 
-//    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
-//    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
 
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
@@ -87,9 +87,6 @@ browserhelper::browserhelper(QObject *parent) :
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
 
     connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
-
-    connect(this, SIGNAL(urlChanged(int, QString)), wpw, SLOT(loadforward(int, QString)));
-
 }
 
 void browserhelper::browserreload() {
@@ -114,6 +111,7 @@ void browserhelper::browserloadurl(QString url) {
 
 void browserhelper::getUrlTitle() {
     qDebug() << webitem->property("url") << webitem->property("title");
+
     wpw->localurl = webitem->property("url").toString();
     wpw->localtitle = webitem->property("title").toString();
 }
