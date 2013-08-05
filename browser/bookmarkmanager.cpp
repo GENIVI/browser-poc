@@ -120,6 +120,8 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
         if (bookmarklist.at(i)->uid() == uid) {
             bookmarklist.removeAt(i);
 
+            bookmarksettings.clear();
+            bookmarksettings.setValue("lastgivenUID",lastgivenUID);
             bookmarksettings.beginWriteArray("bookmarks");
             for (int i = 0; i < bookmarklist.size(); ++i) {
                 bookmarksettings.setArrayIndex(i);
