@@ -1,3 +1,16 @@
+/**
+ * Copyright (C) 2013, Pelagicore
+ *
+ * Author: Marcel Schuette <marcel.schuette@pelagicore.com>
+ *
+ * This file is part of the GENIVI project Browser Proof-Of-Concept
+ * For further information, see http://genivi.org/
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include "browserhelper.h"
 
 #include <QtDBus/QDBusConnection>
@@ -73,40 +86,34 @@ browserhelper::browserhelper(QObject *parent) :
     connect(wpw, SIGNAL(forwardrequested()), this, SLOT(browserforward()));
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
 
-    connect(wpw, SIGNAL(test()), this, SLOT(test()));
+    connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
 
-    connect(this, SIGNAL(urlChanged(QString)), wpw, SLOT(loadforward(QString)));
+    connect(this, SIGNAL(urlChanged(int, QString)), wpw, SLOT(loadforward(int, QString)));
 
 }
 
 void browserhelper::browserreload() {
-    QMetaObject::invokeMethod(item, "reload");
+    QMetaObject::invokeMethod(webitem, "reload");
 }
 
 void browserhelper::browserback() {
-    QMetaObject::invokeMethod(item, "goBack");
+    QMetaObject::invokeMethod(webitem, "goBack");
 }
 
 void browserhelper::browserforward() {
-    QMetaObject::invokeMethod(item, "goForward");
+    QMetaObject::invokeMethod(webitem, "goForward");
 }
 
 void browserhelper::browserstop() {
-    QMetaObject::invokeMethod(item, "stop");
+    QMetaObject::invokeMethod(webitem, "stop");
 }
 
 void browserhelper::browserloadurl(QString url) {
-    item->setProperty("url", url);
+    webitem->setProperty("url", url);
 }
 
-void browserhelper::test() {
-    qDebug() << item->property("url") << item->property("title");
-    wpw->localurl = item->property("url").toString();
-    wpw->localtitle = item->property("title").toString();
-}
-
-void browserhelper::urlChanged(int status, QString url) {
-    qDebug() << status << url;
-
-    emit urlChanged(url);
+void browserhelper::getUrlTitle() {
+    qDebug() << webitem->property("url") << webitem->property("title");
+    wpw->localurl = webitem->property("url").toString();
+    wpw->localtitle = webitem->property("title").toString();
 }

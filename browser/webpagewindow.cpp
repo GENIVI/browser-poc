@@ -108,17 +108,15 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
 conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit test();
+    emit urlTitleReady();
 
-//    url = "www.test.de";
-//    title = "jfhgls;djg;osj";
     url = localurl;
     title = localtitle;
 
     return conn::brw::EID_NO_ERROR;
 }
 
-void webpagewindow::loadforward(QString url) {
+void webpagewindow::loadforward(int status, QString url) {
     qDebug() << __PRETTY_FUNCTION__;
 
     emit onLoadStarted(url);

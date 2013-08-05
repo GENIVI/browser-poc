@@ -18,7 +18,6 @@
 
 #include "../common/browserdefs.h"
 
-#include <QQuickItem>
 
 class webpagewindow : public QObject
 {
@@ -36,7 +35,7 @@ signals:
     void forwardrequested();
     void stoprequested();
     void loadurlrequested(QString url);
-    void test();
+    void urlTitleReady();
 
     void onLoadStarted(QString url);
     
@@ -54,7 +53,7 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
     conn::brw::ERROR_IDS getCurrentUrlTitle(QString &url, QString &title);
-    void loadforward(QString url);
+    void loadforward(int status, QString url);
 };
 
 #endif // WEBPAGEWINDOW_H

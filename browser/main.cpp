@@ -39,16 +39,15 @@ int main(int argc, char *argv[])
 
     QtQuick2ApplicationViewer viewer;
     viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
-
-    QObject *object = viewer.rootObject();
-    QObject::connect(object, SIGNAL(urlChanged(int, QString)), &bh, SLOT(urlChanged(int,QString)));
-
-
     viewer.showExpanded();
 
-    bh.item = viewer.contentItem()->childItems().at(0);
+    QObject *object = viewer.rootObject();
+    QObject::connect(object, SIGNAL(urlChanged(int, QString)), &bh, SIGNAL(urlChanged(int, QString)));
 
-    qDebug()  << "A" << bh.item <<  bh.item->childItems();
+
+    bh.webitem = viewer.contentItem()->childItems().at(0);
+
+    qDebug()  << "A" << bh.webitem <<  bh.webitem->childItems();
 
 //    QQuickItem *test = viewer.contentItem()->childItems().at(0);
 //    qDebug()  << "A" << test << test->childItems();

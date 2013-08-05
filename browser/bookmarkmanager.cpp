@@ -147,7 +147,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
     qDebug() << __PRETTY_FUNCTION__ << path << type << a_eSortingOrder << index << count;
 
     // TODO: sorting
-    conn::brw::BookmarkItem *test = new conn::brw::BookmarkItem();
+    conn::brw::BookmarkItem *temp_bookmark = new conn::brw::BookmarkItem();
     QList<conn::brw::BookmarkItem> bmlist;
 
     uint added = 0;
@@ -158,15 +158,15 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
 
             found++;
             if(found >= index) {
-                test->i32Type = bookmarklist.at(i)->type();
-                test->i32Uid = bookmarklist.at(i)->uid();
-                test->strIconPath = bookmarklist.at(i)->iconpath();
-                test->strParentFolderPath = bookmarklist.at(i)->folderpath();
-                test->strThumbnailPath = bookmarklist.at(i)->thumbnailpath();
-                test->strTitle = bookmarklist.at(i)->title();
-                test->strUrl = bookmarklist.at(i)->url();
+                temp_bookmark->i32Type = bookmarklist.at(i)->type();
+                temp_bookmark->i32Uid = bookmarklist.at(i)->uid();
+                temp_bookmark->strIconPath = bookmarklist.at(i)->iconpath();
+                temp_bookmark->strParentFolderPath = bookmarklist.at(i)->folderpath();
+                temp_bookmark->strThumbnailPath = bookmarklist.at(i)->thumbnailpath();
+                temp_bookmark->strTitle = bookmarklist.at(i)->title();
+                temp_bookmark->strUrl = bookmarklist.at(i)->url();
 
-                bmlist.append(*test);
+                bmlist.append(*temp_bookmark);
                 added++;
             }
         }
