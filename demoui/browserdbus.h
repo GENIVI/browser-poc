@@ -30,6 +30,8 @@ class BrowserDbus : public QObject
     Q_PROPERTY(QString title READ title NOTIFY titleChanged)
     Q_PROPERTY(QString url READ url NOTIFY urlChanged)
     Q_PROPERTY(QQmlListProperty<Bookmark> bookmarkList READ getBookmarkList NOTIFY bookmarkListChanged)
+    Q_PROPERTY(bool pageloading READ pageloading NOTIFY pageloadingChanged)
+    Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
 
 public:
     explicit BrowserDbus(QObject *parent = 0);
@@ -37,6 +39,7 @@ public:
     Q_INVOKABLE void goBack();
     Q_INVOKABLE void goForward();
     Q_INVOKABLE void reload();
+    Q_INVOKABLE void stop();
     Q_INVOKABLE void loadurl(QString url);
     Q_INVOKABLE void getBookmarks();
     Q_INVOKABLE void addBookmark(QString url, QString title);
@@ -49,6 +52,10 @@ public:
     void setTitle(QString title) { m_title = title; }
     QString url() const { return m_url; }
     void setUrl(const QString &url)  { m_url = url; }
+    bool pageloading() { return m_pageloading; }
+    void setPageLoading(bool loading) { m_pageloading = loading; }
+    int progress() { return m_progress; }
+    void setProgress(int prog) { m_progress = prog; }
 
     QQmlListProperty<Bookmark> getBookmarkList() { return QQmlListProperty<Bookmark>(this, m_bookmarkList); }
 
@@ -56,11 +63,13 @@ signals:
     void bookmarkListChanged();
     void urlChanged();
     void titleChanged();
+    void pageloadingChanged();
+    void progressChanged();
 
 public slots:
-    void testSlot();
-    void testslot2(bool success);
-    void testslot3(int progress);
+    void pageloadingstarted();
+    void pageloadingfinished(bool success);
+    void pageloadingprogress(int progress);
 
 private:
     conn::brw::IBookmarkManager *bookmark;
@@ -71,6 +80,8 @@ private:
     QString m_title;
     QString m_url;
     QList<Bookmark*> m_bookmarkList;
+    bool m_pageloading;
+    int m_progress;
 };
 
 #endif // BROWSERDBUS_H

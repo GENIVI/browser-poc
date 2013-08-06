@@ -48,33 +48,33 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     browser = new conn::brw::IBrowser("conn.brw.IBrowser", "/browser",
                                       QDBusConnection::sessionBus(), this);
 
-
-
-
-
-    connect(webpagewindow, SIGNAL(onLoadStarted()),this,SLOT(testSlot()));
-
-    connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(testslot2(bool)));
-
-    connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(testslot3(int)));
+    connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
+    connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
+    connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
 }
 
 
-void BrowserDbus::testSlot() {
+void BrowserDbus::pageloadingstarted() {
     qDebug() << __PRETTY_FUNCTION__;
+    setPageLoading(true);
+    emit pageloadingChanged();
 }
 
-void BrowserDbus::testslot2(bool success) {
+void BrowserDbus::pageloadingfinished(bool success) {
     qDebug() << __PRETTY_FUNCTION__ << success;
     if(success) {
         getCurrentUrlAndTitle();
         emit urlChanged();
         qDebug() << __PRETTY_FUNCTION__ << url() << title();
     }
+    setPageLoading(false);
+    emit pageloadingChanged();
 }
 
-void BrowserDbus::testslot3(int progress) {
-    qDebug() << __PRETTY_FUNCTION__ << progress;
+void BrowserDbus::pageloadingprogress(int progress) {
+    qDebug() << __PRETTY_FUNCTION__ << progress << pageloading();
+    setProgress(progress);
+    emit progressChanged();
 }
 
 void BrowserDbus::goBack() {
@@ -118,6 +118,21 @@ void BrowserDbus::reload() {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
+
+void BrowserDbus::stop() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->stop();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 
 void BrowserDbus::loadurl(QString url) {
     qDebug() << __PRETTY_FUNCTION__ << url;

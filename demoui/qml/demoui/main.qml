@@ -60,19 +60,30 @@ Item {
                     bookmarklistopen = false
                     browserinterface.loadurl(text)
                 }
+
             }
             Rectangle {
+                id: progressbar
+                height: 5
+                width: (parent.width - reloadbutton.width) * browserinterface.progress / 100
+                color: "lightblue"
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                visible: browserinterface.pageloading
+            }
+            Rectangle {
+                id: reloadbutton
                 height: parent.height
                 width: parent.height
                 color: "lightgray"
                 anchors.right: parent.right
                 Image {
-                    source: "../../images/view-refresh.png"
+                    source: browserinterface.pageloading ? "../../images/process-stop.png" : "../../images/view-refresh.png"
                     anchors.centerIn: parent
                 }
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: browserinterface.reload()
+                    onClicked: browserinterface.pageloading ? browserinterface.stop() : browserinterface.reload()
                 }
             }
         }
