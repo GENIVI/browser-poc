@@ -37,7 +37,7 @@ signals:
     void loadurlrequested(QString url);
     void urlTitleReady();
 
-    void onLoadStarted(QString url);
+    void onLoadStarted();
     void onLoadFinished(bool a_fState);
     void onLoadProgress(int a_i32Progress);
     

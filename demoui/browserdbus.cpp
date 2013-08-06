@@ -52,17 +52,30 @@ BrowserDbus::BrowserDbus(QObject *parent) :
 
 
 
-    connect(webpagewindow, SIGNAL(onLoadStarted(QString)),this,SLOT(testSlot(QString)));
+    connect(webpagewindow, SIGNAL(onLoadStarted()),this,SLOT(testSlot()));
+
+    connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(testslot2(bool)));
+
+    connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(testslot3(int)));
 }
 
 
-void BrowserDbus::testSlot(QString url) {
-    qDebug() << __PRETTY_FUNCTION__ << url;
-
-    setUrl(url);
-    emit urlChanged();
+void BrowserDbus::testSlot() {
+    qDebug() << __PRETTY_FUNCTION__;
 }
 
+void BrowserDbus::testslot2(bool success) {
+    qDebug() << __PRETTY_FUNCTION__ << success;
+    if(success) {
+        getCurrentUrlAndTitle();
+        emit urlChanged();
+        qDebug() << __PRETTY_FUNCTION__ << url() << title();
+    }
+}
+
+void BrowserDbus::testslot3(int progress) {
+    qDebug() << __PRETTY_FUNCTION__ << progress;
+}
 
 void BrowserDbus::goBack() {
     qDebug() << __PRETTY_FUNCTION__;
@@ -207,5 +220,7 @@ void BrowserDbus::getCurrentUrlAndTitle() {
         conn::brw::ERROR_IDS ret = reply.value();
         setUrl(reply.argumentAt<1>());
         setTitle(reply.argumentAt<2>());
+
+        qDebug() << __PRETTY_FUNCTION__ << url() << title();
     }
 }

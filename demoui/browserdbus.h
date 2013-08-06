@@ -58,7 +58,9 @@ signals:
     void titleChanged();
 
 public slots:
-    void testSlot(QString url);
+    void testSlot();
+    void testslot2(bool success);
+    void testslot3(int progress);
 
 private:
     conn::brw::IBookmarkManager *bookmark;

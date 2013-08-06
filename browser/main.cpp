@@ -11,15 +11,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include <QtGui/QGuiApplication>
-#include "qtquick2applicationviewer.h"
+#include <QApplication>
+#include "qmlapplicationviewer.h"
 
 #include "../common/browserdefs.h"
 #include "browserhelper.h"
 
-int main(int argc, char *argv[])
+Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QScopedPointer<QApplication> app(createApplication(argc, argv));
 
     QCoreApplication::setOrganizationName("Genivi");
     QCoreApplication::setOrganizationDomain("genivi.org");
@@ -27,34 +27,22 @@ int main(int argc, char *argv[])
 
     browserhelper bhelper;
 
-
-    QtQuick2ApplicationViewer viewer;
-    viewer.setMainQmlFile(QStringLiteral("qml/browser/main.qml"));
+    QmlApplicationViewer viewer;
+    viewer.addImportPath(QLatin1String("modules"));
+    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
+    viewer.setMainQmlFile(QLatin1String("qml/browser/main.qml"));
     viewer.showExpanded();
 
-    QObject *object = viewer.rootObject();
-    QObject::connect(object, SIGNAL(pageLoadStarted(QString)), &bhelper, SLOT(browserStartLoading(QString)));
-    QObject::connect(object, SIGNAL(pageLoadFinished(bool)), bhelper.wpw, SIGNAL(onLoadFinished(bool)));
+    QGraphicsObject *rootqmlobject = viewer.rootObject();
 
-    bhelper.webitem = viewer.contentItem()->childItems().at(0);
+    bhelper.webitem = rootqmlobject;
 
-    qDebug()  << "A" << bhelper.webitem <<  bhelper.webitem->childItems();
+    QObject::connect(rootqmlobject, SIGNAL(pageLoadStarted()), &bhelper, SLOT(browserStartLoading()));
+    QObject::connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), bhelper.wpw, SIGNAL(onLoadFinished(bool)));
 
-//    QQuickItem *test = viewer.contentItem()->childItems().at(0);
-//    qDebug()  << "A" << test << test->childItems();
-//    qDebug() << test->setProperty("url", "http://www.google.de");
-//    qDebug() << "E" << test->metaObject()->methodCount() << test->metaObject()->propertyCount();
-//    int j = test->metaObject()->propertyCount();
-//    for (int i = 0; i < j; i++)
-//        qDebug() << i << " " << test->metaObject()->property(i).name();
-
-//    int k = test->metaObject()->methodCount();
-//    for (int l = 0; l < k; l++)
-//        qDebug() << l  << " " << test->metaObject()->method(l).name() << k;
-//    qDebug() << "F" << test->metaObject()->property(79).name();
-
-//    char array[5] = "stop";
-//    qDebug() << "G" << test->metaObject()->indexOfMethod(array);
-
-    return app.exec();
+    return app->exec();
 }
+
+
+
+

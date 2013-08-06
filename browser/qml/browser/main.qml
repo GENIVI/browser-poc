@@ -1,23 +1,26 @@
-import QtQuick 2.0
-import QtWebKit 3.0
+import QtQuick 1.1
+import QtWebKit 1.0
 
 WebView {
     id: root
 
-    signal pageLoadStarted(string url)
+    function goBack() { root.back.trigger() }
+    function goForward() { root.forward.trigger() }
+    function pagereload() { root.reload.trigger() }
+    function pagestop() { root.stop.trigger() }
+
+    signal pageLoadStarted()
     signal pageLoadFinished(bool success)
 
-    onLoadingChanged: {
-        if(loadRequest.status === WebView.LoadStartedStatus)
-            pageLoadStarted(loadRequest.url)
-        else if(loadRequest.status === WebView.LoadSucceededStatus)
-            pageLoadFinished(true)
-        else if(loadRequest.status === WebView.LoadFailedStatus)
-            pageLoadFinished(false)
-    }
+    onLoadStarted: pageLoadStarted()
+    onLoadFinished: pageLoadFinished(true)
+    onLoadFailed: pageLoadFinished(false)
+
 
     width: 800
     height: 520
+    preferredWidth: 800
+    preferredHeight: 520
 
-    url: "http://www.genivi.org"
+    url: "http://www.heise.de"
 }

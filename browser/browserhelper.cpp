@@ -88,26 +88,26 @@ browserhelper::browserhelper(QObject *parent) :
 
     connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
 
-    connect(this, SIGNAL(onLoadStarted(QString)), wpw, SIGNAL(onLoadStarted(QString)));
+    connect(this, SIGNAL(onLoadStarted()), wpw, SIGNAL(onLoadStarted()));
 
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
 }
 
 void browserhelper::browserreload() {
-    QMetaObject::invokeMethod(webitem, "reload");
+    webitem->metaObject()->invokeMethod(webitem, "pagereload");
 }
 
 void browserhelper::browserback() {
-    QMetaObject::invokeMethod(webitem, "goBack");
+    webitem->metaObject()->invokeMethod(webitem, "goBack");
 }
 
 void browserhelper::browserforward() {
-    QMetaObject::invokeMethod(webitem, "goForward");
+    webitem->metaObject()->invokeMethod(webitem, "goForward");
 }
 
 void browserhelper::browserstop() {
-    QMetaObject::invokeMethod(webitem, "stop");
+    webitem->metaObject()->invokeMethod(webitem, "pagestop");
 }
 
 void browserhelper::browserloadurl(QString url) {
@@ -122,23 +122,21 @@ void browserhelper::getUrlTitle() {
 }
 
 void browserhelper::reportprogress() {
+    qDebug() << __PRETTY_FUNCTION__;
     int progress;
 
-    progress = webitem->property("loadProgress").toInt();
+    progress = webitem->property("progress").toFloat() * 100;
 
     qDebug() << progress;
     emit onLoadProgress(progress);
 
     if(progress >= 100)
         progresstimer->stop();
-
-
 }
 
-void browserhelper::browserStartLoading(QString url) {
+void browserhelper::browserStartLoading() {
     qDebug() << __PRETTY_FUNCTION__;
-    emit onLoadStarted(url);
-
+    emit onLoadStarted();
 
     progresstimer = new QTimer(this);
     connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
