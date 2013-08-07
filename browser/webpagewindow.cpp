@@ -41,7 +41,26 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
 conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    conn::brw::BrowserScrollDirections *temp_scrolldirections = new conn::brw::BrowserScrollDirections();
+    temp_scrolldirections->u8Left = 1;
+    temp_scrolldirections->u8Right = 1;
+    temp_scrolldirections->u8Top = 1;
+    temp_scrolldirections->u8Bottom = 1;
+
+    conn::brw::BrowserActions *temp_browseractions = new conn::brw::BrowserActions();
+    temp_browseractions->u8Back = 0x03;
+    temp_browseractions->u8Forward = 0x03;
+    temp_browseractions->u8Reload = 0x03;
+    temp_browseractions->u8Stop = 0x03;
+    temp_browseractions->u8LoadUrl = 0x03;
+    temp_browseractions->u8Select = 0x00;
+    temp_browseractions->sScrollSymbol = *temp_scrolldirections;
+    temp_browseractions->sScrollPage = *temp_scrolldirections;
+    temp_browseractions->sScrollLink = *temp_scrolldirections;
+
+    a_browserActionsState = *temp_browseractions;
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32Height) {
