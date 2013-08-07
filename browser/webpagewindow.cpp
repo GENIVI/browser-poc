@@ -38,6 +38,23 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
     return conn::brw::EID_NO_ERROR;
 }
 
+conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
+    qDebug() << __PRETTY_FUNCTION__ << a_Url;
+
+    emit loadurlrequested(a_Url);
+
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS webpagewindow::reload() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+
+    emit reloadrequested();
+
+    return conn::brw::EID_NO_ERROR;
+}
+
 conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -66,7 +83,13 @@ conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserAct
 conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32Height) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    uint width = webitem->property("width").toInt();
+    uint height = webitem->property("height").toInt();
+
+    a_u32Width = width;
+    a_u32Height = height;
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
@@ -75,31 +98,13 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-
-conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
-    qDebug() << __PRETTY_FUNCTION__ << a_Url;
-
-    emit loadurlrequested(a_Url);
-
-    return conn::brw::EID_NO_ERROR;
-}
-
-conn::brw::ERROR_IDS webpagewindow::reload() {
-    qDebug() << __PRETTY_FUNCTION__;
-
-
-    emit reloadrequested();
-
-    return conn::brw::EID_NO_ERROR;
-}
-
-conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {
+conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect) {
+conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;
