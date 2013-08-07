@@ -36,6 +36,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QGraphicsObject *rootqmlobject = viewer.rootObject();
 
     bhelper.webitem = rootqmlobject;
+    bhelper.wpw->webitem = rootqmlobject;
 
     QObject::connect(rootqmlobject, SIGNAL(pageLoadStarted()), &bhelper, SLOT(browserStartLoading()));
     QObject::connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), bhelper.wpw, SIGNAL(onLoadFinished(bool)));

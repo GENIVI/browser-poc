@@ -56,11 +56,6 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-bool webpagewindow::getVisible() {
-    qDebug() << __PRETTY_FUNCTION__;
-
-    return false;
-}
 
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
     qDebug() << __PRETTY_FUNCTION__ << a_Url;
@@ -89,6 +84,12 @@ conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect)
     qDebug() << __PRETTY_FUNCTION__;
 
     return conn::brw::EID_NOT_IMPLEMENTED;
+}
+
+bool webpagewindow::getVisible() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    return webitem->property("visible").toBool();
 }
 
 conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {

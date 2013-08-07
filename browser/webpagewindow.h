@@ -15,6 +15,7 @@
 #define WEBPAGEWINDOW_H
 
 #include <QObject>
+#include <QGraphicsObject>
 
 #include "../common/browserdefs.h"
 
@@ -25,9 +26,10 @@ class webpagewindow : public QObject
 public:
     explicit webpagewindow(QObject *parent = 0);
 
-
     QString localurl;
     QString localtitle;
+
+    QGraphicsObject *webitem;
 
 signals:
     void reloadrequested();
