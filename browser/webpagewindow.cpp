@@ -95,14 +95,10 @@ conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32
 conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    int width = webitem->property("width").toInt();
-    int height = webitem->property("height").toInt();
-    int x = webitem->property("x").toInt();
-    int y = webitem->property("y").toInt();
-
-    QRect *temp_rect = new QRect(x, y, width, height);
-
-    a_sRect = *temp_rect;
+    a_sRect.i32X = webitem->property("x").toInt();
+    a_sRect.i32Y = webitem->property("y").toInt();
+    a_sRect.i32Width = webitem->property("width").toInt();
+    a_sRect.i32Height = webitem->property("height").toInt();
 
     return conn::brw::EID_NO_ERROR;
 }
@@ -110,7 +106,12 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
 conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    webitem->setProperty("x", a_sRect.i32X);
+    webitem->setProperty("y", a_sRect.i32Y);
+    webitem->setProperty("width", a_sRect.i32Width);
+    webitem->setProperty("height", a_sRect.i32Height);
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {

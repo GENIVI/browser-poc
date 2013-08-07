@@ -36,6 +36,11 @@ browserhelper::browserhelper(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
     qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
+    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
+    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::Rect>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
 
     bookmarkmanager *bm = new bookmarkmanager();
     new IBookmarkManagerAdaptor(bm);
@@ -46,10 +51,6 @@ browserhelper::browserhelper(QObject *parent) :
     if(!connection.registerObject("/bookmarkmanager", bm))
         qDebug() << "failed register object bookmarkmanager";
 
-
-    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
-    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
-
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
 
@@ -58,10 +59,6 @@ browserhelper::browserhelper(QObject *parent) :
     if(!connection.registerObject("/userinput", ui))
         qDebug() << "failed register object userinput";
 
-
-    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
-    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
 
@@ -69,7 +66,6 @@ browserhelper::browserhelper(QObject *parent) :
         qDebug() << "failed register service conn.brw.IWebPageWindow";
     if(!connection.registerObject("/webpagewindow", wpw))
         qDebug() << "failed register object userinput";
-
 
     browser *br = new browser();
     new IBrowserAdaptor(br);

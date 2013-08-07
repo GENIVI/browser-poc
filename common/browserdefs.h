@@ -116,39 +116,16 @@ namespace conn {
             return argument;
         }
 
-        /*!
-                *
-                */
+
         //## type BookmarkItem
         struct BookmarkItem {
-            /*!
-                    *
-                    */
-            int i32Uid;		//## attribute i32Uid
-            /*!
-                    *
-                    */
-            int i32Type;		//## attribute eType
-            /*!
-                    *
-                    */
-            QString strParentFolderPath;		//## attribute strParentFolderPath
-            /*!
-                    *
-                    */
-            QString strTitle;		//## attribute strTitle
-            /*!
-                    *
-                    */
-            QString strUrl;		//## attribute strUrl
-            /*!
-                    *
-                    */
-            QString strIconPath;		//## attribute strIconPath
-            /*!
-                    *
-                    */
-            QString strThumbnailPath;		//## attribute strThumbnailPath
+            int i32Uid;                     //## attribute i32Uid
+            int i32Type;                    //## attribute eType
+            QString strParentFolderPath;    //## attribute strParentFolderPath
+            QString strTitle;               //## attribute strTitle
+            QString strUrl;                 //## attribute strUrl
+            QString strIconPath;            //## attribute strIconPath
+            QString strThumbnailPath;       //## attribute strThumbnailPath
 
             BookmarkItem()
                 : i32Uid(0)
@@ -182,12 +159,7 @@ namespace conn {
 
         
         //## class BookmarkItemList
-        /*!
-        * 
-        */
-        typedef QList<conn::brw::BookmarkItem> BookmarkItemList;
-        
-        
+        typedef QList<conn::brw::BookmarkItem> BookmarkItemList;    
         
 
         /*!
@@ -335,13 +307,37 @@ namespace conn {
             return argument;
         }
 
-        
-        /*!
-                *
-                */
+              
         //## type Rect
-        typedef QRect Rect;
-        
+        struct Rect {
+            int i32X;		//## attribute i32X
+            int i32Y;		//## attribute i32Y
+            int i32Width;	//## attribute i32Width
+            int i32Height;	//## attribute i32Height
+
+            Rect() : i32X(0), i32Y(0), i32Width(0), i32Height(0) {}
+        };
+
+        inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::Rect &rect)
+        {
+            argument.beginStructure();
+            argument >> rect.i32X >> rect.i32Y >> rect.i32Width >>
+                        rect.i32Height;
+            argument.endStructure();
+            return argument;
+        }
+
+        inline QDBusArgument &operator<<(QDBusArgument &argument, const conn::brw::Rect &rect)
+        {
+            argument.beginStructure();
+            argument << rect.i32X << rect.i32Y << rect.i32Width <<
+                        rect.i32Height;
+            argument.endStructure();
+            return argument;
+        }
+
+
+
         /*!
         * Defines type of the object handlers.
         */
@@ -349,9 +345,6 @@ namespace conn {
         typedef qlonglong OBJECT_HANDLE;
         
         //## class ObjectHandleList
-        /*!
-        * 
-        */
         typedef QList<conn::brw::OBJECT_HANDLE> ObjectHandleList;
         
         
@@ -360,21 +353,9 @@ namespace conn {
         */
         //## type BrowserScrollDirections
         struct BrowserScrollDirections {
-            /*!
-            * 
-            */
             uchar u8Left;       //## attribute u8Left
-            /*!
-            * 
-            */
             uchar u8Right;      //## attribute u8Right
-            /*!
-            * 
-            */
             uchar u8Top;        //## attribute u8Top
-            /*!
-            * 
-            */
             uchar u8Bottom;     //## attribute u8Bottom
 
             BrowserScrollDirections()
@@ -494,6 +475,7 @@ Q_DECLARE_METATYPE(conn::brw::INPUT_ELEMENT_TYPE)
 Q_DECLARE_METATYPE(conn::brw::SCROLL_DIRECTION)
 Q_DECLARE_METATYPE(conn::brw::SCROLL_TYPE)
 
+Q_DECLARE_METATYPE(conn::brw::Rect)
 Q_DECLARE_METATYPE(conn::brw::BrowserScrollDirections)
 Q_DECLARE_METATYPE(conn::brw::BrowserActions)
 
