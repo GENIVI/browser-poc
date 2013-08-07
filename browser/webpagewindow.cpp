@@ -95,7 +95,16 @@ conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32
 conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    int width = webitem->property("width").toInt();
+    int height = webitem->property("height").toInt();
+    int x = webitem->property("x").toInt();
+    int y = webitem->property("y").toInt();
+
+    QRect *temp_rect = new QRect(x, y, width, height);
+
+    a_sRect = *temp_rect;
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect) {
