@@ -25,7 +25,9 @@ public:
     explicit browser(QObject *parent = 0);
     
 signals:
-    
+    void createPage(int x, int y, int width, int height);
+    void destroyPage();
+
 public Q_SLOTS:
     conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle);
     conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);

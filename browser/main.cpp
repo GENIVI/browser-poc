@@ -12,14 +12,12 @@
  */
 
 #include <QApplication>
-#include "qmlapplicationviewer.h"
 
-#include "../common/browserdefs.h"
 #include "browserhelper.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
-    QScopedPointer<QApplication> app(createApplication(argc, argv));
+    QScopedPointer<QApplication> app(new QApplication(argc, argv));
 
     QCoreApplication::setOrganizationName("Genivi");
     QCoreApplication::setOrganizationDomain("genivi.org");
@@ -27,23 +25,5 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
 
     browserhelper bhelper;
 
-    QmlApplicationViewer viewer;
-    viewer.addImportPath(QLatin1String("modules"));
-    viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
-    viewer.setMainQmlFile(QLatin1String("qml/browser/main.qml"));
-    viewer.showExpanded();
-
-    QGraphicsObject *rootqmlobject = viewer.rootObject();
-
-    bhelper.webitem = rootqmlobject;
-    bhelper.wpw->webitem = rootqmlobject;
-
-    QObject::connect(rootqmlobject, SIGNAL(pageLoadStarted()), &bhelper, SLOT(browserStartLoading()));
-    QObject::connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), bhelper.wpw, SIGNAL(onLoadFinished(bool)));
-
     return app->exec();
 }
-
-
-
-

@@ -14,7 +14,7 @@
 #include "browserhelper.h"
 
 #include <QtDBus/QDBusConnection>
-//#include <QDBusMetaType>
+
 
 #include "bookmarkmanager.h"
 #include "ibookmarkmanager_adaptor.h"
@@ -27,6 +27,7 @@
 
 #include "browser.h"
 #include "ibrowser_adaptor.h"
+
 
 browserhelper::browserhelper(QObject *parent) :
     QObject(parent)
@@ -75,6 +76,19 @@ browserhelper::browserhelper(QObject *parent) :
         qDebug() << "failed register object browser";
 
 
+    view = new QDeclarativeView;
+    view->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
+    view->setWindowFlags( Qt::CustomizeWindowHint );
+//    view->show();
+
+    QGraphicsObject *rootqmlobject = view->rootObject();
+    webitem = rootqmlobject;
+    wpw->webitem = rootqmlobject;
+
+    connect(rootqmlobject, SIGNAL(pageLoadStarted()), this, SLOT(browserStartLoading()));
+    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(onLoadFinished(bool)));
+
+
     connect(wpw, SIGNAL(reloadrequested()), this, SLOT(browserreload()));
     connect(wpw, SIGNAL(stoprequested()), this, SLOT(browserstop()));
     connect(wpw, SIGNAL(backrequested()), this, SLOT(browserback()));
@@ -87,6 +101,20 @@ browserhelper::browserhelper(QObject *parent) :
 
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
+
+    connect(br, SIGNAL(createPage(int,int,int,int)), this, SLOT(createWindow(int,int,int,int)));
+    connect(br, SIGNAL(destroyPage()), this, SLOT(destroyWindow()));
+
+}
+
+void browserhelper::createWindow(int x, int y, int width, int height) {
+    view->setGeometry(x, y, width, height);
+    view->show();
+}
+
+
+void browserhelper::destroyWindow() {
+    view->hide();
 }
 
 void browserhelper::browserreload() {

@@ -33,6 +33,7 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
     qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
     qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::Rect>();
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
 
@@ -76,6 +77,28 @@ void BrowserDbus::pageloadingprogress(int progress) {
     setProgress(progress);
     emit progressChanged();
 }
+
+void BrowserDbus::openBrowserWindow() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    conn::brw::Rect *windowrect = new conn::brw::Rect();
+    windowrect->i32X = 100;
+    windowrect->i32Y = 300;
+    windowrect->i32Width = 800;
+    windowrect->i32Height = 520;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, qlonglong> reply = browser->createPageWindow(1, *windowrect);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qlonglong handle = reply.argumentAt<1>();
+
+        qDebug() << "ERROR_IDS " << ret << handle;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 
 void BrowserDbus::goDown() {
     qDebug() << __PRETTY_FUNCTION__;

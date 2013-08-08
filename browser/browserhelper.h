@@ -16,6 +16,7 @@
 
 #include <QObject>
 #include <QGraphicsObject>
+#include <QDeclarativeView>
 #include <QTimer>
 
 #include "webpagewindow.h"
@@ -28,6 +29,7 @@ public:
 
     QGraphicsObject *webitem;
     webpagewindow *wpw;
+    QDeclarativeView *view;
 
 signals:
     void onLoadStarted();
@@ -45,6 +47,9 @@ public slots:
     void reportprogress();
 
     void browserStartLoading();
+
+    void createWindow(int x, int y, int width, int height);
+    void destroyWindow();
 
 private:
     QTimer *progresstimer;

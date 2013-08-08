@@ -53,6 +53,8 @@ public:
     Q_INVOKABLE void goDownPage();
     Q_INVOKABLE void goUpPage();
 
+    Q_INVOKABLE void openBrowserWindow();
+
 
     Q_INVOKABLE void deleteBookmark(int index);
 

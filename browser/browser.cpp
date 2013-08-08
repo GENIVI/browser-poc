@@ -22,11 +22,17 @@ browser::browser(QObject *parent) :
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle) {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit createPage(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
+
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(qlonglong a_hPageWindowHandle) {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit destroyPage();
+
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
