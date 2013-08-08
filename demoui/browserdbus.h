@@ -46,6 +46,14 @@ public:
     Q_INVOKABLE void deleteAllBookmarks();
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
+    Q_INVOKABLE void goRight();
+    Q_INVOKABLE void goLeft();
+    Q_INVOKABLE void goUp();
+    Q_INVOKABLE void goDown();
+    Q_INVOKABLE void goDownPage();
+    Q_INVOKABLE void goUpPage();
+
+
     Q_INVOKABLE void deleteBookmark(int index);
 
     QString title() { return m_title; }
@@ -82,6 +90,8 @@ private:
     QList<Bookmark*> m_bookmarkList;
     bool m_pageloading;
     int m_progress;
+
+    void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
 };
 
 #endif // BROWSERDBUS_H

@@ -77,6 +77,50 @@ void BrowserDbus::pageloadingprogress(int progress) {
     emit progressChanged();
 }
 
+void BrowserDbus::goDown() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_BOTTOM, conn::brw::ST_SYMBOL);
+}
+void BrowserDbus::goUp() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_TOP, conn::brw::ST_SYMBOL);
+}
+void BrowserDbus::goLeft() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_LEFT, conn::brw::ST_SYMBOL);
+}
+void BrowserDbus::goRight() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_RIGHT, conn::brw::ST_SYMBOL);
+}
+void BrowserDbus::goDownPage() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_BOTTOM, conn::brw::ST_PAGE);
+}
+void BrowserDbus::goUpPage() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    scrollpage(conn::brw::SD_TOP, conn::brw::ST_PAGE);
+}
+void BrowserDbus::scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type) {
+    qDebug() << __PRETTY_FUNCTION__ << direction;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->scroll(direction, type);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 void BrowserDbus::goBack() {
     qDebug() << __PRETTY_FUNCTION__;
 

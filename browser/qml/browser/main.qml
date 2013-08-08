@@ -1,26 +1,42 @@
 import QtQuick 1.1
 import QtWebKit 1.0
 
-WebView {
+Flickable {
     id: root
 
-    function goBack() { root.back.trigger() }
-    function goForward() { root.forward.trigger() }
-    function pagereload() { root.reload.trigger() }
-    function pagestop() { root.stop.trigger() }
+    property alias url: webcontent.url
+    property alias progress: webcontent.progress
+    property alias title: webcontent.title
+    property alias contentheight: webcontent.height
+    property alias contentwidth: webcontent.width
+
+    function goBack() { webcontent.back.trigger() }
+    function goForward() { webcontent.forward.trigger() }
+    function pagereload() { webcontent.reload.trigger() }
+    function pagestop() { webcontent.stop.trigger() }
 
     signal pageLoadStarted()
     signal pageLoadFinished(bool success)
 
-    onLoadStarted: pageLoadStarted()
-    onLoadFinished: pageLoadFinished(true)
-    onLoadFailed: pageLoadFinished(false)
-
-
     width: 800
     height: 520
-    preferredWidth: 800
-    preferredHeight: 520
 
-    url: "http://www.heise.de"
+    contentWidth: Math.max(root.width,webcontent.width)
+    contentHeight: Math.max(root.height,webcontent.height)
+
+    WebView {
+        id: webcontent
+
+        onLoadStarted: root.pageLoadStarted()
+        onLoadFinished: {
+            console.log(root.height, webcontent.height)
+            root.pageLoadFinished(true)
+        }
+        onLoadFailed: root.pageLoadFinished(false)
+
+        preferredWidth: root.width
+        preferredHeight: root.height
+
+        url: "http://www.heise.de"
+    }
 }

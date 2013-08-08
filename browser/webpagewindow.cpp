@@ -117,7 +117,40 @@ conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect)
 conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    int i = 0;
+    int scrollheight = (webitem->property("height").toInt())-(webitem->property("contentheight").toInt());
+    int scrollwidth = (webitem->property("width").toInt())-(webitem->property("contentwidth").toInt());
+
+    int scrolltype = 50;
+    if(a_eScrollType == conn::brw::ST_PAGE)
+        scrolltype = webitem->property("height").toInt();
+
+    switch (a_eScrollDirection) {
+    case conn::brw::SD_TOP:
+        i = webitem->property("y").toInt();
+        if(i != 0)
+            webitem->setProperty("y", i + scrolltype);
+        break;
+    case conn::brw::SD_BOTTOM:
+        i = webitem->property("y").toInt();
+        if(i > scrollheight)
+            webitem->setProperty("y", i - scrolltype);
+        break;
+    case conn::brw::SD_RIGHT:
+        i = webitem->property("x").toInt();
+        if(i > scrollwidth)
+            webitem->setProperty("x", i - scrolltype);
+        break;
+    case conn::brw::SD_LEFT:
+        i = webitem->property("x").toInt();
+        if(i != 0)
+            webitem->setProperty("x", i + scrolltype);
+        break;
+    default:
+        break;
+    }
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 bool webpagewindow::getVisible() {

@@ -6,6 +6,14 @@ Item {
     width: 800
     height: 600
 
+    focus: true
+    Keys.onDownPressed: browserinterface.goDown()
+    Keys.onUpPressed: browserinterface.goUp()
+    Keys.onLeftPressed: browserinterface.goLeft()
+    Keys.onRightPressed: browserinterface.goRight()
+    Keys.onSpacePressed: browserinterface.goDownPage()
+    Keys.onTabPressed: browserinterface.goUpPage()
+
     BrowserInterface {
         id: browserinterface
     }
