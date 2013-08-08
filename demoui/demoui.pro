@@ -7,10 +7,10 @@ DEPLOYMENTFOLDERS = folder_01
 QML_IMPORT_PATH =
 
 
-my_dbus_interfaces.files += ../IBookmarkManager.xml \
-    ../IUserInput.xml \
-    ../IWebPageWindow.xml \
-    ../IBrowser.xml
+my_dbus_interfaces.files += ../common/IBookmarkManager.xml \
+    ../common/IUserInput.xml \
+    ../common/IWebPageWindow.xml \
+    ../common/IBrowser.xml
 my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
 DBUS_INTERFACES += my_dbus_interfaces
 
