@@ -7,7 +7,7 @@ DEPLOYMENTFOLDERS = folder_01
 QML_IMPORT_PATH =
 
 
-QT += dbus
+QT += dbus declarative
 
 my_dbus_bookmark_adaptors.files += ../common/IBookmarkManager.xml
 my_dbus_bookmark_adaptors.header_flags = -i bookmarkmanager.h -i ../common/browserdefs.h -l bookmarkmanager
@@ -44,7 +44,3 @@ HEADERS += \
 
 # Installation path
 # target.path =
-
-# Please do not modify the following two lines. Required for deployment.
-include(qmlapplicationviewer/qmlapplicationviewer.pri)
-qtcAddDeployment()
