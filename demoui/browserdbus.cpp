@@ -82,8 +82,8 @@ void BrowserDbus::openBrowserWindow() {
     qDebug() << __PRETTY_FUNCTION__;
 
     conn::brw::Rect *windowrect = new conn::brw::Rect();
-    windowrect->i32X = 100;
-    windowrect->i32Y = 300;
+    windowrect->i32X = 0;
+    windowrect->i32Y = 100;
     windowrect->i32Width = 800;
     windowrect->i32Height = 520;
 
