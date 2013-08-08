@@ -162,7 +162,9 @@ bool webpagewindow::getVisible() {
 conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    webitem->setProperty("visible", a_bVisible);
+
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::stop() {
