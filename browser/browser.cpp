@@ -20,23 +20,45 @@ browser::browser(QObject *parent) :
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle) {
+conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit createPage(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
+    Q_UNUSED(a_eDeviceId);
 
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    if(windowhash.isEmpty()) {
+        initialview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
+        a_hPageWindowHandle = initialview->winId();
+        windowhash.insert(a_hPageWindowHandle, initialview->window());
+        initialview->show();
+    } else {
+        QDeclarativeView *tempview = new QDeclarativeView();
+        tempview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
+        tempview->setWindowFlags(Qt::CustomizeWindowHint);
+        tempview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
+        a_hPageWindowHandle = tempview->winId();
+        windowhash.insert(a_hPageWindowHandle, tempview->window());
+        tempview->show();
+    }
+
+    return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS browser::destroyPageWindow(qlonglong a_hPageWindowHandle) {
-    qDebug() << __PRETTY_FUNCTION__;
+conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {
+    qDebug() << __PRETTY_FUNCTION__ << a_hPageWindowHandle;
 
-    emit destroyPage();
-
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    if(!windowhash.isEmpty()) {
+        QWidget *tempwidget = windowhash.value(a_hPageWindowHandle);
+        windowhash.remove(a_hPageWindowHandle);
+        tempwidget->hide();
+        return conn::brw::EID_NO_ERROR;
+    }
+    return conn::brw::EID_GENERAL_ERROR;
 }
 
 conn::brw::ERROR_IDS browser::getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds) {
     qDebug() << __PRETTY_FUNCTION__;
-    return conn::brw::EID_NOT_IMPLEMENTED;
+
+    a_oPageWindowIds = windowhash.keys();
+
+    return conn::brw::EID_NO_ERROR;
 }

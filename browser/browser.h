@@ -16,6 +16,9 @@
 
 #include <QObject>
 
+#include <QDeclarativeView>
+
+
 #include "../common/browserdefs.h"
 
 class browser : public QObject
@@ -24,15 +27,17 @@ class browser : public QObject
 public:
     explicit browser(QObject *parent = 0);
     
+    QDeclarativeView *initialview;
+
 signals:
-    void createPage(int x, int y, int width, int height);
-    void destroyPage();
 
 public Q_SLOTS:
-    conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle);
+    conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);
     conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);
     conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
     
+private:
+    QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
 };
 
 #endif // BROWSER_H

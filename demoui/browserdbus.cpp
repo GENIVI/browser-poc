@@ -87,10 +87,11 @@ void BrowserDbus::openBrowserWindow() {
     windowrect->i32Width = 800;
     windowrect->i32Height = 520;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, qlonglong> reply = browser->createPageWindow(1, *windowrect);
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::OBJECT_HANDLE> reply = browser->createPageWindow(1, *windowrect);
+    reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        qlonglong handle = reply.argumentAt<1>();
+        conn::brw::OBJECT_HANDLE handle = reply.argumentAt<1>();
 
         qDebug() << "ERROR_IDS " << ret << handle;
     } else {
