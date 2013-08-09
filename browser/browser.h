@@ -30,6 +30,8 @@ public:
     QDeclarativeView *initialview;
 
 signals:
+    void onPageWindowCreated(conn::brw::OBJECT_HANDLE a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);
+    void onPageWindowDestroyed(conn::brw::OBJECT_HANDLE a_hPageWindowHandle);
 
 public Q_SLOTS:
     conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);

@@ -40,6 +40,8 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
         tempview->show();
     }
 
+    emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
+
     return conn::brw::EID_NO_ERROR;
 }
 
@@ -50,6 +52,7 @@ conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPage
         QWidget *tempwidget = windowhash.value(a_hPageWindowHandle);
         windowhash.remove(a_hPageWindowHandle);
         tempwidget->hide();
+        emit onPageWindowDestroyed(a_hPageWindowHandle);
         return conn::brw::EID_NO_ERROR;
     }
     return conn::brw::EID_GENERAL_ERROR;
