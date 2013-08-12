@@ -102,6 +102,9 @@ browserhelper::browserhelper(QObject *parent) :
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
 
+    connect(br, SIGNAL(onPageWindowDestroyed(conn::brw::OBJECT_HANDLE)), wpw, SIGNAL(onClose()));
+
+
 }
 
 void browserhelper::browserreload() {

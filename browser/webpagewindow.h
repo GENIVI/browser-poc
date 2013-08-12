@@ -42,6 +42,8 @@ signals:
     void onLoadStarted();
     void onLoadFinished(bool a_fState);
     void onLoadProgress(int a_i32Progress);
+
+    void onClose();
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();
