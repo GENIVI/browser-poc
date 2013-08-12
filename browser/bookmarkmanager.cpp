@@ -166,7 +166,46 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
                 temp_bookmark->strTitle = bookmarklist.at(i)->title();
                 temp_bookmark->strUrl = bookmarklist.at(i)->url();
 
-                bmlist.append(*temp_bookmark);
+                bmlist.prepend(*temp_bookmark);
+
+                if(bmlist.count() >= 1) {
+                    switch (a_eSortingOrder) {
+                    case conn::brw::BST_TITLE_ASCENDING:
+                        for(int i = 0; i < bmlist.count(); i++) {
+                            if(bmlist.at(i).strTitle > bmlist.at(i+1).strTitle)
+                                bmlist.swap(i, i+1);
+                            else
+                                break;
+                        }
+                        break;
+                    case conn::brw::BST_TITLE_DESCENDING:
+                        for(int i = 0; i < bmlist.count(); i++) {
+                            if(bmlist.at(i).strTitle < bmlist.at(i+1).strTitle)
+                                bmlist.swap(i, i+1);
+                            else
+                                break;
+                        }
+                        break;
+                    case conn::brw::BST_URL_ASCENDING:
+                        for(int i = 0; i < bmlist.count(); i++) {
+                            if(bmlist.at(i).strUrl > bmlist.at(i+1).strUrl)
+                                bmlist.swap(i, i+1);
+                            else
+                                break;
+                        }
+                        break;
+                    case conn::brw::BST_URL_DESCENDING:
+                        for(int i = 0; i < bmlist.count(); i++) {
+                            if(bmlist.at(i).strUrl < bmlist.at(i+1).strUrl)
+                                bmlist.swap(i, i+1);
+                            else
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
                 added++;
             }
         }
