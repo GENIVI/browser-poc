@@ -6,6 +6,8 @@ Item {
     width: 800
     height: 600
 
+    signal bookmarksopen(bool open)
+
     function switchon() {
         browserinterface.openBrowserWindow()
         controls.state = "on"
@@ -18,19 +20,18 @@ Item {
 
         Rectangle {
             anchors.fill: parent
-            color: "blue"
-            opacity: 0.3
+            color: "black"
+            opacity: 0.8
         }
 
         Image {
             id: onbutton
             source: "../../images/internet-web-browser.png"
             anchors.centerIn: parent
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: switchon()
-            }
+        }
+        MouseArea {
+            anchors.fill: parent
+            onClicked: switchon()
         }
         Keys.onEnterPressed: switchon()
         Keys.onReturnPressed: switchon()
@@ -59,6 +60,7 @@ Item {
         Rectangle {
             id: bg
             width: parent.width
+            color: "transparent"
             height: 80
         }
         Button {
@@ -102,6 +104,7 @@ Item {
                     onAccepted: {
                         bookmarklist.state = ""
                         bookmarklistopen = false
+                        root.bookmarksopen(bookmarklistopen)
                         browserinterface.loadurl(text)
                     }
 
@@ -154,10 +157,12 @@ Item {
                 if(bookmarklistopen) {
                     bookmarklist.state = ""
                     bookmarklistopen = false
+                    root.bookmarksopen(bookmarklistopen)
                 } else {
                     browserinterface.getBookmarks()
                     bookmarklist.state = "open"
                     bookmarklistopen = true
+                    root.bookmarksopen(bookmarklistopen)
                 }
             }
         }
@@ -221,6 +226,7 @@ Item {
                 onClicked: {
                     bookmarklist.state = ""
                     bookmarklistopen = false
+                    root.bookmarksopen(bookmarklistopen)
                     browserinterface.deleteAllBookmarks()
                 }
             }
@@ -253,6 +259,7 @@ Item {
                         browserinterface.loadurl(model.modelData.url)
                         bookmarklist.state = ""
                         bookmarklistopen = false
+                        root.bookmarksopen(bookmarklistopen)
                     }
                     onPressed: {
                         bookmarkurl.color = "lightblue"
@@ -322,6 +329,7 @@ Item {
                 name: "on"
                 PropertyChanges { target: startscreen; opacity: 0.0 }
                 PropertyChanges { target: startscreen; scale: 0 }
+                PropertyChanges { target: startscreen; enabled: false }
                 PropertyChanges { target: controls; y: 0 }
                 PropertyChanges { target: controls; focus: true }
             }

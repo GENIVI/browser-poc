@@ -24,7 +24,8 @@ public:
     void setMainQmlFile(const QString &file);
     void addImportPath(const QString &path);
 
-    void showExpanded();
+public slots:
+    void changeGeometry(bool open);
 
 private:
     class QtQuick2ApplicationViewerPrivate *d;

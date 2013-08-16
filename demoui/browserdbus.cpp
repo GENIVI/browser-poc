@@ -24,9 +24,6 @@
 BrowserDbus::BrowserDbus(QObject *parent) :
     QObject(parent)
 {
-    qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
-    qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
-
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
@@ -83,7 +80,7 @@ void BrowserDbus::openBrowserWindow() {
 
     conn::brw::Rect *windowrect = new conn::brw::Rect();
     windowrect->i32X = 0;
-    windowrect->i32Y = 100;
+    windowrect->i32Y = 80;
     windowrect->i32Width = 800;
     windowrect->i32Height = 520;
 
@@ -99,7 +96,6 @@ void BrowserDbus::openBrowserWindow() {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
-
 
 void BrowserDbus::goDown() {
     qDebug() << __PRETTY_FUNCTION__;
