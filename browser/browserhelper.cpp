@@ -79,32 +79,28 @@ browserhelper::browserhelper(QObject *parent) :
     br->initialview = new QDeclarativeView;
     br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
     br->initialview->setWindowFlags(Qt::CustomizeWindowHint);
-//    br->view->show();
+//    br->initialview->show();
 
     QGraphicsObject *rootqmlobject = br->initialview->rootObject();
     webitem = rootqmlobject;
     wpw->webitem = rootqmlobject;
 
+
     connect(rootqmlobject, SIGNAL(pageLoadStarted()), this, SLOT(browserStartLoading()));
     connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(onLoadFinished(bool)));
-
+    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, QString, int, int, int, int)), ui, SIGNAL(onInputText(QString, QString, QString, int, int, int, int)));
 
     connect(wpw, SIGNAL(reloadrequested()), this, SLOT(browserreload()));
     connect(wpw, SIGNAL(stoprequested()), this, SLOT(browserstop()));
     connect(wpw, SIGNAL(backrequested()), this, SLOT(browserback()));
     connect(wpw, SIGNAL(forwardrequested()), this, SLOT(browserforward()));
     connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
-
     connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
 
     connect(this, SIGNAL(onLoadStarted()), wpw, SIGNAL(onLoadStarted()));
-
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
-
     connect(br, SIGNAL(onPageWindowDestroyed(conn::brw::OBJECT_HANDLE)), wpw, SIGNAL(onClose()));
-
-
 }
 
 void browserhelper::browserreload() {
