@@ -46,6 +46,8 @@ public slots:
 
     void browserStartLoading();
 
+    void inputText(QString input);
+
 private:
     QTimer *progresstimer;
     

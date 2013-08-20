@@ -101,6 +101,14 @@ browserhelper::browserhelper(QObject *parent) :
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
     connect(br, SIGNAL(onPageWindowDestroyed(conn::brw::OBJECT_HANDLE)), wpw, SIGNAL(onClose()));
+
+    connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
+}
+
+
+void browserhelper::inputText(QString input) {
+    webitem->setProperty("input", input);
+    webitem->metaObject()->invokeMethod(webitem, "inputText");
 }
 
 void browserhelper::browserreload() {

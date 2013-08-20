@@ -26,6 +26,7 @@ public:
     
 signals:
     void onInputText(QString a_strInputName, QString a_strDefaultInputValue, QString a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
+    void inputText(QString input);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue);

@@ -20,25 +20,27 @@ Flickable {
 
     signal onInputText(string a_strInputName, string a_strDefaultInputValue, string a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step)
 
+    property string input: ""
+
+    function inputText() {
+        webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT'); var index;for(index=0; index < inputs.length; index++){ if(inputs[index].name == '" + inputfieldname + "') { var element = inputs[index]; element.value='" + root.input + "' }}");
+    }
+
     width: 800
     height: 520
 
     contentWidth: Math.max(root.width,webcontent.width)
     contentHeight: Math.max(root.height,webcontent.height)
 
+    property string inputfieldname: ""
+
     WebView {
         id: webcontent
 
         onLoadStarted: root.pageLoadStarted()
         onLoadFinished: {
-//            console.log(root.height, webcontent.height)
             root.pageLoadFinished(true)
-//            webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT');var index;for(index=0; index < inputs.length; index++){inputs[index].onfocus = function() {window.webpage.getFocus(index, inputs.length, inputs[index].name,inputs[index].value,inputs[index].type,inputs[index].maxlength,inputs[index].max,inputs[index].min,inputs[index].step)};inputs[index].onblur = function(){window.webpage.leaveFocus()}}")
-            webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT');var index;for(index=0; index < inputs.length; index++){ inputs[index].onfocus = function() {window.webpage.getFocus(this.name, this.value, this.type, this.maxlength, this.max, this.min, this.step) }}")
-
-
-
-//            webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT'); var element = inputs[2]; element.value='Hello'")
+            webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT');var index;for(index=0; index < inputs.length; index++){inputs[index].onfocus = function() { window.webpage.getFocus(this.name, this.value, this.type, this.maxlength, this.max, this.min, this.step) }}")
         }
         onLoadFailed: root.pageLoadFinished(false)
 
@@ -47,20 +49,19 @@ Flickable {
 
         focus: true
 
+//        url: "http://www.google.com"
         url: "http://www.bmw.com"
 
 //        settings.javaEnabled: true
-        settings.developerExtrasEnabled: true
+//        settings.developerExtrasEnabled: true
         javaScriptWindowObjects: QtObject {
             WebView.windowObjectName: "webpage"
 
             function getFocus(name, value, type, maxlength, max, min, step) {
-//                console.log("Input has focus " + name + " " + value
-//                            + " " + type + " " + maxlength + " " + max
-//                            + " " + min + " " + step);
+//                console.log("Input has focus " + name + " " + value + " " + type + " " + maxlength + " " + max + " " + min + " " + step);
+                inputfieldname = name;
                 onInputText(name, value, type, maxlength, max, min, step);
             }
-            function leaveFocus() { console.log("Input lost focus"); }
         }
     }
 }
