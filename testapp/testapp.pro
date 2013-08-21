@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui dbus
+QT       += core gui dbus qml quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -24,3 +24,11 @@ SOURCES += main.cpp\
         widget.cpp
 
 HEADERS  += widget.h \
+
+OTHER_FILES += \
+    qml/testapp/main.qml \
+    qml/testapp/UserInput.qml \
+    qml/testapp/Browser.qml \
+    qml/testapp/BookmarkManager.qml \
+    qml/testapp/WebPageWindow.qml
+
