@@ -61,6 +61,8 @@ public:
     Q_INVOKABLE void getGeometry();
     Q_INVOKABLE void setGeometry(int x, int y, int width, int height);
 
+    Q_INVOKABLE void getContentSize();
+
     Q_INVOKABLE void deleteBookmark(int index);
 
     QString title() { return m_title; }

@@ -51,6 +51,23 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
 }
 
+void BrowserDbus::getContentSize() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, uint, uint> reply = webpagewindow->getContentSize();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        uint width = reply.argumentAt<1>();
+        uint height = reply.argumentAt<2>();
+
+        qDebug() << "ERROR_IDS " << ret << width << height;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 
 void BrowserDbus::getGeometry() {
     qDebug() << __PRETTY_FUNCTION__;
@@ -66,7 +83,6 @@ void BrowserDbus::getGeometry() {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
     }
-
 }
 
 void BrowserDbus::setGeometry(int x, int y, int width, int height) {

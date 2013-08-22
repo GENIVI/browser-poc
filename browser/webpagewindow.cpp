@@ -83,8 +83,8 @@ conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserAct
 conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32Height) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    uint width = webitem->property("width").toInt();
-    uint height = webitem->property("height").toInt();
+    uint width = webitem->property("contentWidth").toInt();
+    uint height = webitem->property("contentHeight").toInt();
 
     a_u32Width = width;
     a_u32Height = height;

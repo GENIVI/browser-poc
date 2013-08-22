@@ -72,6 +72,11 @@ Item {
             font.pixelSize: 20
             text: "http://"
         }
+        Text {
+            text: "url"
+            anchors.top: inputfieldurl.bottom
+            anchors.left: inputfieldurl.left
+        }
         Button {
             width: 130
             height: inputfieldurl.height
@@ -117,7 +122,7 @@ Item {
 
     GroupBox {
         id: groupcontrolbuttons2
-        title: "getVisible()/getGeometry()/getContentSize()/getBrowserActionsState()"
+        title: "getVisible()/getGeometry()/getContentSize()/getBrowserActionsState()    "
         width: 4 * 130 + 3 * 20 + 30
         anchors.top: groupsetvisible.bottom
         anchors.topMargin: 10
@@ -152,6 +157,7 @@ Item {
             anchors.left: buttongetgeometry.right
             anchors.leftMargin: 20
             text: "Get ContentSize"
+            onClicked: browserinterface.getContentSize()
         }
 
         Button {
@@ -183,6 +189,11 @@ Item {
             inputMask: "999"
             text: "0"
         }
+        Text {
+            text: "x"
+            anchors.top: inputfieldx.bottom
+            anchors.left: inputfieldx.left
+        }
         TextField {
             id: inputfieldy
             width: 50
@@ -194,6 +205,11 @@ Item {
             maximumLength: 3
             inputMask: "999"
             text: "0"
+        }
+        Text {
+            text: "y"
+            anchors.top: inputfieldy.bottom
+            anchors.left: inputfieldy.left
         }
         TextField {
             id: inputfieldwidth
@@ -207,6 +223,11 @@ Item {
             inputMask: "999"
             text: "800"
         }
+        Text {
+            text: "width"
+            anchors.top: inputfieldwidth.bottom
+            anchors.left: inputfieldwidth.left
+        }
         TextField {
             id: inputfieldheight
             width: 50
@@ -218,6 +239,11 @@ Item {
             maximumLength: 3
             inputMask: "999"
             text: "520"
+        }
+        Text {
+            text: "height"
+            anchors.top: inputfieldheight.bottom
+            anchors.left: inputfieldheight.left
         }
         Button {
             width: 130

@@ -14,7 +14,7 @@
 #include <QtGui/QGuiApplication>
 #include "qtquick2applicationviewer.h"
 
-#include "browserdbus.h"
+#include "../common/browserdbus.h"
 
 
 #include <QtQml>
