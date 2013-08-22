@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 1.0
+import browserdbusinterface 1.0
 
 ApplicationWindow {
     id: root
@@ -8,6 +9,9 @@ ApplicationWindow {
     height: 700
     color: "gray"
 
+    BrowserInterface {
+        id: browserinterface
+    }
     TabView {
         anchors.top: parent.top
         anchors.left: parent.left

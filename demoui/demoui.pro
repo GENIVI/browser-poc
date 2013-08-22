@@ -6,7 +6,6 @@ DEPLOYMENTFOLDERS = folder_01
 # Additional import path used to resolve QML modules in Creator's code model
 QML_IMPORT_PATH =
 
-
 my_dbus_interfaces.files += ../common/IBookmarkManager.xml \
     ../common/IUserInput.xml \
     ../common/IWebPageWindow.xml \
@@ -19,9 +18,6 @@ QT += core dbus
 include(../common/common.pri)
 
 SOURCES += main.cpp \
-    browserdbus.cpp
-
-HEADERS += browserdbus.h \
 
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer/qtquick2applicationviewer.pri)

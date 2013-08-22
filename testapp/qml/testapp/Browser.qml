@@ -10,7 +10,7 @@ Item {
         title: "createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, qlonglong &a_hPageWindowHandle)"
         width: children.width + 250
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: parent.left
         anchors.leftMargin: 30
 

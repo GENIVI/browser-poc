@@ -18,21 +18,22 @@ my_dbus_browser_adaptors.source_flags = -l browser
 
 DBUS_ADAPTORS += my_dbus_bookmark_adaptors my_dbus_userinput_adaptors my_dbus_webpagewindow_adaptors my_dbus_browser_adaptors
 
-include(../common/common.pri)
-
 SOURCES += main.cpp \
     bookmarkmanager.cpp \
     userinput.cpp \
     webpagewindow.cpp \
     browser.cpp \
-    browserhelper.cpp
+    browserhelper.cpp \
+    ../common/bookmark.cpp \
 
 HEADERS += \
     bookmarkmanager.h \
     userinput.h \
     webpagewindow.h \
     browser.h \
-    browserhelper.h
+    browserhelper.h \
+    ../common/bookmark.h \
+    ../common/browserdefs.h \
 
 OTHER_FILES += \
     qml/browser/main.qml \

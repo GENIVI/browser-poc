@@ -20,6 +20,10 @@
 
 //#include "../common/browserdefs.h"
 
+
+#include "../common/browserdbus.h"
+#include <QtQml>
+
 int main(int argc, char *argv[])
 {
 //    QApplication app(argc, argv);
@@ -41,6 +45,12 @@ int main(int argc, char *argv[])
 
 
     QApplication app(argc, argv);
+
+//    BrowserDbus browserdbushelper;
+
+    qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
+    qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
+
     QQmlApplicationEngine engine("qml/testapp/main.qml");
 
     QObject *topLevel = engine.rootObjects().value(0);

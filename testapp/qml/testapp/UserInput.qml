@@ -9,7 +9,7 @@ Item {
         id: groupuserinput
         title: "inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue)"
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: parent.left
         anchors.leftMargin: 30
 

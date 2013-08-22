@@ -160,7 +160,7 @@ bool webpagewindow::getVisible() {
 }
 
 conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << a_bVisible;
 
     webitem->setProperty("visible", a_bVisible);
 

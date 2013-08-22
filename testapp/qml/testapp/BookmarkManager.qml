@@ -10,7 +10,7 @@ Item {
         title: "addItem(const conn::brw::BookmarkItem & a_oItem)"
         width: children.width + 250
         anchors.top: parent.top
-        anchors.topMargin: 30
+        anchors.topMargin: 15
         anchors.left: parent.left
         anchors.leftMargin: 30
 
