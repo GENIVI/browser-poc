@@ -33,6 +33,7 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::Rect>();
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
+    qDBusRegisterMetaType<conn::brw::BrowserActions>();
 
     bookmark = new conn::brw::IBookmarkManager("conn.brw.IBookmarkManager", "/bookmarkmanager",
                                                QDBusConnection::sessionBus(), this);
@@ -49,6 +50,23 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
     connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
     connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
+}
+
+void BrowserDbus::getBrowserActionState() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BrowserActions> reply = webpagewindow->getBrowserActionsState();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        conn::brw::BrowserActions actions = reply.argumentAt<1>();
+
+        qDebug() << "ERROR_IDS " << ret << actions.u8Back << actions.u8Forward <<
+                    actions.u8Reload << actions.u8Stop << actions.u8LoadUrl << actions.u8Select;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
 }
 
 void BrowserDbus::getContentSize() {

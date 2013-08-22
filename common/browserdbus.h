@@ -63,6 +63,8 @@ public:
 
     Q_INVOKABLE void getContentSize();
 
+    Q_INVOKABLE void getBrowserActionState();
+
     Q_INVOKABLE void deleteBookmark(int index);
 
     QString title() { return m_title; }

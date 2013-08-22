@@ -167,6 +167,7 @@ Item {
             anchors.left: buttongetcontentsize.right
             anchors.leftMargin: 20
             text: "Get Browser ActionState"
+            onClicked: browserinterface.getBrowserActionState()
         }
     }
 
