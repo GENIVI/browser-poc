@@ -143,7 +143,7 @@ Item {
             imagesource: "../../images/bookmarks.png"
             onButtonClicked: {
                 browserinterface.getCurrentUrlAndTitle()
-                browserinterface.addBookmark(browserinterface.url, browserinterface.title)
+                browserinterface.addBookmark(1, "", browserinterface.title, browserinterface.url, "", "")
             }
         }
 

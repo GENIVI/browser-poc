@@ -53,13 +53,6 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
             return conn::brw::EID_MAX_NUMBER_REACHED;
         }
 
-        // check if uid already exists
-//        for (int i = 0; i < bookmarklist.size(); ++i) {
-//             if (bookmarklist.at(i)->uid() == a_oItem.i32Uid) {
-//                 return conn::brw::EID_ALREADY_EXIST;
-//             }
-//         }
-
         // add item
         Bookmark *temp_bookmark = new Bookmark();
         temp_bookmark->setUid(++lastgivenUID);
@@ -95,7 +88,7 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
 }
 
 conn::brw::ERROR_IDS bookmarkmanager::deleteAllItems(int type) {
-    qDebug() << __PRETTY_FUNCTION__;
+    qDebug() << __PRETTY_FUNCTION__ << type;
 
     bool success = false;
 
@@ -104,10 +97,24 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteAllItems(int type) {
         if (bookmarklist.at(i)->type() == type) {
             bookmarklist.removeAt(i--);
             success = true;
-            lastgivenUID = 0;
-
-            bookmarksettings.clear();
         }
+    }
+
+    if(success) {
+        bookmarksettings.clear();
+        bookmarksettings.setValue("lastgivenUID",lastgivenUID);
+        bookmarksettings.beginWriteArray("bookmarks");
+        for (int i = 0; i < bookmarklist.size(); ++i) {
+            bookmarksettings.setArrayIndex(i);
+            bookmarksettings.setValue("i32Uid", bookmarklist.at(i)->uid());
+            bookmarksettings.setValue("i32Type", bookmarklist.at(i)->type());
+            bookmarksettings.setValue("strParentFolderPath", bookmarklist.at(i)->folderpath());
+            bookmarksettings.setValue("strTitle", bookmarklist.at(i)->title());
+            bookmarksettings.setValue("strUrl", bookmarklist.at(i)->url());
+            bookmarksettings.setValue("strIconPath", bookmarklist.at(i)->iconpath());
+            bookmarksettings.setValue("strThumbnailPath", bookmarklist.at(i)->thumbnailpath());
+        }
+        bookmarksettings.endArray();
     }
     return success ? conn::brw::EID_NO_ERROR : conn::brw::EID_NOT_EXISTS;
 }
@@ -134,7 +141,6 @@ conn::brw::ERROR_IDS bookmarkmanager::deleteItem(int uid) {
                 bookmarksettings.setValue("strThumbnailPath", bookmarklist.at(i)->thumbnailpath());
             }
             bookmarksettings.endArray();
-
 
             return conn::brw::EID_NO_ERROR;
         }

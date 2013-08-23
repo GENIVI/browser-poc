@@ -308,17 +308,17 @@ void BrowserDbus::loadurl(QString url) {
     }
 }
 
-void BrowserDbus::addBookmark(QString bookmarkurl, QString bookmarktitle) {
-    qDebug() << __PRETTY_FUNCTION__ << bookmarkurl << bookmarktitle;
+void BrowserDbus::addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath) {
+    qDebug() << __PRETTY_FUNCTION__ << type << folder << title << url << iconpath << thumbnailpath;
 
     conn::brw::BookmarkItem tmpbookmark;
     tmpbookmark.i32Uid = 0;
-    tmpbookmark.i32Type = 1;
-    tmpbookmark.strParentFolderPath = "";
-    tmpbookmark.strTitle = bookmarktitle;
-    tmpbookmark.strUrl = bookmarkurl;
-    tmpbookmark.strIconPath = "";
-    tmpbookmark.strThumbnailPath = "";
+    tmpbookmark.i32Type = type;
+    tmpbookmark.strParentFolderPath = folder;
+    tmpbookmark.strTitle = title;
+    tmpbookmark.strUrl = url;
+    tmpbookmark.strIconPath = iconpath;
+    tmpbookmark.strThumbnailPath = thumbnailpath;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(tmpbookmark);
     reply.waitForFinished();

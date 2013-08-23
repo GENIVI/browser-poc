@@ -43,7 +43,7 @@ public:
     Q_INVOKABLE void loadurl(QString url);
 
     Q_INVOKABLE void getBookmarks(QString folder, int type, conn::brw::BOOKMARK_SORT_TYPE sorting, int start, int count);
-    Q_INVOKABLE void addBookmark(QString url, QString title);
+    Q_INVOKABLE void addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath);
     Q_INVOKABLE void deleteBookmark(int uid);
     Q_INVOKABLE void deleteAllBookmarks(int type);
 

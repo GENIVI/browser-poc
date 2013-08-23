@@ -15,7 +15,7 @@ Item {
         anchors.leftMargin: 30
 
         TextField {
-            id: uidadditem
+            id: typeadditem
             width: 50
             height: 50
             anchors.left: parent.left
@@ -23,26 +23,10 @@ Item {
             font.pixelSize: 20
             maximumLength: 3
             inputMask: "999"
+            text: "1"
         }
         Text {
-            id: uidadditemsubtext
-            text: "uid"
-            anchors.top: uidadditem.bottom
-            anchors.left: uidadditem.left
-        }
-
-        TextField {
-            id: typeadditem
-            width: 50
-            height: uidadditem.height
-            anchors.top: uidadditem.top
-            anchors.left: uidadditem.right
-            anchors.leftMargin: 20
-            font.pixelSize: 20
-            maximumLength: 3
-            inputMask: "999"
-        }
-        Text {
+            id: typeadditemsubtext
             text: "type"
             anchors.top: typeadditem.bottom
             anchors.left: typeadditem.left
@@ -50,21 +34,21 @@ Item {
         TextField {
             id: folderpathadditem
             width: 200
-            height: uidadditem.height
+            height: typeadditem.height
             anchors.top: typeadditem.top
             anchors.left: typeadditem.right
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
         Text {
-            text: "parentfolderpath"
+            text: "folder path"
             anchors.top: folderpathadditem.bottom
             anchors.left: folderpathadditem.left
         }
         TextField {
             id: titleadditem
             width: 200
-            height: uidadditem.height
+            height: typeadditem.height
             anchors.top: folderpathadditem.top
             anchors.left: folderpathadditem.right
             anchors.leftMargin: 20
@@ -78,10 +62,10 @@ Item {
         TextField {
             id: urladditem
             width: 300
-            height: uidadditem.height
-            anchors.top: uidadditemsubtext.bottom
+            height: typeadditem.height
+            anchors.top: typeadditemsubtext.bottom
             anchors.topMargin: 10
-            anchors.left: uidadditem.left
+            anchors.left: typeadditem.left
             font.pixelSize: 20
             text: "http://"
         }
@@ -93,7 +77,7 @@ Item {
         TextField {
             id: iconpathadditem
             width: 150
-            height: uidadditem.height
+            height: typeadditem.height
             anchors.top: urladditem.top
             anchors.left: urladditem.right
             anchors.leftMargin: 20
@@ -107,7 +91,7 @@ Item {
         TextField {
             id: thumbnailpathadditem
             width: 150
-            height: uidadditem.height
+            height: typeadditem.height
             anchors.top: iconpathadditem.top
             anchors.left: iconpathadditem.right
             anchors.leftMargin: 20
@@ -120,11 +104,12 @@ Item {
         }
         Button {
             width: 130
-            height: uidadditem.height
+            height: typeadditem.height
             anchors.top: titleadditem.top
             anchors.left: titleadditem.right
-            anchors.leftMargin: 20
+            anchors.leftMargin: 40
             text: "Add Item"
+            onClicked: browserinterface.addBookmark(typeadditem.text, folderpathadditem.text, titleadditem.text, urladditem.text, iconpathadditem.text, thumbnailpathadditem.text)
         }
     }
 
