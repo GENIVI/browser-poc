@@ -159,7 +159,7 @@ Item {
                     bookmarklistopen = false
                     root.bookmarksopen(bookmarklistopen)
                 } else {
-                    browserinterface.getBookmarks()
+                    browserinterface.getBookmarks("", 1, 0, 1, 20)
                     bookmarklist.state = "open"
                     bookmarklistopen = true
                     root.bookmarksopen(bookmarklistopen)
@@ -227,7 +227,7 @@ Item {
                     bookmarklist.state = ""
                     bookmarklistopen = false
                     root.bookmarksopen(bookmarklistopen)
-                    browserinterface.deleteAllBookmarks()
+                    browserinterface.deleteAllBookmarks(1)
                 }
             }
         }
@@ -279,7 +279,7 @@ Item {
                     MouseArea {
                         anchors.fill: parent
                         anchors.margins: -10
-                        onClicked: browserinterface.deleteBookmark(index)
+                        onClicked: browserinterface.deleteBookmark(model.modelData.uid)
                         onPressed: bookmarkdeletebutton.color = "lightblue"
                         onReleased: bookmarkdeletebutton.color = "darkgray"
                     }

@@ -41,9 +41,12 @@ public:
     Q_INVOKABLE void reload();
     Q_INVOKABLE void stop();
     Q_INVOKABLE void loadurl(QString url);
-    Q_INVOKABLE void getBookmarks();
+
+    Q_INVOKABLE void getBookmarks(QString folder, int type, conn::brw::BOOKMARK_SORT_TYPE sorting, int start, int count);
     Q_INVOKABLE void addBookmark(QString url, QString title);
-    Q_INVOKABLE void deleteAllBookmarks();
+    Q_INVOKABLE void deleteBookmark(int uid);
+    Q_INVOKABLE void deleteAllBookmarks(int type);
+
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
     Q_INVOKABLE void goRight();
@@ -65,7 +68,6 @@ public:
 
     Q_INVOKABLE void getBrowserActionState();
 
-    Q_INVOKABLE void deleteBookmark(int index);
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

@@ -8,7 +8,7 @@ Item {
     GroupBox {
         id: groupadditem
         title: "addItem(const conn::brw::BookmarkItem & a_oItem)"
-        width: children.width + 250
+        width: 750
         anchors.top: parent.top
         anchors.topMargin: 15
         anchors.left: parent.left
@@ -24,6 +24,13 @@ Item {
             maximumLength: 3
             inputMask: "999"
         }
+        Text {
+            id: uidadditemsubtext
+            text: "uid"
+            anchors.top: uidadditem.bottom
+            anchors.left: uidadditem.left
+        }
+
         TextField {
             id: typeadditem
             width: 50
@@ -35,56 +42,87 @@ Item {
             maximumLength: 3
             inputMask: "999"
         }
+        Text {
+            text: "type"
+            anchors.top: typeadditem.bottom
+            anchors.left: typeadditem.left
+        }
         TextField {
             id: folderpathadditem
-            width: 50
+            width: 200
             height: uidadditem.height
             anchors.top: typeadditem.top
             anchors.left: typeadditem.right
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
+        Text {
+            text: "parentfolderpath"
+            anchors.top: folderpathadditem.bottom
+            anchors.left: folderpathadditem.left
+        }
         TextField {
             id: titleadditem
-            width: 50
+            width: 200
             height: uidadditem.height
             anchors.top: folderpathadditem.top
             anchors.left: folderpathadditem.right
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
+        Text {
+            text: "title"
+            anchors.top: titleadditem.bottom
+            anchors.left: titleadditem.left
+        }
         TextField {
             id: urladditem
-            width: 50
+            width: 300
             height: uidadditem.height
-            anchors.top: titleadditem.top
-            anchors.left: titleadditem.right
-            anchors.leftMargin: 20
+            anchors.top: uidadditemsubtext.bottom
+            anchors.topMargin: 10
+            anchors.left: uidadditem.left
             font.pixelSize: 20
+            text: "http://"
+        }
+        Text {
+            text: "url"
+            anchors.top: urladditem.bottom
+            anchors.left: urladditem.left
         }
         TextField {
             id: iconpathadditem
-            width: 50
+            width: 150
             height: uidadditem.height
             anchors.top: urladditem.top
             anchors.left: urladditem.right
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
+        Text {
+            text: "icon path"
+            anchors.top: iconpathadditem.bottom
+            anchors.left: iconpathadditem.left
+        }
         TextField {
             id: thumbnailpathadditem
-            width: 50
+            width: 150
             height: uidadditem.height
             anchors.top: iconpathadditem.top
             anchors.left: iconpathadditem.right
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
+        Text {
+            text: "thumbnail path"
+            anchors.top: thumbnailpathadditem.bottom
+            anchors.left: thumbnailpathadditem.left
+        }
         Button {
             width: 130
             height: uidadditem.height
-            anchors.top: thumbnailpathadditem.top
-            anchors.left: thumbnailpathadditem.right
+            anchors.top: titleadditem.top
+            anchors.left: titleadditem.right
             anchors.leftMargin: 20
             text: "Add Item"
         }
@@ -93,7 +131,7 @@ Item {
     GroupBox {
         id: groupdeleteitem
         title: "deleteItem(int a_i32Uid)"
-        width: children.width + 200
+        width: 50 + 130 + 55
         anchors.top: groupadditem.bottom
         anchors.topMargin: 10
         anchors.left: groupadditem.left
@@ -107,6 +145,12 @@ Item {
             font.pixelSize: 20
             maximumLength: 3
             inputMask: "999"
+            text: "1"
+        }
+        Text {
+            text: "uid"
+            anchors.top: uiddeleteitem.bottom
+            anchors.left: uiddeleteitem.left
         }
         Button {
             width: 130
@@ -115,13 +159,14 @@ Item {
             anchors.left: uiddeleteitem.right
             anchors.leftMargin: 20
             text: "Delete Item"
+            onClicked: browserinterface.deleteBookmark(uiddeleteitem.text)
         }
     }
 
     GroupBox {
         id: groupdeleteallitem
         title: "deleteAllItems(int a_i32BookmarkItemType)"
-        width: children.width + 200
+        width: 50 + 130 + 55
         anchors.top: groupdeleteitem.bottom
         anchors.topMargin: 10
         anchors.left: groupdeleteitem.left
@@ -135,6 +180,12 @@ Item {
             font.pixelSize: 20
             maximumLength: 3
             inputMask: "999"
+            text: "1"
+        }
+        Text {
+            text: "type"
+            anchors.top: typedeleteall.bottom
+            anchors.left: typedeleteall.left
         }
         Button {
             width: 130
@@ -143,25 +194,31 @@ Item {
             anchors.left: typedeleteall.right
             anchors.leftMargin: 20
             text: "Delete All Items"
+            onClicked: browserinterface.deleteAllBookmarks(typedeleteall.text)
         }
     }
 
 
     GroupBox {
         id: groupgetitems
-        title: "getItems(const QString &a_strParentFolderPath, int a_i32BookmarkType, conn::brw::BOOKMARK_SORT_TYPE a_eSortingOrder, uint a_u32StartIndex, uint a_u32ItemsCount, conn::brw::BookmarkItemList &a_oItems)"
-        width: children.width + 200
+        title: "getItems(&a_strParentFolderPath, a_i32BookmarkType, a_eSortingOrder, a_u32StartIndex, a_u32ItemsCount, &a_oItems)"
+        width: 660
         anchors.top: groupdeleteallitem.bottom
         anchors.topMargin: 10
         anchors.left: groupdeleteallitem.left
 
         TextField {
             id: folderpathgetitems
-            width: 50
+            width: 150
             height: 50
             anchors.left: parent.left
             anchors.leftMargin: 10
             font.pixelSize: 20
+        }
+        Text {
+            text: "folder path"
+            anchors.top: folderpathgetitems.bottom
+            anchors.left: folderpathgetitems.left
         }
         TextField {
             id: typegetitems
@@ -171,17 +228,30 @@ Item {
             anchors.left: folderpathgetitems.right
             anchors.leftMargin: 20
             font.pixelSize: 20
+            maximumLength: 3
+            inputMask: "999"
+            text: "1"
         }
-        TextField {
+        Text {
+            text: "type"
+            anchors.top: typegetitems.bottom
+            anchors.left: typegetitems.left
+        }
+        ComboBox {
             id: sortinggetitems
-            width: 50
+            width: 100
+            model: ["unsorted", "title ascending", "title descending", "url acending", "url descending"]
             height: folderpathgetitems.height
             anchors.top: typegetitems.top
             anchors.left: typegetitems.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
         }
-        TextField {
+        Text {
+            text: "sorting"
+            anchors.top: sortinggetitems.bottom
+            anchors.left: sortinggetitems.left
+        }
+        SpinBox {
             id: startindexgetitems
             width: 50
             height: folderpathgetitems.height
@@ -190,7 +260,12 @@ Item {
             anchors.leftMargin: 20
             font.pixelSize: 20
         }
-        TextField {
+        Text {
+            text: "start index"
+            anchors.top: startindexgetitems.bottom
+            anchors.left: startindexgetitems.left
+        }
+        SpinBox {
             id: countgetitems
             width: 50
             height: folderpathgetitems.height
@@ -198,6 +273,12 @@ Item {
             anchors.left: startindexgetitems.right
             anchors.leftMargin: 20
             font.pixelSize: 20
+            value: 1
+        }
+        Text {
+            text: "count"
+            anchors.top: countgetitems.bottom
+            anchors.left: countgetitems.left
         }
         Button {
             width: 130
@@ -206,6 +287,7 @@ Item {
             anchors.left: countgetitems.right
             anchors.leftMargin: 20
             text: "Get Items"
+            onClicked: browserinterface.getBookmarks(folderpathgetitems.text, typegetitems.text, sortinggetitems.currentIndex, startindexgetitems.value, countgetitems.value)
         }
     }
 }

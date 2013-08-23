@@ -16,14 +16,13 @@
 
 #include <QObject>
 
-#include <QDateTime>
-
 class Bookmark : public QObject
 {
     Q_OBJECT
 
     Q_PROPERTY(QString title READ title NOTIFY titleChanged)
     Q_PROPERTY(QString url READ url NOTIFY urlChanged)
+    Q_PROPERTY(int uid READ uid NOTIFY uidChanged)
 
 public:
     explicit Bookmark(QObject *parent = 0);
@@ -48,6 +47,7 @@ public:
 signals:
     void urlChanged();
     void titleChanged();
+    void uidChanged();
 
 public slots:
     

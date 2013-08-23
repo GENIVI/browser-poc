@@ -146,7 +146,6 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
                                                uint index, uint count, conn::brw::BookmarkItemList &a_oItems) {
     qDebug() << __PRETTY_FUNCTION__ << path << type << a_eSortingOrder << index << count;
 
-    // TODO: sorting
     conn::brw::BookmarkItem *temp_bookmark = new conn::brw::BookmarkItem();
     QList<conn::brw::BookmarkItem> bmlist;
 
@@ -168,10 +167,10 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
 
                 bmlist.prepend(*temp_bookmark);
 
-                if(bmlist.count() >= 1) {
+                if(bmlist.count() > 1) {
                     switch (a_eSortingOrder) {
                     case conn::brw::BST_TITLE_ASCENDING:
-                        for(int i = 0; i < bmlist.count(); i++) {
+                        for(int i = 0; i < bmlist.count()-1; i++) {
                             if(bmlist.at(i).strTitle > bmlist.at(i+1).strTitle)
                                 bmlist.swap(i, i+1);
                             else
@@ -179,7 +178,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
                         }
                         break;
                     case conn::brw::BST_TITLE_DESCENDING:
-                        for(int i = 0; i < bmlist.count(); i++) {
+                        for(int i = 0; i < bmlist.count()-1; i++) {
                             if(bmlist.at(i).strTitle < bmlist.at(i+1).strTitle)
                                 bmlist.swap(i, i+1);
                             else
@@ -187,7 +186,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
                         }
                         break;
                     case conn::brw::BST_URL_ASCENDING:
-                        for(int i = 0; i < bmlist.count(); i++) {
+                        for(int i = 0; i < bmlist.count()-1; i++) {
                             if(bmlist.at(i).strUrl > bmlist.at(i+1).strUrl)
                                 bmlist.swap(i, i+1);
                             else
@@ -195,7 +194,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
                         }
                         break;
                     case conn::brw::BST_URL_DESCENDING:
-                        for(int i = 0; i < bmlist.count(); i++) {
+                        for(int i = 0; i < bmlist.count()-1; i++) {
                             if(bmlist.at(i).strUrl < bmlist.at(i+1).strUrl)
                                 bmlist.swap(i, i+1);
                             else
