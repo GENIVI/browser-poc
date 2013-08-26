@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui dbus qml quick
+QT       += dbus qml quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -20,10 +20,9 @@ DBUS_INTERFACES += my_dbus_interfaces
 
 include(../common/common.pri)
 
-SOURCES += main.cpp\
-        widget.cpp
+SOURCES += main.cpp \
 
-HEADERS  += widget.h \
+HEADERS += \
 
 OTHER_FILES += \
     qml/testapp/main.qml \

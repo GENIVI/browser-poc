@@ -11,39 +11,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-//#include "widget.h"
 #include <QApplication>
-#include <QQmlApplicationEngine>
 #include <QQuickWindow>
-
-//#include <QDBusMetaType>
-
-//#include "../common/browserdefs.h"
-
-
-#include "../common/browserdbus.h"
 #include <QtQml>
+#include "../common/browserdbus.h"
 
 int main(int argc, char *argv[])
 {
-//    QApplication app(argc, argv);
-
-//    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
-//    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
-//    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
-//    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
-
-//    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
-//    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
-
-//    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
-//    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-
-//    Widget w;
-//    w.setGeometry(0,0,600,600);
-//    w.show();
-
-
     QApplication app(argc, argv);
 
 //    BrowserDbus browserdbushelper;
