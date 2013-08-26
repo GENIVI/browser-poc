@@ -46,14 +46,17 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {
-    qDebug() << __PRETTY_FUNCTION__ << a_hPageWindowHandle;
+    qDebug() << __PRETTY_FUNCTION__ << a_hPageWindowHandle << windowhash.isEmpty();
 
     if(!windowhash.isEmpty()) {
         QWidget *tempwidget = windowhash.value(a_hPageWindowHandle);
-        windowhash.remove(a_hPageWindowHandle);
-        tempwidget->hide();
-        emit onPageWindowDestroyed(a_hPageWindowHandle);
-        return conn::brw::EID_NO_ERROR;
+        if(tempwidget) {
+            windowhash.remove(a_hPageWindowHandle);
+            tempwidget->hide();
+            emit onPageWindowDestroyed(a_hPageWindowHandle);
+            return conn::brw::EID_NO_ERROR;
+        }
+        return conn::brw::EID_DB_ITEM_NOT_EXISTS;
     }
     return conn::brw::EID_GENERAL_ERROR;
 }

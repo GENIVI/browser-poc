@@ -68,6 +68,9 @@ public:
 
     Q_INVOKABLE void getBrowserActionState();
 
+    Q_INVOKABLE void createPageWindow(int deviceid, int x, int y, int width, int height);
+    Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
+
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

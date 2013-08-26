@@ -49,6 +49,44 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
 }
 
+void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int height) {
+    qDebug() << __PRETTY_FUNCTION__ << x << y << width << height;
+
+    conn::brw::Rect *rect = new conn::brw::Rect();
+    rect->i32X = x;
+    rect->i32Y = y;
+    rect->i32Width = width;
+    rect->i32Height = height;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::OBJECT_HANDLE> reply = browser->createPageWindow(deviceid, *rect);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        conn::brw::OBJECT_HANDLE handle = reply.argumentAt<1>();
+
+        qDebug() << "ERROR_IDS " << ret << handle;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::destroyPageWindow(conn::brw::OBJECT_HANDLE windowhandle) {
+    qDebug() << __PRETTY_FUNCTION__ << windowhandle;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = browser->destroyPageWindow(windowhandle);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+
+}
+
 void BrowserDbus::getBrowserActionState() {
     qDebug() << __PRETTY_FUNCTION__;
 
