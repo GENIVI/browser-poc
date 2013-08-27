@@ -468,16 +468,14 @@ Q_DECLARE_METATYPE(conn::brw::ERROR_IDS)
 Q_DECLARE_METATYPE(conn::brw::BOOKMARK_SORT_TYPE)
 Q_DECLARE_METATYPE(conn::brw::BookmarkItem)
 Q_DECLARE_METATYPE(conn::brw::BookmarkItemList)
-
 Q_DECLARE_METATYPE(conn::brw::DIALOG_RESULT)
 Q_DECLARE_METATYPE(conn::brw::INPUT_ELEMENT_TYPE)
-
 Q_DECLARE_METATYPE(conn::brw::SCROLL_DIRECTION)
 Q_DECLARE_METATYPE(conn::brw::SCROLL_TYPE)
-
 Q_DECLARE_METATYPE(conn::brw::Rect)
 Q_DECLARE_METATYPE(conn::brw::BrowserScrollDirections)
 Q_DECLARE_METATYPE(conn::brw::BrowserActions)
-
+Q_DECLARE_METATYPE(conn::brw::OBJECT_HANDLE)
+Q_DECLARE_METATYPE(conn::brw::ObjectHandleList)
 
 #endif // BROWSERDEFS_H

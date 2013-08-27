@@ -42,6 +42,9 @@ browserhelper::browserhelper(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
+    qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
+    qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+
 
     bookmarkmanager *bm = new bookmarkmanager();
     new IBookmarkManagerAdaptor(bm);

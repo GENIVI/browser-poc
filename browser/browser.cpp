@@ -64,7 +64,13 @@ conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPage
 conn::brw::ERROR_IDS browser::getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    a_oPageWindowIds = windowhash.keys();
+    conn::brw::ERROR_IDS ret;
 
-    return conn::brw::EID_NO_ERROR;
+    if(windowhash.isEmpty()) {
+        ret = conn::brw::EID_NOT_EXISTS;
+    } else {
+        a_oPageWindowIds = windowhash.keys();
+        ret =  conn::brw::EID_NO_ERROR;
+    }
+    return ret;
 }

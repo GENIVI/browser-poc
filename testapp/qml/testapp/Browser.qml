@@ -142,6 +142,7 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: "Get Page Window"
+            onClicked: browserinterface.getPageWindows()
         }
     }
 }

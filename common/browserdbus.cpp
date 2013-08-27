@@ -31,6 +31,8 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
     qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
+    qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
+    qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
 
     bookmark = new conn::brw::IBookmarkManager("conn.brw.IBookmarkManager", "/bookmarkmanager",
                                                QDBusConnection::sessionBus(), this);
@@ -71,7 +73,7 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
     }
 }
 
-void BrowserDbus::destroyPageWindow(conn::brw::OBJECT_HANDLE windowhandle) {
+void BrowserDbus::destroyPageWindow(qlonglong windowhandle) {
     qDebug() << __PRETTY_FUNCTION__ << windowhandle;
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = browser->destroyPageWindow(windowhandle);
@@ -85,6 +87,24 @@ void BrowserDbus::destroyPageWindow(conn::brw::OBJECT_HANDLE windowhandle) {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 
+}
+
+void BrowserDbus::getPageWindows() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::ObjectHandleList> reply = browser->getPageWindows();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        conn::brw::ObjectHandleList list = reply.argumentAt<1>();
+
+        qDebug() << "ERROR_IDS " << ret;
+        for(int i = 0; i < list.size(); i++)
+            qDebug() << list.at(i);
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
 }
 
 void BrowserDbus::getBrowserActionState() {
@@ -209,27 +229,6 @@ void BrowserDbus::pageloadingprogress(int progress) {
     emit progressChanged();
 }
 
-void BrowserDbus::openBrowserWindow() {
-    qDebug() << __PRETTY_FUNCTION__;
-
-    conn::brw::Rect *windowrect = new conn::brw::Rect();
-    windowrect->i32X = 0;
-    windowrect->i32Y = 80;
-    windowrect->i32Width = 800;
-    windowrect->i32Height = 520;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::OBJECT_HANDLE> reply = browser->createPageWindow(1, *windowrect);
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        conn::brw::OBJECT_HANDLE handle = reply.argumentAt<1>();
-
-        qDebug() << "ERROR_IDS " << ret << handle;
-    } else {
-        QDBusError error = reply.error();
-        qDebug() << "ERROR " << error.name() << error.message();
-    }
-}
 
 void BrowserDbus::goDown() {
     qDebug() << __PRETTY_FUNCTION__;

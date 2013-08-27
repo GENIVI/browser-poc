@@ -9,7 +9,7 @@ Item {
     signal bookmarksopen(bool open)
 
     function switchon() {
-        browserinterface.openBrowserWindow()
+        browserinterface.createPageWindow(1, 0, 80, 800, 520);
         controls.state = "on"
     }
 

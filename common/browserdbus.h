@@ -56,8 +56,6 @@ public:
     Q_INVOKABLE void goDownPage();
     Q_INVOKABLE void goUpPage();
 
-    Q_INVOKABLE void openBrowserWindow();
-
     Q_INVOKABLE void setVisible(bool visible);
     Q_INVOKABLE void getVisible();
 
@@ -70,6 +68,7 @@ public:
 
     Q_INVOKABLE void createPageWindow(int deviceid, int x, int y, int width, int height);
     Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
+    Q_INVOKABLE void getPageWindows();
 
 
     QString title() { return m_title; }
