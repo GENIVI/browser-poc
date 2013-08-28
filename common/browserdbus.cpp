@@ -361,7 +361,7 @@ void BrowserDbus::addBookmark(int type, QString folder, QString title, QString u
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "reply " << ret;
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -400,7 +400,7 @@ void BrowserDbus::deleteAllBookmarks(int type) {
         conn::brw::ERROR_IDS ret = reply.value();
         m_bookmarkList.clear();
         emit bookmarkListChanged();
-        qDebug() << "reply " << ret;
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -414,7 +414,7 @@ void BrowserDbus::deleteBookmark(int uid) {
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "reply " << ret;
+        qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
