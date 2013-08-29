@@ -50,12 +50,12 @@ Item {
         }
 
         focus: true
-        Keys.onDownPressed: browserinterface.goDown()
-        Keys.onUpPressed: browserinterface.goUp()
-        Keys.onLeftPressed: browserinterface.goLeft()
-        Keys.onRightPressed: browserinterface.goRight()
-        Keys.onSpacePressed: browserinterface.goDownPage()
-        Keys.onTabPressed: browserinterface.goUpPage()
+        Keys.onDownPressed: browserinterface.goDown(0)
+        Keys.onUpPressed: browserinterface.goUp(0)
+        Keys.onLeftPressed: browserinterface.goLeft(0)
+        Keys.onRightPressed: browserinterface.goRight(0)
+        Keys.onSpacePressed: browserinterface.goDown(1)
+        Keys.onTabPressed: browserinterface.goUp(1)
 
         Rectangle {
             id: bg

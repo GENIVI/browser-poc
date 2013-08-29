@@ -46,7 +46,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {
-    qDebug() << __PRETTY_FUNCTION__ << a_hPageWindowHandle << windowhash.isEmpty();
+    qDebug() << __PRETTY_FUNCTION__ << a_hPageWindowHandle;
 
     if(!windowhash.isEmpty()) {
         QWidget *tempwidget = windowhash.value(a_hPageWindowHandle);
@@ -58,7 +58,7 @@ conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPage
         }
         return conn::brw::EID_DB_ITEM_NOT_EXISTS;
     }
-    return conn::brw::EID_GENERAL_ERROR;
+    return conn::brw::EID_NOT_EXISTS;
 }
 
 conn::brw::ERROR_IDS browser::getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds) {

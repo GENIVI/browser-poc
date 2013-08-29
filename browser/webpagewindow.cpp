@@ -41,6 +41,10 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
     qDebug() << __PRETTY_FUNCTION__ << a_Url;
 
+    // is the url valid
+    if(a_Url == "" || a_Url == "http://")
+        return conn::brw::EID_INVALID_ARGUMENT;
+
     emit loadurlrequested(a_Url);
 
     return conn::brw::EID_NO_ERROR;

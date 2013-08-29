@@ -257,12 +257,62 @@ Item {
         }
     }
 
-    Text {
+    GroupBox {
+        id: groupscroll
+        title: "scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType);"
+//        width: 200
         anchors.top: groupsetgeometry.bottom
         anchors.topMargin: 10
         anchors.left: groupsetgeometry.left
-        text: "scrolling to be done"
-        font.pixelSize: 20
+
+        Image {
+            id: buttonleft
+            anchors.top: buttonup.bottom
+            source: "../../images/draw-triangle1.png"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: browserinterface.goLeft(scrolltype.currentIndex)
+            }
+        }
+        Image {
+            id: buttonright
+            anchors.left: buttonup.right
+            anchors.top: buttonleft.top
+            source: "../../images/draw-triangle2.png"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: browserinterface.goRight(scrolltype.currentIndex)
+            }
+        }
+        Image {
+            id: buttonup
+            anchors.top: parent.top
+            anchors.left: buttonleft.right
+            source: "../../images/draw-triangle3.png"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: browserinterface.goUp(scrolltype.currentIndex)
+            }
+        }
+        Image {
+            id: buttondown
+            anchors.left: buttonleft.right
+            anchors.top: buttonleft.bottom
+            source: "../../images/draw-triangle4.png"
+            MouseArea {
+                anchors.fill: parent
+                onClicked: browserinterface.goDown(scrolltype.currentIndex)
+            }
+        }
+        ComboBox {
+            id: scrolltype
+            width: 120
+            height: 50
+            model: [ "ST_SYMBOL", "ST_PAGE", "ST_LINK" ]
+            anchors.left: buttonright.right
+            anchors.leftMargin: 20
+            anchors.verticalCenter: parent.verticalCenter
+        }
     }
 }
 

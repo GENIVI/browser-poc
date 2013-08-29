@@ -18,7 +18,7 @@
 #include <QGraphicsObject>
 #include <QTimer>
 
-#include "webpagewindow.h"
+class webpagewindow;
 
 class browserhelper : public QObject
 {

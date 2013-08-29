@@ -11,21 +11,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "browserhelper.h"
-
 #include <QtDBus/QDBusConnection>
 
+#include "browserhelper.h"
 
-#include "bookmarkmanager.h"
 #include "ibookmarkmanager_adaptor.h"
-
-#include "userinput.h"
 #include "iuserinput_adaptor.h"
-
-//#include "webpagewindow.h"
+#include "userinput.h"
 #include "iwebpagewindow_adaptor.h"
-
-#include "browser.h"
 #include "ibrowser_adaptor.h"
 
 
@@ -104,7 +97,7 @@ browserhelper::browserhelper(QObject *parent) :
     connect(this, SIGNAL(onLoadStarted()), wpw, SIGNAL(onLoadStarted()));
     connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
 
-    connect(br, SIGNAL(onPageWindowDestroyed(conn::brw::OBJECT_HANDLE)), wpw, SIGNAL(onClose()));
+    connect(br, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
 
     connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
 }

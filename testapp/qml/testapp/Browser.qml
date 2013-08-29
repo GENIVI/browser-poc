@@ -116,6 +116,11 @@ Item {
             font.pixelSize: 20
             inputMask: "999999999999"
         }
+        Text {
+            text: "window handle"
+            anchors.top: windowhandledestroy.bottom
+            anchors.left: windowhandledestroy.left
+        }
         Button {
             width: 130
             height: windowhandledestroy.height

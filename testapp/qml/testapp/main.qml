@@ -13,11 +13,7 @@ ApplicationWindow {
         id: browserinterface
     }
     TabView {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 50
+        anchors.fill: parent
 
         Tab {
             id: bookmarks

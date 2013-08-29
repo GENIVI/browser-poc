@@ -49,12 +49,10 @@ public:
 
     Q_INVOKABLE void getCurrentUrlAndTitle();
 
-    Q_INVOKABLE void goRight();
-    Q_INVOKABLE void goLeft();
-    Q_INVOKABLE void goUp();
-    Q_INVOKABLE void goDown();
-    Q_INVOKABLE void goDownPage();
-    Q_INVOKABLE void goUpPage();
+    Q_INVOKABLE void goRight(conn::brw::SCROLL_TYPE type);
+    Q_INVOKABLE void goLeft(conn::brw::SCROLL_TYPE type);
+    Q_INVOKABLE void goUp(conn::brw::SCROLL_TYPE type);
+    Q_INVOKABLE void goDown(conn::brw::SCROLL_TYPE type);
 
     Q_INVOKABLE void setVisible(bool visible);
     Q_INVOKABLE void getVisible();
@@ -93,6 +91,9 @@ public slots:
     void pageloadingstarted();
     void pageloadingfinished(bool success);
     void pageloadingprogress(int progress);
+    void PageWindowDestroyed(qlonglong handle);
+    void PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS result);
+    void WindowClosed();
 
 private:
     conn::brw::IBookmarkManager *bookmark;

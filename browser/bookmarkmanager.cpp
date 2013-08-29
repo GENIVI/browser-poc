@@ -47,7 +47,7 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
                 << a_oItem.strUrl << a_oItem.strIconPath << a_oItem.strThumbnailPath;
 
     // check if item is valid (url is valid)
-    if(a_oItem.strUrl != "") {
+    if(a_oItem.strUrl != "http://") {
         // check if max items reached
         if(bookmarklist.size() >= 50) {
             return conn::brw::EID_MAX_NUMBER_REACHED;

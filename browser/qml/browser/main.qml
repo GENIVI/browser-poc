@@ -46,10 +46,8 @@ Flickable {
 
         preferredWidth: root.width
         preferredHeight: root.height
-
         focus: true
 
-//        url: "http://www.google.com"
         url: "http://www.bmw.com"
 
 //        settings.javaEnabled: true

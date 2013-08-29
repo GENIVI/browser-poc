@@ -49,7 +49,24 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
     connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
     connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
+    connect(webpagewindow, SIGNAL(onClose()), this, SLOT(WindowClosed()));
+
+    connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
+    connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
 }
+
+void BrowserDbus::WindowClosed() {
+    qDebug() << __PRETTY_FUNCTION__;
+}
+
+void BrowserDbus::PageWindowDestroyed(qlonglong handle) {
+    qDebug() << __PRETTY_FUNCTION__ << handle;
+}
+
+void BrowserDbus::PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS result) {
+        qDebug() << __PRETTY_FUNCTION__ << handle << result;
+}
+
 
 void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int height) {
     qDebug() << __PRETTY_FUNCTION__ << x << y << width << height;
@@ -230,36 +247,27 @@ void BrowserDbus::pageloadingprogress(int progress) {
 }
 
 
-void BrowserDbus::goDown() {
-    qDebug() << __PRETTY_FUNCTION__;
+void BrowserDbus::goDown(conn::brw::SCROLL_TYPE type) {
+    qDebug() << __PRETTY_FUNCTION__ << type;
 
-    scrollpage(conn::brw::SD_BOTTOM, conn::brw::ST_SYMBOL);
+    scrollpage(conn::brw::SD_BOTTOM, type);
 }
-void BrowserDbus::goUp() {
-    qDebug() << __PRETTY_FUNCTION__;
+void BrowserDbus::goUp(conn::brw::SCROLL_TYPE type) {
+    qDebug() << __PRETTY_FUNCTION__ << type;
 
-    scrollpage(conn::brw::SD_TOP, conn::brw::ST_SYMBOL);
+    scrollpage(conn::brw::SD_TOP, type);
 }
-void BrowserDbus::goLeft() {
-    qDebug() << __PRETTY_FUNCTION__;
+void BrowserDbus::goLeft(conn::brw::SCROLL_TYPE type) {
+    qDebug() << __PRETTY_FUNCTION__ << type;
 
-    scrollpage(conn::brw::SD_LEFT, conn::brw::ST_SYMBOL);
+    scrollpage(conn::brw::SD_LEFT, type);
 }
-void BrowserDbus::goRight() {
-    qDebug() << __PRETTY_FUNCTION__;
+void BrowserDbus::goRight(conn::brw::SCROLL_TYPE type) {
+    qDebug() << __PRETTY_FUNCTION__ << type;
 
-    scrollpage(conn::brw::SD_RIGHT, conn::brw::ST_SYMBOL);
+    scrollpage(conn::brw::SD_RIGHT, type);
 }
-void BrowserDbus::goDownPage() {
-    qDebug() << __PRETTY_FUNCTION__;
 
-    scrollpage(conn::brw::SD_BOTTOM, conn::brw::ST_PAGE);
-}
-void BrowserDbus::goUpPage() {
-    qDebug() << __PRETTY_FUNCTION__;
-
-    scrollpage(conn::brw::SD_TOP, conn::brw::ST_PAGE);
-}
 void BrowserDbus::scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type) {
     qDebug() << __PRETTY_FUNCTION__ << direction;
 
@@ -437,6 +445,6 @@ void BrowserDbus::getCurrentUrlAndTitle() {
         setUrl(reply.argumentAt<1>());
         setTitle(reply.argumentAt<2>());
 
-        qDebug() << __PRETTY_FUNCTION__ << url() << title();
+        qDebug() << __PRETTY_FUNCTION__ << ret << url() << title();
     }
 }
