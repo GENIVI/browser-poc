@@ -126,8 +126,12 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
     int scrollwidth = (webitem->property("width").toInt())-(webitem->property("contentwidth").toInt());
 
     int scrolltype = 50;
-    if(a_eScrollType == conn::brw::ST_PAGE)
-        scrolltype = webitem->property("height").toInt();
+    if(a_eScrollType == conn::brw::ST_PAGE) {
+        if(a_eScrollDirection == conn::brw::SD_BOTTOM || a_eScrollDirection == conn::brw::SD_TOP)
+            scrolltype = webitem->property("height").toInt();
+        else
+            scrolltype = webitem->property("width").toInt();
+    }
 
     switch (a_eScrollDirection) {
     case conn::brw::SD_TOP:

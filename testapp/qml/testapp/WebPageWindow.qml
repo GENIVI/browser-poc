@@ -259,8 +259,7 @@ Item {
 
     GroupBox {
         id: groupscroll
-        title: "scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType);"
-//        width: 200
+        title: "scroll(a_eScrollDirection, a_eScrollType);"
         anchors.top: groupsetgeometry.bottom
         anchors.topMargin: 10
         anchors.left: groupsetgeometry.left
@@ -312,6 +311,11 @@ Item {
             anchors.left: buttonright.right
             anchors.leftMargin: 20
             anchors.verticalCenter: parent.verticalCenter
+        }
+        Text {
+            text: "scroll type"
+            anchors.top: scrolltype.bottom
+            anchors.left: scrolltype.left
         }
     }
 }
