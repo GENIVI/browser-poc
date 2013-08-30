@@ -68,6 +68,8 @@ public:
     Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
     Q_INVOKABLE void getPageWindows();
 
+    Q_INVOKABLE void inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue);
+
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
@@ -94,6 +96,7 @@ public slots:
     void PageWindowDestroyed(qlonglong handle);
     void PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS result);
     void WindowClosed();
+    void InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
 
 private:
     conn::brw::IBookmarkManager *bookmark;

@@ -8,6 +8,7 @@ Item {
     GroupBox {
         id: groupuserinput
         title: "inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue)"
+        width: 400 + 70 + 130 + 70
         anchors.top: parent.top
         anchors.topMargin: 15
         anchors.left: parent.left
@@ -28,15 +29,21 @@ Item {
             model: [ "OK", "Cancel" ]
             anchors.top: inputstring.top
             anchors.left: inputstring.right
-            anchors.leftMargin: 30
+            anchors.leftMargin: 20
+        }
+        Text {
+            text: "Dialog result"
+            anchors.top: combo.bottom
+            anchors.left: combo.left
         }
         Button {
             width: 130
             height: inputstring.height
             anchors.top: inputstring.top
             anchors.left: combo.right
-            anchors.leftMargin: 30
+            anchors.leftMargin: 20
             text: "Send"
+            onClicked: browserinterface.inputText(combo.currentIndex, inputstring.text)
         }
     }
 }

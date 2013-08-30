@@ -53,6 +53,28 @@ BrowserDbus::BrowserDbus(QObject *parent) :
 
     connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
     connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
+
+    connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
+}
+
+
+void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue) {
+    qDebug() << __PRETTY_FUNCTION__ << a_eResult << a_strInputValue;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = userinput->inputText(a_eResult, a_strInputValue);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
+    qDebug() << __PRETTY_FUNCTION__ << a_strInputName << a_strDefaultInputValue << a_i32InputValueType << a_s32MaxLength << a_s32Max << a_s32Min << a_s32Step;
 }
 
 void BrowserDbus::WindowClosed() {

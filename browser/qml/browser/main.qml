@@ -18,7 +18,7 @@ Flickable {
     signal pageLoadStarted()
     signal pageLoadFinished(bool success)
 
-    signal onInputText(string a_strInputName, string a_strDefaultInputValue, string a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step)
+    signal onInputText(string a_strInputName, string a_strDefaultInputValue, int a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step)
 
     property string input: ""
 
@@ -51,7 +51,7 @@ Flickable {
         url: "http://www.bmw.com"
 
 //        settings.javaEnabled: true
-//        settings.developerExtrasEnabled: true
+        settings.developerExtrasEnabled: true
         javaScriptWindowObjects: QtObject {
             WebView.windowObjectName: "webpage"
 

@@ -85,7 +85,9 @@ browserhelper::browserhelper(QObject *parent) :
 
     connect(rootqmlobject, SIGNAL(pageLoadStarted()), this, SLOT(browserStartLoading()));
     connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(onLoadFinished(bool)));
-    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, QString, int, int, int, int)), ui, SIGNAL(onInputText(QString, QString, QString, int, int, int, int)));
+    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+
+
 
     connect(wpw, SIGNAL(reloadrequested()), this, SLOT(browserreload()));
     connect(wpw, SIGNAL(stoprequested()), this, SLOT(browserstop()));
@@ -101,7 +103,6 @@ browserhelper::browserhelper(QObject *parent) :
 
     connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
 }
-
 
 void browserhelper::inputText(QString input) {
     webitem->setProperty("input", input);

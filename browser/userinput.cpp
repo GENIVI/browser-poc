@@ -28,3 +28,9 @@ conn::brw::ERROR_IDS userinput::inputText(conn::brw::DIALOG_RESULT a_eResult, co
 
     return conn::brw::EID_NO_ERROR;
 }
+
+void userinput::inputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, int a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    emit onInputText(a_strInputName, a_strDefaultInputValue, (conn::brw::INPUT_ELEMENT_TYPE)a_i32InputValueType, a_s32MaxLength, a_s32Max, a_s32Min, a_s32Step);
+}
