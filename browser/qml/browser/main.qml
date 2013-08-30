@@ -23,7 +23,7 @@ Flickable {
     property string input: ""
 
     function inputText() {
-        webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT'); var index;for(index=0; index < inputs.length; index++){ if(inputs[index].name == '" + inputfieldname + "') { var element = inputs[index]; element.value='" + root.input + "' }}");
+        webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT'); var index;for(index=0; index < inputs.length; index++){ if(inputs[index].name == '" + privateMem.inputfieldname + "') { var element = inputs[index]; element.value='" + root.input + "' }}");
     }
 
     width: 800
@@ -32,7 +32,10 @@ Flickable {
     contentWidth: Math.max(root.width,webcontent.width)
     contentHeight: Math.max(root.height,webcontent.height)
 
-    property string inputfieldname: ""
+    Item {
+        id: privateMem
+        property string inputfieldname: ""
+    }
 
     WebView {
         id: webcontent
@@ -57,7 +60,7 @@ Flickable {
 
             function getFocus(name, value, type, maxlength, max, min, step) {
 //                console.log("Input has focus " + name + " " + value + " " + type + " " + maxlength + " " + max + " " + min + " " + step);
-                inputfieldname = name;
+                privateMem.inputfieldname = name;
                 onInputText(name, value, type, maxlength, max, min, step);
             }
         }
