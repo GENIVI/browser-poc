@@ -15,11 +15,10 @@
 #define BOOKMARKMANAGER_H
 
 #include <QObject>
+#include <QSettings>
 
 #include "../common/browserdefs.h"
 #include "../common/bookmark.h"
-
-#include <QSettings>
 
 class bookmarkmanager : public QObject
 {
@@ -27,8 +26,6 @@ class bookmarkmanager : public QObject
 
 public:
     explicit bookmarkmanager(QObject *parent = 0);
-
-signals:
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS addItem(const conn::brw::BookmarkItem & a_oItem);
@@ -39,11 +36,7 @@ public Q_SLOTS:
                                   uint a_u32ItemsCount, conn::brw::BookmarkItemList &a_oItems);
 private:
     QList<Bookmark*> bookmarklist;
-
-    void printbookmarklist();
-
     int lastgivenUID;
-
     QSettings bookmarksettings;
 };
 

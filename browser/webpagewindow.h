@@ -19,7 +19,6 @@
 
 #include "../common/browserdefs.h"
 
-
 class webpagewindow : public QObject
 {
     Q_OBJECT
@@ -28,7 +27,6 @@ public:
 
     QString localurl;
     QString localtitle;
-
     QGraphicsObject *webitem;
 
 signals:
@@ -38,11 +36,9 @@ signals:
     void stoprequested();
     void loadurlrequested(QString url);
     void urlTitleReady();
-
     void onLoadStarted();
     void onLoadFinished(bool a_fState);
     void onLoadProgress(int a_i32Progress);
-
     void onClose();
     
 public Q_SLOTS:

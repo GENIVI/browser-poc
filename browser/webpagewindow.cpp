@@ -18,15 +18,12 @@ webpagewindow::webpagewindow(QObject *parent) :
     QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
-
-
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
     qDebug() << __PRETTY_FUNCTION__;
 
     emit backrequested();
-
     return conn::brw::EID_NO_ERROR;
 }
 
@@ -34,28 +31,24 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
     qDebug() << __PRETTY_FUNCTION__;
 
     emit forwardrequested();
-
     return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
     qDebug() << __PRETTY_FUNCTION__ << a_Url;
 
-    // is the url valid
+    // is the url valid?
     if(a_Url == "" || a_Url == "http://")
         return conn::brw::EID_INVALID_ARGUMENT;
 
     emit loadurlrequested(a_Url);
-
     return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
-
     emit reloadrequested();
-
     return conn::brw::EID_NO_ERROR;
 }
 
@@ -171,7 +164,6 @@ conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
     qDebug() << __PRETTY_FUNCTION__ << a_bVisible;
 
     webitem->setProperty("visible", a_bVisible);
-
     return conn::brw::EID_NO_ERROR;
 }
 
@@ -179,17 +171,15 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
     qDebug() << __PRETTY_FUNCTION__;
 
     emit stoprequested();
-
     return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit urlTitleReady();
-
     url = localurl;
     title = localtitle;
 
+    emit urlTitleReady();
     return conn::brw::EID_NO_ERROR;
 }

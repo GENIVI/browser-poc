@@ -41,7 +41,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     }
 
     emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
-
     return conn::brw::EID_NO_ERROR;
 }
 

@@ -15,9 +15,7 @@
 #define BROWSER_H
 
 #include <QObject>
-
 #include <QDeclarativeView>
-
 
 #include "../common/browserdefs.h"
 
@@ -34,7 +32,8 @@ signals:
     void onPageWindowDestroyed(qlonglong a_hPageWindowHandle);
 
 public Q_SLOTS:
-    conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);
+    conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry,
+                                          conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);
     conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);
     conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
     

@@ -48,8 +48,6 @@ signals:
     void urlChanged();
     void titleChanged();
     void uidChanged();
-
-public slots:
     
 private:
     int     i32Uid;

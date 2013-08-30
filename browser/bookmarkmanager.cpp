@@ -65,7 +65,6 @@ conn::brw::ERROR_IDS bookmarkmanager::addItem(const conn::brw::BookmarkItem & a_
 
         bookmarklist.append(temp_bookmark);
 
-
         // store bookmark
         bookmarksettings.setValue("lastgivenUID",lastgivenUID);
 
@@ -222,9 +221,4 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
     }
 
     return conn::brw::EID_NOT_EXISTS;
-}
-
-void bookmarkmanager::printbookmarklist() {
-    for (int i = 0; i < bookmarklist.size(); ++i)
-        qDebug() << i << bookmarklist.at(i)->uid() << bookmarklist.at(i)->title() << bookmarklist.at(i)->url();
 }

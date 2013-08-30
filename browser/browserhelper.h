@@ -39,13 +39,9 @@ public slots:
     void browserforward();
     void browserstop();
     void browserloadurl(QString url);
-
     void getUrlTitle();
-
     void reportprogress();
-
     void browserStartLoading();
-
     void inputText(QString input);
 
 private:
