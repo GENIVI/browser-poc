@@ -18,6 +18,7 @@ Item {
         property bool bookmarklistopen: false
     }
 
+    Component.onCompleted: browserinterface.reload() // show initial url
 
     Item {
         id: startscreen

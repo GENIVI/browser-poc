@@ -72,7 +72,6 @@ browserhelper::browserhelper(QObject *parent) :
     if(!connection.registerObject("/browser", br))
         qDebug() << "failed register object browser";
 
-
     br->initialview = new QDeclarativeView;
     br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
     br->initialview->setWindowFlags(Qt::CustomizeWindowHint);
@@ -82,12 +81,10 @@ browserhelper::browserhelper(QObject *parent) :
     webitem = rootqmlobject;
     wpw->webitem = rootqmlobject;
 
-
     connect(rootqmlobject, SIGNAL(pageLoadStarted()), this, SLOT(browserStartLoading()));
     connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(onLoadFinished(bool)));
+    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(urlTitleReady()));
     connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
-
-
 
     connect(wpw, SIGNAL(reloadrequested()), this, SLOT(browserreload()));
     connect(wpw, SIGNAL(stoprequested()), this, SLOT(browserstop()));
