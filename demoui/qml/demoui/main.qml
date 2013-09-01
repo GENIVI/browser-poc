@@ -14,6 +14,12 @@ Item {
     }
 
     Item {
+        id: privateMem
+        property bool bookmarklistopen: false
+    }
+
+
+    Item {
         id: startscreen
         anchors.fill: parent
         focus: true
@@ -37,7 +43,6 @@ Item {
         Keys.onReturnPressed: switchon()
     }
 
-    property bool bookmarklistopen: false
 
     Item {
         id: controls
@@ -103,8 +108,8 @@ Item {
 
                     onAccepted: {
                         bookmarklist.state = ""
-                        bookmarklistopen = false
-                        root.bookmarksopen(bookmarklistopen)
+                        privateMem.bookmarklistopen = false
+                        root.bookmarksopen(privateMem.bookmarklistopen)
                         browserinterface.loadurl(text)
                     }
 
@@ -154,15 +159,15 @@ Item {
             anchors.right: parent.right
             imagesource: "../../images/bookmark-new-list.png"
             onButtonClicked: {
-                if(bookmarklistopen) {
+                if(privateMem.bookmarklistopen) {
                     bookmarklist.state = ""
-                    bookmarklistopen = false
-                    root.bookmarksopen(bookmarklistopen)
+                    privateMem.bookmarklistopen = false
+                    root.bookmarksopen(privateMem.bookmarklistopen)
                 } else {
                     browserinterface.getBookmarks("", 1, 0, 1, 20)
                     bookmarklist.state = "open"
-                    bookmarklistopen = true
-                    root.bookmarksopen(bookmarklistopen)
+                    privateMem.bookmarklistopen = true
+                    root.bookmarksopen(privateMem.bookmarklistopen)
                 }
             }
         }
@@ -225,8 +230,8 @@ Item {
                 anchors.fill: parent
                 onClicked: {
                     bookmarklist.state = ""
-                    bookmarklistopen = false
-                    root.bookmarksopen(bookmarklistopen)
+                    privateMem.bookmarklistopen = false
+                    root.bookmarksopen(privateMem.bookmarklistopen)
                     browserinterface.deleteAllBookmarks(1)
                 }
             }
@@ -258,8 +263,8 @@ Item {
                         list.currentIndex = index
                         browserinterface.loadurl(model.modelData.url)
                         bookmarklist.state = ""
-                        bookmarklistopen = false
-                        root.bookmarksopen(bookmarklistopen)
+                        privateMem.bookmarklistopen = false
+                        root.bookmarksopen(privateMem.bookmarklistopen)
                     }
                     onPressed: {
                         bookmarkurl.color = "lightblue"
