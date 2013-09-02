@@ -20,8 +20,6 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-//    BrowserDbus browserdbushelper;
-
     qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
     qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
 

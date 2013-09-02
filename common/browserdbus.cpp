@@ -50,21 +50,50 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
     connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
     connect(webpagewindow, SIGNAL(onClose()), this, SLOT(WindowClosed()));
-
     connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
     connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
-
     connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
 }
 
+// IBookmarkManager
+void BrowserDbus::addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath) {
+    qDebug() << __PRETTY_FUNCTION__ << type << folder << title << url << iconpath << thumbnailpath;
 
-void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue) {
-    qDebug() << __PRETTY_FUNCTION__ << a_eResult << a_strInputValue;
+    conn::brw::BookmarkItem tmpbookmark;
+    tmpbookmark.i32Uid = 0;
+    tmpbookmark.i32Type = type;
+    tmpbookmark.strParentFolderPath = folder;
+    tmpbookmark.strTitle = title;
+    tmpbookmark.strUrl = url;
+    tmpbookmark.strIconPath = iconpath;
+    tmpbookmark.strThumbnailPath = thumbnailpath;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = userinput->inputText(a_eResult, a_strInputValue);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(tmpbookmark);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::getBookmarks(QString folder, int type, conn::brw::BOOKMARK_SORT_TYPE sorting, int start, int count) {
+    qDebug() << __PRETTY_FUNCTION__ << folder << type << sorting << start << count;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems(folder, type, sorting, start, count);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        conn::brw::BookmarkItemList bookmarklist = reply.argumentAt<1>();
+
+        m_bookmarkList.clear();
+        for (int i = 0; i < bookmarklist.size(); ++i) {
+            qDebug() << "BookmarkItemList" << bookmarklist.at(i).i32Uid << bookmarklist.at(i).strTitle << bookmarklist.at(i).strUrl << bookmarklist.at(i).strParentFolderPath;
+            m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl, bookmarklist.at(i).i32Uid));
+            emit bookmarkListChanged();
+        }
 
         qDebug() << "ERROR_IDS " << ret;
     } else {
@@ -73,23 +102,43 @@ void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInp
     }
 }
 
-void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
-    qDebug() << __PRETTY_FUNCTION__ << a_strInputName << a_strDefaultInputValue << a_i32InputValueType << a_s32MaxLength << a_s32Max << a_s32Min << a_s32Step;
+void BrowserDbus::deleteAllBookmarks(int type) {
+    qDebug() << __PRETTY_FUNCTION__ << type;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(type);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        m_bookmarkList.clear();
+        emit bookmarkListChanged();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
 }
 
-void BrowserDbus::WindowClosed() {
-    qDebug() << __PRETTY_FUNCTION__;
+void BrowserDbus::deleteBookmark(int uid) {
+    qDebug() << __PRETTY_FUNCTION__ << uid;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteItem(uid);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+
+    for(int i = 0; i < m_bookmarkList.size(); ++i) {
+        if(uid == m_bookmarkList.at(i)->uid())
+            m_bookmarkList.removeAt(i);
+    }
+    emit bookmarkListChanged();
 }
 
-void BrowserDbus::PageWindowDestroyed(qlonglong handle) {
-    qDebug() << __PRETTY_FUNCTION__ << handle;
-}
-
-void BrowserDbus::PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS result) {
-        qDebug() << __PRETTY_FUNCTION__ << handle << result;
-}
-
-
+// IBrowser
 void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int height) {
     qDebug() << __PRETTY_FUNCTION__ << x << y << width << height;
 
@@ -146,6 +195,35 @@ void BrowserDbus::getPageWindows() {
     }
 }
 
+void BrowserDbus::PageWindowDestroyed(qlonglong handle) {
+    qDebug() << __PRETTY_FUNCTION__ << handle;
+}
+
+void BrowserDbus::PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS result) {
+        qDebug() << __PRETTY_FUNCTION__ << handle << result;
+}
+
+// IUserInput
+void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue) {
+    qDebug() << __PRETTY_FUNCTION__ << a_eResult << a_strInputValue;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = userinput->inputText(a_eResult, a_strInputValue);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
+    qDebug() << __PRETTY_FUNCTION__ << a_strInputName << a_strDefaultInputValue << a_i32InputValueType << a_s32MaxLength << a_s32Max << a_s32Min << a_s32Step;
+}
+
+// IWebPageWindow
 void BrowserDbus::getBrowserActionState() {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -179,7 +257,6 @@ void BrowserDbus::getContentSize() {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
-
 
 void BrowserDbus::getGeometry() {
     qDebug() << __PRETTY_FUNCTION__;
@@ -217,7 +294,6 @@ void BrowserDbus::setGeometry(int x, int y, int width, int height) {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
-
 
 void BrowserDbus::setVisible(bool visible) {
     qDebug() << __PRETTY_FUNCTION__ << visible;
@@ -267,7 +343,6 @@ void BrowserDbus::pageloadingprogress(int progress) {
     setProgress(progress);
     emit progressChanged();
 }
-
 
 void BrowserDbus::goDown(conn::brw::SCROLL_TYPE type) {
     qDebug() << __PRETTY_FUNCTION__ << type;
@@ -360,7 +435,6 @@ void BrowserDbus::stop() {
     }
 }
 
-
 void BrowserDbus::loadurl(QString url) {
     qDebug() << __PRETTY_FUNCTION__ << url;
 
@@ -375,86 +449,8 @@ void BrowserDbus::loadurl(QString url) {
     }
 }
 
-void BrowserDbus::addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath) {
-    qDebug() << __PRETTY_FUNCTION__ << type << folder << title << url << iconpath << thumbnailpath;
-
-    conn::brw::BookmarkItem tmpbookmark;
-    tmpbookmark.i32Uid = 0;
-    tmpbookmark.i32Type = type;
-    tmpbookmark.strParentFolderPath = folder;
-    tmpbookmark.strTitle = title;
-    tmpbookmark.strUrl = url;
-    tmpbookmark.strIconPath = iconpath;
-    tmpbookmark.strThumbnailPath = thumbnailpath;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->addItem(tmpbookmark);
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "ERROR_IDS " << ret;
-    } else {
-        QDBusError error = reply.error();
-        qDebug() << "ERROR " << error.name() << error.message();
-    }
-}
-
-void BrowserDbus::getBookmarks(QString folder, int type, conn::brw::BOOKMARK_SORT_TYPE sorting, int start, int count) {
-    qDebug() << __PRETTY_FUNCTION__ << folder << type << sorting << start << count;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BookmarkItemList> reply = bookmark->getItems(folder, type, sorting, start, count);
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        conn::brw::BookmarkItemList bookmarklist = reply.argumentAt<1>();
-
-        m_bookmarkList.clear();
-        for (int i = 0; i < bookmarklist.size(); ++i) {
-            qDebug() << "BookmarkItemList" << bookmarklist.at(i).i32Uid << bookmarklist.at(i).strTitle << bookmarklist.at(i).strUrl << bookmarklist.at(i).strParentFolderPath;
-            m_bookmarkList.append(new Bookmark(bookmarklist.at(i).strTitle, bookmarklist.at(i).strUrl, bookmarklist.at(i).i32Uid));
-            emit bookmarkListChanged();
-        }
-
-        qDebug() << "ERROR_IDS " << ret;
-    } else {
-        QDBusError error = reply.error();
-        qDebug() << "ERROR " << error.name() << error.message();
-    }
-}
-
-void BrowserDbus::deleteAllBookmarks(int type) {
-    qDebug() << __PRETTY_FUNCTION__ << type;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteAllItems(type);
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        m_bookmarkList.clear();
-        emit bookmarkListChanged();
-        qDebug() << "ERROR_IDS " << ret;
-    } else {
-        QDBusError error = reply.error();
-        qDebug() << "ERROR " << error.name() << error.message();
-    }
-}
-
-void BrowserDbus::deleteBookmark(int uid) {
-    qDebug() << __PRETTY_FUNCTION__ << uid;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = bookmark->deleteItem(uid);
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        qDebug() << "ERROR_IDS " << ret;
-    } else {
-        QDBusError error = reply.error();
-        qDebug() << "ERROR " << error.name() << error.message();
-    }
-
-    for(int i = 0; i < m_bookmarkList.size(); ++i) {
-        if(uid == m_bookmarkList.at(i)->uid())
-            m_bookmarkList.removeAt(i);
-    }
-    emit bookmarkListChanged();
+void BrowserDbus::WindowClosed() {
+    qDebug() << __PRETTY_FUNCTION__;
 }
 
 void BrowserDbus::getCurrentUrlAndTitle() {

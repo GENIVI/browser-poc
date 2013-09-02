@@ -41,33 +41,24 @@ public:
     Q_INVOKABLE void reload();
     Q_INVOKABLE void stop();
     Q_INVOKABLE void loadurl(QString url);
-
     Q_INVOKABLE void getBookmarks(QString folder, int type, conn::brw::BOOKMARK_SORT_TYPE sorting, int start, int count);
     Q_INVOKABLE void addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath);
     Q_INVOKABLE void deleteBookmark(int uid);
     Q_INVOKABLE void deleteAllBookmarks(int type);
-
     Q_INVOKABLE void getCurrentUrlAndTitle();
-
     Q_INVOKABLE void goRight(conn::brw::SCROLL_TYPE type);
     Q_INVOKABLE void goLeft(conn::brw::SCROLL_TYPE type);
     Q_INVOKABLE void goUp(conn::brw::SCROLL_TYPE type);
     Q_INVOKABLE void goDown(conn::brw::SCROLL_TYPE type);
-
     Q_INVOKABLE void setVisible(bool visible);
     Q_INVOKABLE void getVisible();
-
     Q_INVOKABLE void getGeometry();
     Q_INVOKABLE void setGeometry(int x, int y, int width, int height);
-
     Q_INVOKABLE void getContentSize();
-
     Q_INVOKABLE void getBrowserActionState();
-
     Q_INVOKABLE void createPageWindow(int deviceid, int x, int y, int width, int height);
     Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
     Q_INVOKABLE void getPageWindows();
-
     Q_INVOKABLE void inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue);
 
 
@@ -103,7 +94,6 @@ private:
     conn::brw::IUserInput *userinput;
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IBrowser *browser;
-
     QString m_title;
     QString m_url;
     QList<Bookmark*> m_bookmarkList;

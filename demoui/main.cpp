@@ -26,8 +26,6 @@ int main(int argc, char *argv[])
 
     QtQuick2ApplicationViewer *viewer = new QtQuick2ApplicationViewer;
 
-//    BrowserDbus browserdbushelper;
-
     qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
     qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
 

@@ -28,21 +28,20 @@ public:
     explicit Bookmark(QObject *parent = 0);
     explicit Bookmark(QString aname, QString aurl, int uid) { strTitle = aname; strUrl = aurl; i32Uid = uid; }
     
-    void setUid(int uid) { i32Uid = uid; }
-    void setType(int type) { i32Type = type; }
-    void setParentFolderPath(QString folderpath) { strParentFolderPath = folderpath; }
-    void setTitle(QString title) { strTitle = title; }
-    void setUrl(QString url) { strUrl = url; }
-    void setIconPath(QString iconpath) { strIconPath = iconpath; }
-    void setThumbnailPath(QString thumbnailpath) { strThumbnailPath = thumbnailpath; }
-
     int uid() { return i32Uid; }
+    void setUid(int uid) { i32Uid = uid; }
     int type() { return i32Type; }
+    void setType(int type) { i32Type = type; }
     QString folderpath() { return strParentFolderPath; }
+    void setParentFolderPath(QString folderpath) { strParentFolderPath = folderpath; }
     QString title() { return strTitle; }
+    void setTitle(QString title) { strTitle = title; }
     QString url() { return strUrl; }
+    void setUrl(QString url) { strUrl = url; }
     QString iconpath() { return strIconPath; }
+    void setIconPath(QString iconpath) { strIconPath = iconpath; }
     QString thumbnailpath() { return strThumbnailPath; }
+    void setThumbnailPath(QString thumbnailpath) { strThumbnailPath = thumbnailpath; }
 
 signals:
     void urlChanged();
