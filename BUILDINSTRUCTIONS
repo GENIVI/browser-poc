@@ -19,11 +19,11 @@ Build
 
 To build all applications at once, run
 
-  <path_to_qt_installation>/bin/make -r browser-poc.pro
+  <path_to_qt_installation>/bin/qmake -r browser-poc.pro
   make
 
 To build the separate applications on its own, run
 
   cd <browser|demoui|testapp>
-  <path_to_qt_installation>/bin/qmake <browser|demoui|testapp>.project
+  <path_to_qt_installation>/bin/qmake <browser|demoui|testapp>.pro
   make
