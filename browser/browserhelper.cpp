@@ -43,34 +43,28 @@ browserhelper::browserhelper(QObject *parent) :
     new IBookmarkManagerAdaptor(bm);
 
     QDBusConnection connection = QDBusConnection::sessionBus();
-    if(!connection.registerService("conn.brw.IBookmarkManager"))
-        qDebug() << "failed register service conn.brw.IBookmarkManager";
-    if(!connection.registerObject("/bookmarkmanager", bm))
-        qDebug() << "failed register object bookmarkmanager";
+    if(!connection.registerService("genivi.browserpoc"))
+        qDebug() << "failed register service genivi.browserpoc";
+    if(!connection.registerObject("/IBookmarkManager", bm))
+        qDebug() << "failed register object IBookmarkManager";
 
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
 
-    if(!connection.registerService("conn.brw.IUserInput"))
-        qDebug() << "failed register service conn.brw.IUserInput";
-    if(!connection.registerObject("/userinput", ui))
-        qDebug() << "failed register object userinput";
+    if(!connection.registerObject("/IUserInput", ui))
+        qDebug() << "failed register object IUserInput";
 
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
 
-    if(!connection.registerService("conn.brw.IWebPageWindow"))
-        qDebug() << "failed register service conn.brw.IWebPageWindow";
-    if(!connection.registerObject("/webpagewindow", wpw))
-        qDebug() << "failed register object userinput";
+    if(!connection.registerObject("/IWebPageWindow", wpw))
+        qDebug() << "failed register object IWebPageWindow";
 
     browser *br = new browser();
     new IBrowserAdaptor(br);
 
-    if(!connection.registerService("conn.brw.IBrowser"))
-        qDebug() << "failed register service conn.brw.IBrowser";
-    if(!connection.registerObject("/browser", br))
-        qDebug() << "failed register object browser";
+    if(!connection.registerObject("/IBrowser", br))
+        qDebug() << "failed register object IBrowser";
 
     br->initialview = new QDeclarativeView;
     br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
