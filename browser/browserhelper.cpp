@@ -43,28 +43,43 @@ browserhelper::browserhelper(QObject *parent) :
     new IBookmarkManagerAdaptor(bm);
 
     QDBusConnection connection = QDBusConnection::sessionBus();
-    if(!connection.registerService("genivi.browserpoc"))
+    if(!connection.isConnected()) {
+        qDebug() << "failed to connect to dbus";
+        exit(1);
+    }
+
+    if(!connection.registerService("genivi.browserpoc")) {
         qDebug() << "failed register service genivi.browserpoc";
-    if(!connection.registerObject("/IBookmarkManager", bm))
+        exit(1);
+    }
+    if(!connection.registerObject("/IBookmarkManager", bm)) {
         qDebug() << "failed register object IBookmarkManager";
+        exit(1);
+    }
 
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
 
-    if(!connection.registerObject("/IUserInput", ui))
+    if(!connection.registerObject("/IUserInput", ui)) {
         qDebug() << "failed register object IUserInput";
+        exit(1);
+    }
 
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
 
-    if(!connection.registerObject("/IWebPageWindow", wpw))
+    if(!connection.registerObject("/IWebPageWindow", wpw)) {
         qDebug() << "failed register object IWebPageWindow";
+        exit(1);
+    }
 
     browser *br = new browser();
     new IBrowserAdaptor(br);
 
-    if(!connection.registerObject("/IBrowser", br))
+    if(!connection.registerObject("/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
+        exit(1);
+    }
 
     br->initialview = new QDeclarativeView;
     br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
