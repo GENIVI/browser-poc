@@ -19,8 +19,10 @@
 #include "../common/browserdefs.h"
 
 BrowserDbus::BrowserDbus(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_instanceId("1")
 {
+    qDebug() << __PRETTY_FUNCTION__;
+
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
@@ -33,8 +35,14 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+}
 
-    QString *dbusservicename = new QString("genivi.poc.browser1");
+void BrowserDbus::connectdbussession(QString id) {
+    qDebug() << __PRETTY_FUNCTION__ << id;
+
+    m_instanceId = id;
+
+    QString *dbusservicename = new QString("genivi.poc.browser" + m_instanceId);
 
     bookmark = new conn::brw::IBookmarkManager(*dbusservicename, "/Browser/IBookmarkManager",
                                                QDBusConnection::sessionBus(), this);

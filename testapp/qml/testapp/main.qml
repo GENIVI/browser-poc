@@ -45,5 +45,5 @@ ApplicationWindow {
         }
     }
 
-
+    Component.onCompleted: browserinterface.connectdbussession("1")
 }

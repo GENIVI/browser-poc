@@ -60,6 +60,7 @@ public:
     Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
     Q_INVOKABLE void getPageWindows();
     Q_INVOKABLE void inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue);
+    Q_INVOKABLE void connectdbussession(QString id);
 
 
     QString title() { return m_title; }
@@ -99,6 +100,7 @@ private:
     QList<Bookmark*> m_bookmarkList;
     bool m_pageloading;
     int m_progress;
+    QString m_instanceId;
 
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
 };

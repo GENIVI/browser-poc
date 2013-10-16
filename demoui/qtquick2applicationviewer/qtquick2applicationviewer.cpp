@@ -69,7 +69,7 @@ void QtQuick2ApplicationViewer::addImportPath(const QString &path)
 
 void QtQuick2ApplicationViewer::changeGeometry(bool open) {
     if(open)
-        setGeometry(0, 0, 800, 600);
+        setGeometry(0, 0, 1024, 768);
     else
-       setGeometry(0, 0, 800, 80);
+       setGeometry(0, 0, 1024, 80);
 }

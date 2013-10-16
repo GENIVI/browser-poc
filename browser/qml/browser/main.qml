@@ -26,8 +26,8 @@ Flickable {
         webcontent.evaluateJavaScript("var inputs = document.getElementsByTagName('INPUT'); var index;for(index=0; index < inputs.length; index++){ if(inputs[index].name == '" + privateMem.inputfieldname + "') { var element = inputs[index]; element.value='" + root.input + "' }}");
     }
 
-    width: 800
-    height: 520
+    width: 1024
+    height: 688
 
     contentWidth: Math.max(root.width,webcontent.width)
     contentHeight: Math.max(root.height,webcontent.height)

@@ -3,51 +3,25 @@ import browserdbusinterface 1.0
 
 Item {
     id: root
-    width: 800
-    height: 600
+    width: 1024
+    height: 768
 
     signal bookmarksopen(bool open)
-
-    function switchon() {
-        browserinterface.createPageWindow(1, 0, 80, 800, 520);
-        controls.state = "on"
-    }
 
     Item {
         id: privateMem
         property bool bookmarklistopen: false
     }
 
-    Component.onCompleted: browserinterface.reload() // show initial url
-
-    Item {
-        id: startscreen
-        anchors.fill: parent
-        focus: true
-
-        Rectangle {
-            anchors.fill: parent
-            color: "black"
-            opacity: 0.8
-        }
-
-        Image {
-            id: onbutton
-            source: "../../images/internet-web-browser.png"
-            anchors.centerIn: parent
-        }
-        MouseArea {
-            anchors.fill: parent
-            onClicked: switchon()
-        }
-        Keys.onEnterPressed: switchon()
-        Keys.onReturnPressed: switchon()
+    Component.onCompleted: {
+        browserinterface.connectdbussession("1")
+        browserinterface.reload() // show initial url
+        browserinterface.createPageWindow(1, 0, 80, 800, 520);
     }
-
 
     Item {
         id: controls
-        y: -80
+        y: 0
         width: parent.width
         height: parent.height
 
@@ -153,7 +127,6 @@ Item {
             }
         }
 
-
         Button {
             id: bookmarks
             width: 70
@@ -237,7 +210,6 @@ Item {
                 }
             }
         }
-
 
         ListView {
             id: list
@@ -329,21 +301,6 @@ Item {
                     color: "black"
                 }
             }
-        }
-        states: [
-            State {
-                name: "on"
-                PropertyChanges { target: startscreen; opacity: 0.0 }
-                PropertyChanges { target: startscreen; scale: 0 }
-                PropertyChanges { target: startscreen; enabled: false }
-                PropertyChanges { target: controls; y: 0 }
-                PropertyChanges { target: controls; focus: true }
-            }
-        ]
-        transitions: Transition {
-            PropertyAnimation { properties: "opacity"; duration: 500; easing.type: Easing.Linear }
-            PropertyAnimation { properties: "scale"; duration: 500; easing.type: Easing.Linear }
-            PropertyAnimation { properties: "y"; duration: 500; easing.type: Easing.Linear }
         }
     }
 }

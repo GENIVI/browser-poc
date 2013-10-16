@@ -49,6 +49,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     }
 
     QString *dbusservicename = new QString("genivi.poc.browser" + instanceId);
+    qDebug() << *dbusservicename;
 
     if(!connection.registerService(*dbusservicename)) {
         qDebug() << "failed register service " << *dbusservicename;

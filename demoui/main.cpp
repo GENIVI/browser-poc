@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
 
     viewer->setMainQmlFile(QStringLiteral("qml/demoui/main.qml"));
     viewer->setFlags(Qt::WindowStaysOnTopHint|Qt::FramelessWindowHint);
-    viewer->setGeometry(0, 0, 800, 80);
+    viewer->setGeometry(0, 0, 1024, 80);
     viewer->show();
 
     QObject::connect((QObject*)viewer->rootObject(), SIGNAL(bookmarksopen(bool)),(QObject*)viewer, SLOT(changeGeometry(bool)));
