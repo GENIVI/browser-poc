@@ -16,13 +16,6 @@ ApplicationWindow {
         anchors.fill: parent
 
         Tab {
-            id: bookmarks
-            title: "IBookmarkManager"
-            anchors.fill: parent
-            clip: true
-            BookmarkManager {}
-        }
-        Tab {
             id: browser
             title: "IBrowser"
             anchors.fill: parent
@@ -30,18 +23,25 @@ ApplicationWindow {
             Browser {}
         }
         Tab {
-            id: userinput
-            title: "IUserInput"
-            anchors.fill: parent
-            clip: true
-            UserInput {}
-        }
-        Tab {
             id: webpage
             title: "IWebPageWindow"
             anchors.fill: parent
             clip: true
             WebPageWindow {}
+        }
+        Tab {
+            id: bookmarks
+            title: "IBookmarkManager"
+            anchors.fill: parent
+            clip: true
+            BookmarkManager {}
+        }
+        Tab {
+            id: userinput
+            title: "IUserInput"
+            anchors.fill: parent
+            clip: true
+            UserInput {}
         }
     }
 
