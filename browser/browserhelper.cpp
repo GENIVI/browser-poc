@@ -22,7 +22,7 @@
 #include "ibrowser_adaptor.h"
 
 
-browserhelper::browserhelper(QObject *parent) :
+browserhelper::browserhelper(QString instanceId, QObject *parent) :
     QObject(parent)
 {
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
@@ -48,11 +48,13 @@ browserhelper::browserhelper(QObject *parent) :
         exit(1);
     }
 
-    if(!connection.registerService("genivi.browserpoc")) {
-        qDebug() << "failed register service genivi.browserpoc";
+    QString *dbusservicename = new QString("genivi.poc.browser" + instanceId);
+
+    if(!connection.registerService(*dbusservicename)) {
+        qDebug() << "failed register service " << *dbusservicename;
         exit(1);
     }
-    if(!connection.registerObject("/IBookmarkManager", bm)) {
+    if(!connection.registerObject("/Browser/IBookmarkManager", bm)) {
         qDebug() << "failed register object IBookmarkManager";
         exit(1);
     }
@@ -60,7 +62,7 @@ browserhelper::browserhelper(QObject *parent) :
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
 
-    if(!connection.registerObject("/IUserInput", ui)) {
+    if(!connection.registerObject("/Browser/IUserInput", ui)) {
         qDebug() << "failed register object IUserInput";
         exit(1);
     }
@@ -68,7 +70,7 @@ browserhelper::browserhelper(QObject *parent) :
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
 
-    if(!connection.registerObject("/IWebPageWindow", wpw)) {
+    if(!connection.registerObject("/Browser/IWebPageWindow", wpw)) {
         qDebug() << "failed register object IWebPageWindow";
         exit(1);
     }
@@ -76,7 +78,7 @@ browserhelper::browserhelper(QObject *parent) :
     browser *br = new browser();
     new IBrowserAdaptor(br);
 
-    if(!connection.registerObject("/IBrowser", br)) {
+    if(!connection.registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
         exit(1);
     }

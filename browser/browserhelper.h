@@ -24,7 +24,7 @@ class browserhelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit browserhelper(QObject *parent = 0);
+    explicit browserhelper(QString instanceId, QObject *parent = 0);
 
     QGraphicsObject *webitem;
     webpagewindow *wpw;

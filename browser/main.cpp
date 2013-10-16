@@ -23,7 +23,11 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     QCoreApplication::setOrganizationDomain("genivi.org");
     QCoreApplication::setApplicationName("Browser PoC");
 
-    browserhelper bhelper;
+    QString instanceId("1");
+    if(argc > 1)
+        instanceId = argv[1];
+
+    browserhelper bhelper(instanceId);
 
     return app->exec();
 }

@@ -34,16 +34,18 @@ BrowserDbus::BrowserDbus(QObject *parent) :
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
 
-    bookmark = new conn::brw::IBookmarkManager("genivi.browserpoc", "/IBookmarkManager",
+    QString *dbusservicename = new QString("genivi.poc.browser1");
+
+    bookmark = new conn::brw::IBookmarkManager(*dbusservicename, "/Browser/IBookmarkManager",
                                                QDBusConnection::sessionBus(), this);
 
-    userinput = new conn::brw::IUserInput("genivi.browserpoc", "/IUserInput",
+    userinput = new conn::brw::IUserInput(*dbusservicename, "/Browser/IUserInput",
                                           QDBusConnection::sessionBus(), this);
 
-    webpagewindow = new conn::brw::IWebPageWindow("genivi.browserpoc", "/IWebPageWindow",
+    webpagewindow = new conn::brw::IWebPageWindow(*dbusservicename, "/Browser/IWebPageWindow",
                                                   QDBusConnection::sessionBus(), this);
 
-    browser = new conn::brw::IBrowser("genivi.browserpoc", "/IBrowser",
+    browser = new conn::brw::IBrowser(*dbusservicename, "/Browser/IBrowser",
                                       QDBusConnection::sessionBus(), this);
 
     connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
