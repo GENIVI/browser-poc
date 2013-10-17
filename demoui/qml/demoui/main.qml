@@ -15,8 +15,8 @@ Item {
 
     Component.onCompleted: {
         browserinterface.connectdbussession("1")
+        browserinterface.createPageWindow(1, 0, 80, 1024, 688);
         browserinterface.reload() // show initial url
-        browserinterface.createPageWindow(1, 0, 80, 800, 520);
     }
 
     Item {
