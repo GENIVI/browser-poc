@@ -30,11 +30,6 @@ public:
     QGraphicsObject *webitem;
 
 signals:
-    void reloadrequested();
-    void backrequested();
-    void forwardrequested();
-    void stoprequested();
-    void loadurlrequested(QString url);
     void urlTitleReady();
     void onLoadStarted();
     void onLoadFinished(bool a_fState);

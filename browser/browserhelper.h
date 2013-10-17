@@ -36,11 +36,6 @@ signals:
     void onLoadProgress(int progress);
 
 public slots:
-    void browserreload();
-    void browserback();
-    void browserforward();
-    void browserstop();
-    void browserloadurl(QString url);
     void getUrlTitle();
     void reportprogress();
     void browserStartLoading();

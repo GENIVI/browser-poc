@@ -23,15 +23,21 @@ webpagewindow::webpagewindow(QObject *parent) :
 conn::brw::ERROR_IDS webpagewindow::back() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit backrequested();
-    return conn::brw::EID_NO_ERROR;
+    bool ret = webitem->metaObject()->invokeMethod(webitem, "goBack");
+    if(ret)
+        return conn::brw::EID_NO_ERROR;
+    else
+        return conn::brw::EID_INVALID_ARGUMENT;
 }
 
 conn::brw::ERROR_IDS webpagewindow::forward() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit forwardrequested();
-    return conn::brw::EID_NO_ERROR;
+    bool ret = webitem->metaObject()->invokeMethod(webitem, "goForward");
+    if(ret)
+        return conn::brw::EID_NO_ERROR;
+    else
+        return conn::brw::EID_INVALID_ARGUMENT;
 }
 
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
@@ -41,15 +47,21 @@ conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
     if(a_Url == "" || a_Url == "http://")
         return conn::brw::EID_INVALID_ARGUMENT;
 
-    emit loadurlrequested(a_Url);
-    return conn::brw::EID_NO_ERROR;
+    bool ret = webitem->setProperty("url", a_Url);
+    if(ret)
+        return conn::brw::EID_NO_ERROR;
+    else
+        return conn::brw::EID_INVALID_ARGUMENT;
 }
 
 conn::brw::ERROR_IDS webpagewindow::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit reloadrequested();
-    return conn::brw::EID_NO_ERROR;
+    bool ret = webitem->metaObject()->invokeMethod(webitem, "pagereload");
+    if(ret)
+        return conn::brw::EID_NO_ERROR;
+    else
+        return conn::brw::EID_INVALID_ARGUMENT;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
@@ -170,8 +182,11 @@ conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
 conn::brw::ERROR_IDS webpagewindow::stop() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    emit stoprequested();
-    return conn::brw::EID_NO_ERROR;
+    bool ret = webitem->metaObject()->invokeMethod(webitem, "pagestop");
+    if(ret)
+        return conn::brw::EID_NO_ERROR;
+    else
+        return conn::brw::EID_INVALID_ARGUMENT;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {

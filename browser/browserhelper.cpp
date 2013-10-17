@@ -78,11 +78,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(urlTitleReady()));
     connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
 
-    connect(wpw, SIGNAL(reloadrequested()), this, SLOT(browserreload()));
-    connect(wpw, SIGNAL(stoprequested()), this, SLOT(browserstop()));
-    connect(wpw, SIGNAL(backrequested()), this, SLOT(browserback()));
-    connect(wpw, SIGNAL(forwardrequested()), this, SLOT(browserforward()));
-    connect(wpw, SIGNAL(loadurlrequested(QString)), this, SLOT(browserloadurl(QString)));
     connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
 
     connect(this, SIGNAL(onLoadStarted()), wpw, SIGNAL(onLoadStarted()));
@@ -111,26 +106,6 @@ void browserhelper::registertypes() {
 void browserhelper::inputText(QString input) {
     webitem->setProperty("input", input);
     webitem->metaObject()->invokeMethod(webitem, "inputText");
-}
-
-void browserhelper::browserreload() {
-    webitem->metaObject()->invokeMethod(webitem, "pagereload");
-}
-
-void browserhelper::browserback() {
-    webitem->metaObject()->invokeMethod(webitem, "goBack");
-}
-
-void browserhelper::browserforward() {
-    webitem->metaObject()->invokeMethod(webitem, "goForward");
-}
-
-void browserhelper::browserstop() {
-    webitem->metaObject()->invokeMethod(webitem, "pagestop");
-}
-
-void browserhelper::browserloadurl(QString url) {
-    webitem->setProperty("url", url);
 }
 
 void browserhelper::getUrlTitle() {
