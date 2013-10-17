@@ -104,6 +104,7 @@ private:
     QString *dbusservicename;
 
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
+    void registertypes();
 };
 
 #endif // BROWSERDBUS_H

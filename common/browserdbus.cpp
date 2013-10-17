@@ -23,6 +23,10 @@ BrowserDbus::BrowserDbus(QObject *parent) :
 {
     qDebug() << __PRETTY_FUNCTION__;
 
+    registertypes();
+}
+
+void BrowserDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
     qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
     qDBusRegisterMetaType<conn::brw::BookmarkItem>();
