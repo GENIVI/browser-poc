@@ -19,6 +19,7 @@
 #include <QTimer>
 
 class webpagewindow;
+class QDBusConnection;
 
 class browserhelper : public QObject
 {
@@ -28,6 +29,7 @@ public:
 
     QGraphicsObject *webitem;
     webpagewindow *wpw;
+    QDBusConnection *connection;
 
 signals:
     void onLoadStarted();
@@ -46,6 +48,7 @@ public slots:
 
 private:
     QTimer *progresstimer;
+    void registertypes();
     
 };
 

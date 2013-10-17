@@ -25,25 +25,10 @@
 browserhelper::browserhelper(QString instanceId, QObject *parent) :
     QObject(parent)
 {
-    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
-    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
-    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
-    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
-    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
-    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
-    qDBusRegisterMetaType<conn::brw::Rect>();
-    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
-    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
-    qDBusRegisterMetaType<conn::brw::BrowserActions>();
-    qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
-    qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+    registertypes();
 
-
-    bookmarkmanager *bm = new bookmarkmanager();
-    new IBookmarkManagerAdaptor(bm);
-
-    QDBusConnection connection = QDBusConnection::sessionBus();
-    if(!connection.isConnected()) {
+    *connection = QDBusConnection::sessionBus();
+    if(!connection->isConnected()) {
         qDebug() << "failed to connect to dbus";
         exit(1);
     }
@@ -51,38 +36,33 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     QString *dbusservicename = new QString("genivi.poc.browser" + instanceId);
     qDebug() << *dbusservicename;
 
-    if(!connection.registerService(*dbusservicename)) {
+    if(!connection->registerService(*dbusservicename)) {
         qDebug() << "failed register service " << *dbusservicename;
         exit(1);
     }
-    if(!connection.registerObject("/Browser/IBookmarkManager", bm)) {
-        qDebug() << "failed register object IBookmarkManager";
+
+    browser *br = new browser();
+    br->connection = connection;
+    new IBrowserAdaptor(br);
+    if(!connection->registerObject("/Browser/IBrowser", br)) {
+        qDebug() << "failed register object IBrowser";
         exit(1);
     }
 
-    userinput *ui = new userinput();
-    new IUserInputAdaptor(ui);
-
-    if(!connection.registerObject("/Browser/IUserInput", ui)) {
-        qDebug() << "failed register object IUserInput";
+    bookmarkmanager *bm = new bookmarkmanager();
+    new IBookmarkManagerAdaptor(bm);
+    if(!connection->registerObject("/Browser/IBookmarkManager", bm)) {
+        qDebug() << "failed register object IBookmarkManager";
         exit(1);
     }
 
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
+    br->wpw = wpw;
 
-    if(!connection.registerObject("/Browser/IWebPageWindow", wpw)) {
-        qDebug() << "failed register object IWebPageWindow";
-        exit(1);
-    }
-
-    browser *br = new browser();
-    new IBrowserAdaptor(br);
-
-    if(!connection.registerObject("/Browser/IBrowser", br)) {
-        qDebug() << "failed register object IBrowser";
-        exit(1);
-    }
+    userinput *ui = new userinput();
+    new IUserInputAdaptor(ui);
+    br->ui = ui;
 
     br->initialview = new QDeclarativeView;
     br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
@@ -111,6 +91,21 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     connect(br, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
 
     connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
+}
+
+void browserhelper::registertypes() {
+    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
+    qDBusRegisterMetaType<conn::brw::BOOKMARK_SORT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItem>();
+    qDBusRegisterMetaType<conn::brw::BookmarkItemList>();
+    qDBusRegisterMetaType<conn::brw::DIALOG_RESULT>();
+    qDBusRegisterMetaType<conn::brw::INPUT_ELEMENT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::Rect>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_DIRECTION>();
+    qDBusRegisterMetaType<conn::brw::SCROLL_TYPE>();
+    qDBusRegisterMetaType<conn::brw::BrowserActions>();
+    qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
+    qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
 }
 
 void browserhelper::inputText(QString input) {

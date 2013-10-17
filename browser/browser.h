@@ -19,6 +19,10 @@
 
 #include "../common/browserdefs.h"
 
+#include <QtDBus/QDBusConnection>
+#include "webpagewindow.h"
+#include "userinput.h"
+
 class browser : public QObject
 {
     Q_OBJECT
@@ -26,6 +30,9 @@ public:
     explicit browser(QObject *parent = 0);
     
     QDeclarativeView *initialview;
+    QDBusConnection *connection;
+    webpagewindow *wpw;
+    userinput *ui;
 
 signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);

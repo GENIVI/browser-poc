@@ -42,37 +42,20 @@ void BrowserDbus::connectdbussession(QString id) {
 
     m_instanceId = id;
 
-    QString *dbusservicename = new QString("genivi.poc.browser" + m_instanceId);
+    dbusservicename = new QString("genivi.poc.browser" + m_instanceId);
 
     browser = new conn::brw::IBrowser(*dbusservicename, "/Browser/IBrowser",
                                       QDBusConnection::sessionBus(), this);
     if(!browser->isValid())
         qDebug() << "failed create object /Browser/IBrowser";
 
+    connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
+    connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
 
     bookmark = new conn::brw::IBookmarkManager(*dbusservicename, "/Browser/IBookmarkManager",
                                                QDBusConnection::sessionBus(), this);
     if(!bookmark->isValid())
         qDebug() << "failed create object /Browser/IBookmarkManager";
-
-
-    webpagewindow = new conn::brw::IWebPageWindow(*dbusservicename, "/Browser/IWebPageWindow",
-                                                  QDBusConnection::sessionBus(), this);
-    if(!webpagewindow->isValid())
-        qDebug() << "failed create object /Browser/IWebPageWindow";
-
-    userinput = new conn::brw::IUserInput(*dbusservicename, "/Browser/IWebPageWindow/IUserInput",
-                                          QDBusConnection::sessionBus(), this);
-    if(!userinput->isValid())
-        qDebug() << "failed create object /Browser/IWebPageWindow/IUserInput";
-
-    connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
-    connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
-    connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
-    connect(webpagewindow, SIGNAL(onClose()), this, SLOT(WindowClosed()));
-    connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
-    connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
-    connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
 }
 
 // IBookmarkManager
@@ -175,6 +158,28 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         conn::brw::OBJECT_HANDLE handle = reply.argumentAt<1>();
 
         qDebug() << "ERROR_IDS " << ret << handle;
+
+        QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(handle));
+        webpagewindow = new conn::brw::IWebPageWindow(*dbusservicename, *webpagewindowservice,
+                                                      QDBusConnection::sessionBus(), this);
+        if(!webpagewindow->isValid())
+            qDebug() << "failed create object /Browser/IWebPageWindow";
+
+        connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
+        connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
+        connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
+        connect(webpagewindow, SIGNAL(onClose()), this, SLOT(WindowClosed()));
+
+        QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
+
+        userinput = new conn::brw::IUserInput(*dbusservicename, *userinputservice,
+                                              QDBusConnection::sessionBus(), this);
+        if(!userinput->isValid())
+            qDebug() << "failed create object /Browser/IWebPageWindow/IUserInput";
+
+        connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
+
+
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();

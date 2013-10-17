@@ -101,6 +101,7 @@ private:
     bool m_pageloading;
     int m_progress;
     QString m_instanceId;
+    QString *dbusservicename;
 
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
 };

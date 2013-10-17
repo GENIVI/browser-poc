@@ -89,44 +89,12 @@ Item {
     }
 
     GroupBox {
-        id: groupsetvisible
-        title: "setVisible(bool a_bVisible)"
-        width: 70 + 130 + 20 + 30
-        anchors.top: groupload.bottom
-        anchors.topMargin: 10
-        anchors.left: groupload.left
-
-        ComboBox {
-            id: combo
-            width: 70
-            height: 50
-            model: [ "True", "False" ]
-            anchors.left: parent.left
-            anchors.leftMargin: 10
-        }
-        Button {
-            width: 130
-            height: combo.height
-            anchors.top: combo.top
-            anchors.left: combo.right
-            anchors.leftMargin: 20
-            text: "Set Visible"
-            onClicked: {
-                if(combo.currentText == "True")
-                    browserinterface.setVisible(true)
-                else
-                    browserinterface.setVisible(false)
-            }
-        }
-    }
-
-    GroupBox {
         id: groupcontrolbuttons2
         title: "getVisible()/getGeometry()/getContentSize()/getBrowserActionsState()    "
         width: 4 * 130 + 3 * 20 + 30
-        anchors.top: groupsetvisible.bottom
+        anchors.top: groupload.bottom
         anchors.topMargin: 10
-        anchors.left: groupsetvisible.left
+        anchors.left: groupload.left
 
         Button {
             id: buttongetvisible
@@ -170,6 +138,7 @@ Item {
             onClicked: browserinterface.getBrowserActionState()
         }
     }
+
 
     GroupBox {
         id: groupsetgeometry
@@ -222,7 +191,7 @@ Item {
             font.pixelSize: 20
             maximumLength: 3
             inputMask: "999"
-            text: "800"
+            text: "1024"
         }
         Text {
             text: "width"
@@ -239,7 +208,7 @@ Item {
             font.pixelSize: 20
             maximumLength: 3
             inputMask: "999"
-            text: "520"
+            text: "688"
         }
         Text {
             text: "height"
@@ -254,6 +223,45 @@ Item {
             anchors.leftMargin: 20
             text: "Set Geometry"
             onClicked: browserinterface.setGeometry(inputfieldx.text, inputfieldy.text, inputfieldwidth.text, inputfieldheight.text)
+        }
+    }
+
+    GroupBox {
+        id: groupsetvisible
+        title: "setVisible(bool a_bVisible)"
+        width: 70 + 130 + 20 + 30
+        anchors.top: groupcontrolbuttons2.bottom
+        anchors.topMargin: 10
+        anchors.left: groupsetgeometry.right
+        anchors.leftMargin: 10
+
+        ComboBox {
+            id: combo
+            width: 70
+            height: 50
+            model: [ "True", "False" ]
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+        }
+        Text {
+            id: placeholder
+            text: ""
+            anchors.top: combo.bottom
+            anchors.left: combo.left
+        }
+        Button {
+            width: 130
+            height: combo.height
+            anchors.top: combo.top
+            anchors.left: combo.right
+            anchors.leftMargin: 20
+            text: "Set Visible"
+            onClicked: {
+                if(combo.currentText == "True")
+                    browserinterface.setVisible(true)
+                else
+                    browserinterface.setVisible(false)
+            }
         }
     }
 

@@ -12,8 +12,39 @@ ApplicationWindow {
     BrowserInterface {
         id: browserinterface
     }
+
+    Item {
+        id: header
+        width: parent.width
+        height: 40
+
+        TextField {
+            id: inputstring
+            width: 30
+            height: 30
+            text: "1"
+            anchors.left: parent.left
+            anchors.leftMargin: 20
+            anchors.verticalCenter: parent.verticalCenter
+            font.pixelSize: 14
+        }
+
+        Button {
+            width: 80
+            height: inputstring.height
+            anchors.top: inputstring.top
+            anchors.left: inputstring.right
+            anchors.leftMargin: 20
+            text: "Connect"
+            onClicked: browserinterface.connectdbussession(inputstring.text)
+        }
+    }
+
     TabView {
-        anchors.fill: parent
+        anchors.top: header.bottom
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
 
         Tab {
             id: browser
@@ -44,6 +75,4 @@ ApplicationWindow {
             UserInput {}
         }
     }
-
-    Component.onCompleted: browserinterface.connectdbussession("1")
 }
