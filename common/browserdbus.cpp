@@ -44,17 +44,27 @@ void BrowserDbus::connectdbussession(QString id) {
 
     QString *dbusservicename = new QString("genivi.poc.browser" + m_instanceId);
 
+    browser = new conn::brw::IBrowser(*dbusservicename, "/Browser/IBrowser",
+                                      QDBusConnection::sessionBus(), this);
+    if(!browser->isValid())
+        qDebug() << "failed create object /Browser/IBrowser";
+
+
     bookmark = new conn::brw::IBookmarkManager(*dbusservicename, "/Browser/IBookmarkManager",
                                                QDBusConnection::sessionBus(), this);
+    if(!bookmark->isValid())
+        qDebug() << "failed create object /Browser/IBookmarkManager";
 
-    userinput = new conn::brw::IUserInput(*dbusservicename, "/Browser/IUserInput",
-                                          QDBusConnection::sessionBus(), this);
 
     webpagewindow = new conn::brw::IWebPageWindow(*dbusservicename, "/Browser/IWebPageWindow",
                                                   QDBusConnection::sessionBus(), this);
+    if(!webpagewindow->isValid())
+        qDebug() << "failed create object /Browser/IWebPageWindow";
 
-    browser = new conn::brw::IBrowser(*dbusservicename, "/Browser/IBrowser",
-                                      QDBusConnection::sessionBus(), this);
+    userinput = new conn::brw::IUserInput(*dbusservicename, "/Browser/IWebPageWindow/IUserInput",
+                                          QDBusConnection::sessionBus(), this);
+    if(!userinput->isValid())
+        qDebug() << "failed create object /Browser/IWebPageWindow/IUserInput";
 
     connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
     connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
