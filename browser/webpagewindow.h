@@ -50,6 +50,13 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
     conn::brw::ERROR_IDS getCurrentUrlTitle(QString &url, QString &title);
+
+    void browserStartLoading();
+    void reportprogress();
+    void getUrlTitle();
+
+private:
+    QTimer *progresstimer;
 };
 
 #endif // WEBPAGEWINDOW_H

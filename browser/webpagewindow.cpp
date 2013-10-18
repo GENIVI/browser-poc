@@ -13,11 +13,41 @@
 
 #include "webpagewindow.h"
 #include <QDebug>
+#include <QTimer>
 
 webpagewindow::webpagewindow(QObject *parent) :
     QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
+}
+
+void webpagewindow::browserStartLoading() {
+    qDebug() << __PRETTY_FUNCTION__;
+    emit onLoadStarted();
+
+    progresstimer = new QTimer(this);
+    connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
+    progresstimer->start(250);
+}
+
+void webpagewindow::reportprogress() {
+    qDebug() << __PRETTY_FUNCTION__;
+    int progress;
+
+    progress = webitem->property("progress").toFloat() * 100;
+
+    qDebug() << progress;
+    emit onLoadProgress(progress);
+
+    if(progress >= 100)
+        progresstimer->stop();
+}
+
+void webpagewindow::getUrlTitle() {
+    qDebug() << webitem->property("url") << webitem->property("title");
+
+    localurl = webitem->property("url").toString();
+    localtitle = webitem->property("title").toString();
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {

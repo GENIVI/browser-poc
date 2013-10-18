@@ -16,12 +16,13 @@
 
 #include <QObject>
 #include <QDeclarativeView>
+#include <QGraphicsObject>
+#include <QtDBus/QDBusConnection>
 
 #include "../common/browserdefs.h"
-
-#include <QtDBus/QDBusConnection>
 #include "webpagewindow.h"
 #include "userinput.h"
+
 
 class browser : public QObject
 {
@@ -33,6 +34,7 @@ public:
     QDBusConnection *connection;
     webpagewindow *wpw;
     userinput *ui;
+    QGraphicsObject *rootqmlobject;
 
 signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);
@@ -43,6 +45,9 @@ public Q_SLOTS:
                                           conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);
     conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);
     conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
+
+    void inputText(QString input);
+
     
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;

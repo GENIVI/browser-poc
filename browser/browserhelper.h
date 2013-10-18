@@ -15,7 +15,6 @@
 #define BROWSERHELPER_H
 
 #include <QObject>
-#include <QGraphicsObject>
 #include <QTimer>
 
 class webpagewindow;
@@ -27,24 +26,11 @@ class browserhelper : public QObject
 public:
     explicit browserhelper(QString instanceId, QObject *parent = 0);
 
-    QGraphicsObject *webitem;
-    webpagewindow *wpw;
-    QDBusConnection *connection;
-
-signals:
-    void onLoadStarted();
-    void onLoadProgress(int progress);
-
-public slots:
-    void getUrlTitle();
-    void reportprogress();
-    void browserStartLoading();
-    void inputText(QString input);
-
 private:
-    QTimer *progresstimer;
+    QDBusConnection *connection;
+    webpagewindow *wpw;
+    QTimer *dummytimer;
     void registertypes();
-    
 };
 
 #endif // BROWSERHELPER_H

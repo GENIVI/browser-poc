@@ -14,10 +14,8 @@
 #include <QtDBus/QDBusConnection>
 
 #include "browserhelper.h"
-
 #include "ibookmarkmanager_adaptor.h"
 #include "iuserinput_adaptor.h"
-#include "userinput.h"
 #include "iwebpagewindow_adaptor.h"
 #include "ibrowser_adaptor.h"
 
@@ -63,29 +61,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
     br->ui = ui;
-
-    br->initialview = new QDeclarativeView;
-    br->initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
-    br->initialview->setWindowFlags(Qt::CustomizeWindowHint);
-//    br->initialview->show();
-
-    QGraphicsObject *rootqmlobject = br->initialview->rootObject();
-    webitem = rootqmlobject;
-    wpw->webitem = rootqmlobject;
-
-    connect(rootqmlobject, SIGNAL(pageLoadStarted()), this, SLOT(browserStartLoading()));
-    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(onLoadFinished(bool)));
-    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), this->wpw, SIGNAL(urlTitleReady()));
-    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
-
-    connect(wpw, SIGNAL(urlTitleReady()), this, SLOT(getUrlTitle()));
-
-    connect(this, SIGNAL(onLoadStarted()), wpw, SIGNAL(onLoadStarted()));
-    connect(this, SIGNAL(onLoadProgress(int)), wpw, SIGNAL(onLoadProgress(int)));
-
-    connect(br, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
-
-    connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
 }
 
 void browserhelper::registertypes() {
@@ -103,36 +78,3 @@ void browserhelper::registertypes() {
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
 }
 
-void browserhelper::inputText(QString input) {
-    webitem->setProperty("input", input);
-    webitem->metaObject()->invokeMethod(webitem, "inputText");
-}
-
-void browserhelper::getUrlTitle() {
-    qDebug() << webitem->property("url") << webitem->property("title");
-
-    wpw->localurl = webitem->property("url").toString();
-    wpw->localtitle = webitem->property("title").toString();
-}
-
-void browserhelper::reportprogress() {
-    qDebug() << __PRETTY_FUNCTION__;
-    int progress;
-
-    progress = webitem->property("progress").toFloat() * 100;
-
-    qDebug() << progress;
-    emit onLoadProgress(progress);
-
-    if(progress >= 100)
-        progresstimer->stop();
-}
-
-void browserhelper::browserStartLoading() {
-    qDebug() << __PRETTY_FUNCTION__;
-    emit onLoadStarted();
-
-    progresstimer = new QTimer(this);
-    connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
-    progresstimer->start(250);
-}

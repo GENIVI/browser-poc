@@ -26,10 +26,28 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     Q_UNUSED(a_eDeviceId);
 
     if(windowhash.isEmpty()) {
+
+        initialview = new QDeclarativeView;
+        initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
+        initialview->setWindowFlags(Qt::CustomizeWindowHint);
+
         initialview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
         a_hPageWindowHandle = initialview->winId();
         windowhash.insert(a_hPageWindowHandle, initialview->window());
         initialview->show();
+
+        rootqmlobject = initialview->rootObject();
+        wpw->webitem = rootqmlobject;
+
+        connect(rootqmlobject, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
+        connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
+        connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
+        connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+
+        connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
+
+        connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
+
     } else {
         QDeclarativeView *tempview = new QDeclarativeView();
         tempview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
@@ -63,6 +81,11 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
     return conn::brw::EID_NO_ERROR;
+}
+
+void browser::inputText(QString input) {
+    wpw->webitem->setProperty("input", input);
+    wpw->webitem->metaObject()->invokeMethod(wpw->webitem, "inputText");
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {
