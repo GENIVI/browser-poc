@@ -40,7 +40,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     }
 
     browser *br = new browser();
-    br->connection = connection;
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";

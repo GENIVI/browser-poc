@@ -17,21 +17,20 @@
 #include <QObject>
 #include <QDeclarativeView>
 #include <QGraphicsObject>
-#include <QtDBus/QDBusConnection>
+#include <QDBusContext>
 
 #include "../common/browserdefs.h"
 #include "webpagewindow.h"
 #include "userinput.h"
 
 
-class browser : public QObject
+class browser : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
     explicit browser(QObject *parent = 0);
     
     QDeclarativeView *initialview;
-    QDBusConnection *connection;
     webpagewindow *wpw;
     userinput *ui;
     QGraphicsObject *rootqmlobject;

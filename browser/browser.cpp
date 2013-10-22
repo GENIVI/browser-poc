@@ -55,29 +55,28 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
         tempview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
         a_hPageWindowHandle = tempview->winId();
         windowhash.insert(a_hPageWindowHandle, tempview->window());
+
+        rootqmlobject = tempview->rootObject();
+        wpw->webitem = rootqmlobject;
         tempview->show();
     }
-
 
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
 
-    qDebug() << connection->isConnected();
-
-    if(!connection->registerObject(*webpagewindowservice, wpw)) {
+    QDBusConnection conn = connection();
+    if(!conn.registerObject(*webpagewindowservice, wpw)) {
         qDebug() << "failed register object IWebPageWindow";
         exit(1);
     }
 
     QString *userinputservice = new QString( *webpagewindowservice + "/IUserInput");
     qDebug() << *userinputservice;
-    if(!connection->registerObject(*userinputservice, ui)) {
+    if(!conn.registerObject(*userinputservice, ui)) {
         qDebug() << "failed register object IUserInput";
         exit(1);
     }
-
-
 
     emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
     return conn::brw::EID_NO_ERROR;
