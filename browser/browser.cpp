@@ -13,6 +13,7 @@
 
 #include "browser.h"
 #include <QDebug>
+#include <QDBusConnection>
 
 browser::browser(QObject *parent) :
     QObject(parent)
