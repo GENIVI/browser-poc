@@ -135,18 +135,18 @@ ApplicationWindow {
             WebPageWindow {}
         }
         Tab {
-            id: bookmarks
-            title: "IBookmarkManager"
-            anchors.fill: parent
-            clip: true
-            BookmarkManager {}
-        }
-        Tab {
             id: userinput
             title: "IUserInput"
             anchors.fill: parent
             clip: true
             UserInput {}
+        }
+        Tab {
+            id: bookmarks
+            title: "IBookmarkManager"
+            anchors.fill: parent
+            clip: true
+            BookmarkManager {}
         }
     }
 }
