@@ -15,14 +15,11 @@
 #define BROWSER_H
 
 #include <QObject>
-#include <QDeclarativeView>
-#include <QGraphicsObject>
 #include <QDBusContext>
 
 #include "../common/browserdefs.h"
 #include "webpagewindow.h"
 #include "userinput.h"
-
 
 class browser : public QObject, protected QDBusContext
 {
@@ -30,10 +27,8 @@ class browser : public QObject, protected QDBusContext
 public:
     explicit browser(QObject *parent = 0);
     
-    QDeclarativeView *initialview;
     webpagewindow *wpw;
     userinput *ui;
-    QGraphicsObject *rootqmlobject;
 
 signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);

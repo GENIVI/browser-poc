@@ -14,6 +14,7 @@
 #include "browser.h"
 #include <QDebug>
 #include <QDBusConnection>
+#include <QDeclarativeView>
 
 browser::browser(QObject *parent) :
     QObject(parent)
@@ -26,40 +27,23 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     Q_UNUSED(a_eDeviceId);
 
-    if(windowhash.isEmpty()) {
+    QDeclarativeView *webview = new QDeclarativeView();
+    webview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
+    webview->setWindowFlags(Qt::CustomizeWindowHint);
+    webview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
+    webview->show();
+    a_hPageWindowHandle = webview->winId();
+    windowhash.insert(a_hPageWindowHandle, webview->window());
+    QGraphicsObject *rootqmlobject;
+    rootqmlobject = webview->rootObject();
+    wpw->webitem = rootqmlobject;
 
-        initialview = new QDeclarativeView;
-        initialview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
-        initialview->setWindowFlags(Qt::CustomizeWindowHint);
-
-        initialview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
-        a_hPageWindowHandle = initialview->winId();
-        windowhash.insert(a_hPageWindowHandle, initialview->window());
-        initialview->show();
-
-        rootqmlobject = initialview->rootObject();
-        wpw->webitem = rootqmlobject;
-
-        connect(rootqmlobject, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
-        connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
-        connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
-        connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
-
-        connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
-
-        connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
-    } else {
-        QDeclarativeView *tempview = new QDeclarativeView();
-        tempview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
-        tempview->setWindowFlags(Qt::CustomizeWindowHint);
-        tempview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
-        a_hPageWindowHandle = tempview->winId();
-        windowhash.insert(a_hPageWindowHandle, tempview->window());
-
-        rootqmlobject = tempview->rootObject();
-        wpw->webitem = rootqmlobject;
-        tempview->show();
-    }
+    connect(rootqmlobject, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
+    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
+    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
+    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+    connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
+    connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
