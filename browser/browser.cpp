@@ -48,7 +48,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
         connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
 
         connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
-
     } else {
         QDeclarativeView *tempview = new QDeclarativeView();
         tempview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
@@ -62,9 +61,10 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
         tempview->show();
     }
 
-
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
+
+    webviewhash.insert(*webpagewindowservice, rootqmlobject);
 
     QDBusConnection conn = connection();
     if(!conn.registerObject(*webpagewindowservice, wpw)) {
@@ -82,6 +82,13 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
     return conn::brw::EID_NO_ERROR;
 }
+
+void browser::setView(QString viewpath) {
+    qDebug() << __PRETTY_FUNCTION__ << viewpath;
+
+    wpw->webitem = webviewhash.value(viewpath);
+}
+
 
 void browser::inputText(QString input) {
     wpw->webitem->setProperty("input", input);

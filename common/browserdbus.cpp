@@ -19,7 +19,7 @@
 #include "../common/browserdefs.h"
 
 BrowserDbus::BrowserDbus(QObject *parent) :
-    QObject(parent), m_instanceId("1")
+    QObject(parent), m_instanceId("1"), m_isconnected(false)
 {
     qDebug() << __PRETTY_FUNCTION__;
 
@@ -50,8 +50,12 @@ void BrowserDbus::connectdbussession(QString id) {
 
     browser = new conn::brw::IBrowser(*dbusservicename, "/Browser/IBrowser",
                                       QDBusConnection::sessionBus(), this);
-    if(!browser->isValid())
+    m_isconnected = true;
+    if(!browser->isValid()) {
         qDebug() << "failed create object /Browser/IBrowser";
+        m_isconnected = false;
+    }
+    emit connectedChanged();
 
     connect(browser, SIGNAL(onPageWindowDestroyed(qlonglong)), this, SLOT(PageWindowDestroyed(qlonglong)));
     connect(browser, SIGNAL(onPageWindowCreated(qlonglong,conn::brw::ERROR_IDS)), this, SLOT(PageWindowCreated(qlonglong,conn::brw::ERROR_IDS)));
@@ -60,6 +64,13 @@ void BrowserDbus::connectdbussession(QString id) {
                                                QDBusConnection::sessionBus(), this);
     if(!bookmark->isValid())
         qDebug() << "failed create object /Browser/IBookmarkManager";
+}
+
+void BrowserDbus::selectTab(int tabnumber) {
+    qDebug() << __PRETTY_FUNCTION__ << tabnumber;
+
+    if(handlelist.length() >= tabnumber)
+        actualtab = webpagehash.value(handlelist.at(tabnumber-1));
 }
 
 // IBookmarkManager
@@ -166,24 +177,27 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(handle));
         webpagewindow = new conn::brw::IWebPageWindow(*dbusservicename, *webpagewindowservice,
                                                       QDBusConnection::sessionBus(), this);
-        if(!webpagewindow->isValid())
-            qDebug() << "failed create object /Browser/IWebPageWindow";
 
-        connect(webpagewindow, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
-        connect(webpagewindow, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
-        connect(webpagewindow, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
-        connect(webpagewindow, SIGNAL(onClose()), this, SLOT(WindowClosed()));
+        webpagehash.insert(handle, webpagewindow);
+        handlelist.append(handle);
+        actualtab = webpagewindow;
+
+        if(!actualtab->isValid())
+            qDebug() << "failed create object /Browser/IWebPageWindow*";
+
+        connect(actualtab, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
+        connect(actualtab, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
+        connect(actualtab, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
+        connect(actualtab, SIGNAL(onClose()), this, SLOT(WindowClosed()));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 
         userinput = new conn::brw::IUserInput(*dbusservicename, *userinputservice,
                                               QDBusConnection::sessionBus(), this);
         if(!userinput->isValid())
-            qDebug() << "failed create object /Browser/IWebPageWindow/IUserInput";
+            qDebug() << "failed create object /Browser/IWebPageWindow*/IUserInput";
 
         connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
-
-
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -197,6 +211,9 @@ void BrowserDbus::destroyPageWindow(qlonglong windowhandle) {
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
+
+        webpagehash.remove(windowhandle);
+        handlelist.removeOne(windowhandle);
 
         qDebug() << "ERROR_IDS " << ret;
     } else {
@@ -256,7 +273,7 @@ void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefault
 void BrowserDbus::getBrowserActionState() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BrowserActions> reply = webpagewindow->getBrowserActionsState();
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BrowserActions> reply = actualtab->getBrowserActionsState();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -273,7 +290,7 @@ void BrowserDbus::getBrowserActionState() {
 void BrowserDbus::getContentSize() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, uint, uint> reply = webpagewindow->getContentSize();
+    QDBusPendingReply<conn::brw::ERROR_IDS, uint, uint> reply = actualtab->getContentSize();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -290,7 +307,7 @@ void BrowserDbus::getContentSize() {
 void BrowserDbus::getGeometry() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::Rect> reply = webpagewindow->getGeometry();
+    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::Rect> reply = actualtab->getGeometry();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -312,7 +329,7 @@ void BrowserDbus::setGeometry(int x, int y, int width, int height) {
     rect->i32Width = width;
     rect->i32Height = height;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->setGeometry(*rect);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setGeometry(*rect);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -326,7 +343,7 @@ void BrowserDbus::setGeometry(int x, int y, int width, int height) {
 
 void BrowserDbus::setVisible(bool visible) {
     qDebug() << __PRETTY_FUNCTION__ << visible;
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->setVisible(visible);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setVisible(visible);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -339,7 +356,7 @@ void BrowserDbus::setVisible(bool visible) {
 
 void BrowserDbus::getVisible() {
     qDebug() << __PRETTY_FUNCTION__;
-    QDBusPendingReply<bool> reply = webpagewindow->getVisible();
+    QDBusPendingReply<bool> reply = actualtab->getVisible();
     reply.waitForFinished();
     if(reply.isValid()) {
         bool ret = reply.value();
@@ -397,7 +414,7 @@ void BrowserDbus::goRight(conn::brw::SCROLL_TYPE type) {
 void BrowserDbus::scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type) {
     qDebug() << __PRETTY_FUNCTION__ << direction;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->scroll(direction, type);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->scroll(direction, type);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -411,7 +428,7 @@ void BrowserDbus::scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::S
 void BrowserDbus::goBack() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->back();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->back();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -425,7 +442,7 @@ void BrowserDbus::goBack() {
 void BrowserDbus::goForward() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->forward();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->forward();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -439,7 +456,7 @@ void BrowserDbus::goForward() {
 void BrowserDbus::reload() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->reload();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->reload();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -453,7 +470,7 @@ void BrowserDbus::reload() {
 void BrowserDbus::stop() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->stop();
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->stop();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -467,7 +484,7 @@ void BrowserDbus::stop() {
 void BrowserDbus::loadurl(QString url) {
     qDebug() << __PRETTY_FUNCTION__ << url;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = webpagewindow->load(url);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->load(url);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
@@ -485,7 +502,7 @@ void BrowserDbus::WindowClosed() {
 void BrowserDbus::getCurrentUrlAndTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = webpagewindow->getCurrentUrlTitle();
+    QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = actualtab->getCurrentUrlTitle();
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();

@@ -14,6 +14,7 @@
 #include "webpagewindow.h"
 #include <QDebug>
 #include <QTimer>
+#include <QDBusMessage>
 
 webpagewindow::webpagewindow(QObject *parent) :
     QObject(parent)
@@ -53,6 +54,8 @@ void webpagewindow::getUrlTitle() {
 conn::brw::ERROR_IDS webpagewindow::back() {
     qDebug() << __PRETTY_FUNCTION__;
 
+    emit setOutputWebview(message().path());
+
     bool ret = webitem->metaObject()->invokeMethod(webitem, "goBack");
     if(ret)
         return conn::brw::EID_NO_ERROR;
@@ -62,6 +65,8 @@ conn::brw::ERROR_IDS webpagewindow::back() {
 
 conn::brw::ERROR_IDS webpagewindow::forward() {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit setOutputWebview(message().path());
 
     bool ret = webitem->metaObject()->invokeMethod(webitem, "goForward");
     if(ret)
@@ -77,6 +82,8 @@ conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
     if(a_Url == "" || a_Url == "http://")
         return conn::brw::EID_INVALID_ARGUMENT;
 
+    emit setOutputWebview(message().path());
+
     bool ret = webitem->setProperty("url", a_Url);
     if(ret)
         return conn::brw::EID_NO_ERROR;
@@ -86,6 +93,8 @@ conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
 
 conn::brw::ERROR_IDS webpagewindow::reload() {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit setOutputWebview(message().path());
 
     bool ret = webitem->metaObject()->invokeMethod(webitem, "pagereload");
     if(ret)
@@ -122,6 +131,8 @@ conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserAct
 conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32Height) {
     qDebug() << __PRETTY_FUNCTION__;
 
+    emit setOutputWebview(message().path());
+
     uint width = webitem->property("contentWidth").toInt();
     uint height = webitem->property("contentHeight").toInt();
 
@@ -134,6 +145,8 @@ conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32
 conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
+    emit setOutputWebview(message().path());
+
     a_sRect.i32X = webitem->property("x").toInt();
     a_sRect.i32Y = webitem->property("y").toInt();
     a_sRect.i32Width = webitem->property("width").toInt();
@@ -145,6 +158,8 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
 conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect) {
     qDebug() << __PRETTY_FUNCTION__;
 
+    emit setOutputWebview(message().path());
+
     webitem->setProperty("x", a_sRect.i32X);
     webitem->setProperty("y", a_sRect.i32Y);
     webitem->setProperty("width", a_sRect.i32Width);
@@ -155,6 +170,8 @@ conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect)
 
 conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScrollDirection, conn::brw::SCROLL_TYPE a_eScrollType) {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit setOutputWebview(message().path());
 
     int i = 0;
     int scrollheight = (webitem->property("height").toInt())-(webitem->property("contentheight").toInt());
@@ -199,11 +216,15 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
 bool webpagewindow::getVisible() {
     qDebug() << __PRETTY_FUNCTION__;
 
+    emit setOutputWebview(message().path());
+
     return webitem->property("visible").toBool();
 }
 
 conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
     qDebug() << __PRETTY_FUNCTION__ << a_bVisible;
+
+    emit setOutputWebview(message().path());
 
     webitem->setProperty("visible", a_bVisible);
     return conn::brw::EID_NO_ERROR;
@@ -211,6 +232,8 @@ conn::brw::ERROR_IDS webpagewindow::setVisible(bool a_bVisible) {
 
 conn::brw::ERROR_IDS webpagewindow::stop() {
     qDebug() << __PRETTY_FUNCTION__;
+
+    emit setOutputWebview(message().path());
 
     bool ret = webitem->metaObject()->invokeMethod(webitem, "pagestop");
     if(ret)

@@ -32,6 +32,7 @@ class BrowserDbus : public QObject
     Q_PROPERTY(QQmlListProperty<Bookmark> bookmarkList READ getBookmarkList NOTIFY bookmarkListChanged)
     Q_PROPERTY(bool pageloading READ pageloading NOTIFY pageloadingChanged)
     Q_PROPERTY(int progress READ progress NOTIFY progressChanged)
+    Q_PROPERTY(bool connected READ connected NOTIFY connectedChanged)
 
 public:
     explicit BrowserDbus(QObject *parent = 0);
@@ -61,7 +62,7 @@ public:
     Q_INVOKABLE void getPageWindows();
     Q_INVOKABLE void inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue);
     Q_INVOKABLE void connectdbussession(QString id);
-
+    Q_INVOKABLE void selectTab(int tabnumber);
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
@@ -71,7 +72,7 @@ public:
     void setPageLoading(bool loading) { m_pageloading = loading; }
     int progress() { return m_progress; }
     void setProgress(int prog) { m_progress = prog; }
-
+    bool connected() { return m_isconnected; }
     QQmlListProperty<Bookmark> getBookmarkList() { return QQmlListProperty<Bookmark>(this, m_bookmarkList); }
 
 signals:
@@ -80,6 +81,7 @@ signals:
     void titleChanged();
     void pageloadingChanged();
     void progressChanged();
+    void connectedChanged();
 
 public slots:
     void pageloadingstarted();
@@ -94,6 +96,8 @@ private:
     conn::brw::IBookmarkManager *bookmark;
     conn::brw::IUserInput *userinput;
     conn::brw::IWebPageWindow *webpagewindow;
+    conn::brw::IWebPageWindow *actualtab;
+    QList<conn::brw::OBJECT_HANDLE> handlelist;
     conn::brw::IBrowser *browser;
     QString m_title;
     QString m_url;
@@ -101,10 +105,11 @@ private:
     bool m_pageloading;
     int m_progress;
     QString m_instanceId;
+    bool m_isconnected;
     QString *dbusservicename;
-
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
     void registertypes();
+    QHash<conn::brw::OBJECT_HANDLE, conn::brw::IWebPageWindow *> webpagehash;
 };
 
 #endif // BROWSERDBUS_H

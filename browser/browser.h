@@ -46,10 +46,12 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
 
     void inputText(QString input);
+    void setView(QString viewpath);
 
     
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
+    QHash<QString, QGraphicsObject *> webviewhash;
 };
 
 #endif // BROWSER_H

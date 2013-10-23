@@ -60,6 +60,8 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     userinput *ui = new userinput();
     new IUserInputAdaptor(ui);
     br->ui = ui;
+
+    connect(wpw, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
 }
 
 void browserhelper::registertypes() {

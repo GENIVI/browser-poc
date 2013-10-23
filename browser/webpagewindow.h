@@ -16,10 +16,11 @@
 
 #include <QObject>
 #include <QGraphicsObject>
+#include <QDBusContext>
 
 #include "../common/browserdefs.h"
 
-class webpagewindow : public QObject
+class webpagewindow : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
@@ -35,6 +36,7 @@ signals:
     void onLoadFinished(bool a_fState);
     void onLoadProgress(int a_i32Progress);
     void onClose();
+    void setOutputWebview(QString viewpath);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();
