@@ -69,8 +69,10 @@ void BrowserDbus::connectdbussession(QString id) {
 void BrowserDbus::selectTab(int tabnumber) {
     qDebug() << __PRETTY_FUNCTION__ << tabnumber;
 
-    if(handlelist.length() >= tabnumber)
+    if(handlelist.length() >= tabnumber) {
         actualtab = webpagehash.value(handlelist.at(tabnumber-1));
+        actualuserinput = inputhash.value(handlelist.at(tabnumber-1));
+    }
 }
 
 // IBookmarkManager
@@ -194,10 +196,13 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
 
         userinput = new conn::brw::IUserInput(*dbusservicename, *userinputservice,
                                               QDBusConnection::sessionBus(), this);
-        if(!userinput->isValid())
+        inputhash.insert(handle, userinput);
+        actualuserinput = userinput;
+
+        if(!actualuserinput->isValid())
             qDebug() << "failed create object /Browser/IWebPageWindow*/IUserInput";
 
-        connect(userinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
+        connect(actualuserinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -213,6 +218,7 @@ void BrowserDbus::destroyPageWindow(qlonglong windowhandle) {
         conn::brw::ERROR_IDS ret = reply.value();
 
         webpagehash.remove(windowhandle);
+        inputhash.remove(windowhandle);
         handlelist.removeOne(windowhandle);
 
         qDebug() << "ERROR_IDS " << ret;
@@ -253,7 +259,7 @@ void BrowserDbus::PageWindowCreated(qlonglong handle, conn::brw::ERROR_IDS resul
 void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue) {
     qDebug() << __PRETTY_FUNCTION__ << a_eResult << a_strInputValue;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS> reply = userinput->inputText(a_eResult, a_strInputValue);
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualuserinput->inputText(a_eResult, a_strInputValue);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();

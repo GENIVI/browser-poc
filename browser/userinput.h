@@ -15,10 +15,13 @@
 #define USERINPUT_H
 
 #include <QObject>
+#include <QDBusContext>
 
 #include "../common/browserdefs.h"
 
-class userinput : public QObject
+
+
+class userinput : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
@@ -29,6 +32,7 @@ signals:
                      conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength,
                      int a_s32Max, int a_s32Min, int a_s32Step);
     void inputText(QString input);
+    void setOutputWebview(QString path);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue);

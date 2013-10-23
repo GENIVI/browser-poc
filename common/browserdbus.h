@@ -97,6 +97,7 @@ private:
     conn::brw::IUserInput *userinput;
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IWebPageWindow *actualtab;
+    conn::brw::IUserInput *actualuserinput;
     QList<conn::brw::OBJECT_HANDLE> handlelist;
     conn::brw::IBrowser *browser;
     QString m_title;
@@ -110,6 +111,7 @@ private:
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
     void registertypes();
     QHash<conn::brw::OBJECT_HANDLE, conn::brw::IWebPageWindow *> webpagehash;
+    QHash<conn::brw::OBJECT_HANDLE, conn::brw::IUserInput *> inputhash;
 };
 
 #endif // BROWSERDBUS_H

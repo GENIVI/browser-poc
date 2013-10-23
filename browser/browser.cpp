@@ -70,11 +70,15 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 void browser::setView(QString viewpath) {
     qDebug() << __PRETTY_FUNCTION__ << viewpath;
 
-    wpw->webitem = webviewhash.value(viewpath);
+    if(viewpath.contains("/IUserInput"))
+        wpw->webitem = webviewhash.value(viewpath.remove("/IUserInput"));
+    else
+        wpw->webitem = webviewhash.value(viewpath);
 }
 
-
 void browser::inputText(QString input) {
+    qDebug() << __PRETTY_FUNCTION__ << input;
+
     wpw->webitem->setProperty("input", input);
     wpw->webitem->metaObject()->invokeMethod(wpw->webitem, "inputText");
 }

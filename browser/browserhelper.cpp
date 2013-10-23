@@ -62,6 +62,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     br->ui = ui;
 
     connect(wpw, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
+    connect(ui, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
 }
 
 void browserhelper::registertypes() {
