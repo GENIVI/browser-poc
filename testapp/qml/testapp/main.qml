@@ -18,19 +18,32 @@ ApplicationWindow {
         width: parent.width
         height: 40
 
+        Rectangle {
+            width: parent.width
+            height: 2
+            color: "black"
+            anchors.bottom: parent.bottom
+        }
+        Text {
+            id: instancetxt
+            anchors.left: parent.left
+            anchors.leftMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr("Instance Id:")
+        }
         TextField {
             id: inputstring
             width: 30
             height: 30
             text: "1"
-            anchors.left: parent.left
-            anchors.leftMargin: 20
-            anchors.verticalCenter: parent.verticalCenter
             font.pixelSize: 14
+            anchors.left: instancetxt.right
+            anchors.leftMargin: 3
+            anchors.verticalCenter: parent.verticalCenter
         }
-
         Button {
-            width: 80
+            id: connectbtn
+            width: 70
             height: inputstring.height
             anchors.top: inputstring.top
             anchors.left: inputstring.right
@@ -38,13 +51,74 @@ ApplicationWindow {
             text: "Connect"
             onClicked: browserinterface.connectdbussession(inputstring.text)
         }
+        Component {
+            id: hallo
+            BookmarkManager{}
+        }
+
+        Text {
+            id: tabs
+            anchors.left: connectbtn.right
+            anchors.leftMargin: 30
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr("Tabs:")
+            visible: browserinterface.connected
+        }
+        Button {
+            id: tab1
+            width: 30
+            height: width
+            anchors.left: tabs.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: "1"
+            onClicked: browserinterface.selectTab(1)
+            visible: browserinterface.connected
+        }
+        Button {
+            id: tab2
+            width: 30
+            height: width
+            anchors.left: tab1.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: "2"
+            onClicked: browserinterface.selectTab(2)
+            visible: browserinterface.connected
+        }
+        Button {
+            id: tab3
+            width: 30
+            height: width
+            anchors.left: tab2.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: "3"
+            onClicked: browserinterface.selectTab(3)
+            visible: browserinterface.connected
+        }
+        Button {
+            id: tab4
+            width: 30
+            height: width
+            anchors.left: tab3.right
+            anchors.leftMargin: 10
+            anchors.verticalCenter: parent.verticalCenter
+            text: "4"
+            onClicked: browserinterface.selectTab(4)
+            visible: browserinterface.connected
+        }
     }
 
     TabView {
+        id: tabview
         anchors.top: header.bottom
+        anchors.topMargin: 3
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
+
+        visible: browserinterface.connected
 
         Tab {
             id: browser

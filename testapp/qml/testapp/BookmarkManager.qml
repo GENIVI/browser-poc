@@ -17,10 +17,10 @@ Item {
         TextField {
             id: typeadditem
             width: 50
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "1"
@@ -38,7 +38,7 @@ Item {
             anchors.top: typeadditem.top
             anchors.left: typeadditem.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "folder path"
@@ -52,7 +52,7 @@ Item {
             anchors.top: folderpathadditem.top
             anchors.left: folderpathadditem.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "title"
@@ -66,7 +66,7 @@ Item {
             anchors.top: typeadditemsubtext.bottom
             anchors.topMargin: 10
             anchors.left: typeadditem.left
-            font.pixelSize: 20
+            font.pixelSize: 16
             text: "http://"
         }
         Text {
@@ -81,7 +81,7 @@ Item {
             anchors.top: urladditem.top
             anchors.left: urladditem.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "icon path"
@@ -95,7 +95,7 @@ Item {
             anchors.top: iconpathadditem.top
             anchors.left: iconpathadditem.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "thumbnail path"
@@ -124,10 +124,10 @@ Item {
         TextField {
             id: uiddeleteitem
             width: 50
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "1"
@@ -159,10 +159,10 @@ Item {
         TextField {
             id: typedeleteall
             width: 50
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "1"
@@ -195,10 +195,10 @@ Item {
         TextField {
             id: folderpathgetitems
             width: 150
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "folder path"
@@ -212,7 +212,7 @@ Item {
             anchors.top: folderpathgetitems.top
             anchors.left: folderpathgetitems.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "1"
@@ -243,7 +243,7 @@ Item {
             anchors.top: sortinggetitems.top
             anchors.left: sortinggetitems.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         Text {
             text: "start index"
@@ -257,7 +257,7 @@ Item {
             anchors.top: startindexgetitems.top
             anchors.left: startindexgetitems.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
             value: 1
         }
         Text {

@@ -17,7 +17,7 @@ Item {
         Button {
             id: buttonback
             width: 130
-            height: 50
+            height: 40
             text: "Back"
             anchors.left: parent.left
             anchors.leftMargin: 10
@@ -26,7 +26,7 @@ Item {
         Button {
             id: buttonforward
             width: 130
-            height: 50
+            height: buttonback.height
             anchors.top: buttonback.top
             anchors.left: buttonback.right
             anchors.leftMargin: 20
@@ -36,7 +36,7 @@ Item {
         Button {
             id: buttonreload
             width: 130
-            height: 50
+            height: buttonback.height
             anchors.top: buttonback.top
             anchors.left: buttonforward.right
             anchors.leftMargin: 20
@@ -46,7 +46,7 @@ Item {
         Button {
             id: buttonstop
             width: 130
-            height: 50
+            height: buttonback.height
             anchors.top: buttonback.top
             anchors.left: buttonreload.right
             anchors.leftMargin: 20
@@ -66,10 +66,10 @@ Item {
         TextField {
             id: inputfieldurl
             width: 400
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             text: "http://"
         }
         Text {
@@ -99,7 +99,7 @@ Item {
         Button {
             id: buttongetvisible
             width: 130
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: "Get Visible"
@@ -109,7 +109,7 @@ Item {
         Button {
             id: buttongetgeometry
             width: 130
-            height: 50
+            height: buttongetvisible.height
             anchors.top: buttongetvisible.top
             anchors.left: buttongetvisible.right
             anchors.leftMargin: 20
@@ -120,7 +120,7 @@ Item {
         Button {
             id: buttongetcontentsize
             width: 130
-            height: buttongetgeometry.height
+            height: buttongetvisible.height
             anchors.top: buttongetgeometry.top
             anchors.left: buttongetgeometry.right
             anchors.leftMargin: 20
@@ -130,7 +130,7 @@ Item {
 
         Button {
             width: 130
-            height: buttongetgeometry.height
+            height: buttongetvisible.height
             anchors.top: buttongetgeometry.top
             anchors.left: buttongetcontentsize.right
             anchors.leftMargin: 20
@@ -151,10 +151,10 @@ Item {
         TextField {
             id: inputfieldx
             width: 50
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "0"
@@ -171,7 +171,7 @@ Item {
             anchors.top: inputfieldx.top
             anchors.left: inputfieldx.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
+            font.pixelSize: 16
             maximumLength: 3
             inputMask: "999"
             text: "0"
@@ -188,9 +188,9 @@ Item {
             anchors.top: inputfieldx.top
             anchors.left: inputfieldy.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
-            maximumLength: 3
-            inputMask: "999"
+            font.pixelSize: 16
+            maximumLength: 4
+            inputMask: "9999"
             text: "1024"
         }
         Text {
@@ -205,8 +205,7 @@ Item {
             anchors.top: inputfieldx.top
             anchors.left: inputfieldwidth.right
             anchors.leftMargin: 20
-            font.pixelSize: 20
-            maximumLength: 3
+            font.pixelSize: 16
             inputMask: "999"
             text: "688"
         }
@@ -238,7 +237,7 @@ Item {
         ComboBox {
             id: combo
             width: 70
-            height: 50
+            height: 40
             model: [ "True", "False" ]
             anchors.left: parent.left
             anchors.leftMargin: 10
@@ -314,7 +313,7 @@ Item {
         ComboBox {
             id: scrolltype
             width: 120
-            height: 50
+            height: 40
             model: [ "ST_SYMBOL", "ST_PAGE", "ST_LINK" ]
             anchors.left: buttonright.right
             anchors.leftMargin: 20

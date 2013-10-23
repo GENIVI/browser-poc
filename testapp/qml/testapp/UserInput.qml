@@ -17,10 +17,10 @@ Item {
         TextField {
             id: inputstring
             width: 400
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
         }
         ComboBox {
             id: combo

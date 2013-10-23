@@ -17,10 +17,10 @@ Item {
         TextField {
             id: deviceidcreate
             width: 50
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             inputMask: "999"
             text: "1"
         }
@@ -110,10 +110,10 @@ Item {
         TextField {
             id: windowhandledestroy
             width: 150
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
-            font.pixelSize: 20
+            font.pixelSize: 16
             inputMask: "999999999999"
         }
         Text {
@@ -143,7 +143,7 @@ Item {
         Button {
             id: button
             width: 130
-            height: 50
+            height: 40
             anchors.left: parent.left
             anchors.leftMargin: 10
             text: "Get Page Window"
