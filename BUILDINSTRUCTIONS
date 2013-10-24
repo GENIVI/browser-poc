@@ -4,13 +4,16 @@ Build instructions
 System requirements
 -------------------
 
+Development platform is Linux.
+
 To build all applications, it's required to use Qt 5.1 (or later).
 See http://qt-project.org/downloads#qt-lib for download.
 
 For the browser application and the demoUI application Qt 5.0 would be sufficient.
-The testapp application requires Qt 5.1, because the use of Qt Quick Controls.
+The testapp application requires Qt 5.1, because of the use of Qt Quick Controls 
+(http://qt-project.org/doc/qt-5.1/qtquickcontrols/qtquickcontrols-index.html).
 
-For building Qt from source, all Qt Essential modules and the Qt Declarative module are necessary
+If building Qt from source, all Qt Essential modules and the Qt Declarative module are necessary
 (see http://qt-project.org/doc/qt-5.1/qtdoc/qtmodules.html).
 
 
