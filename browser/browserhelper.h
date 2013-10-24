@@ -15,7 +15,6 @@
 #define BROWSERHELPER_H
 
 #include <QObject>
-#include <QTimer>
 
 class webpagewindow;
 class QDBusConnection;
@@ -29,7 +28,6 @@ public:
 private:
     QDBusConnection *connection;
     webpagewindow *wpw;
-    QTimer *dummytimer;
     void registertypes();
 };
 
