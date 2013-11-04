@@ -61,7 +61,7 @@ ApplicationWindow {
             anchors.left: connectbtn.right
             anchors.leftMargin: 30
             anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("Tabs:")
+            text: qsTr("Window:")
             visible: browserinterface.connected
         }
         Button {
