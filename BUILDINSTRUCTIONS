@@ -30,3 +30,8 @@ To build the separate applications on its own, run
   cd <browser|demoui|testapp>
   <path_to_qt_installation>/bin/qmake <browser|demoui|testapp>.pro
   make
+
+Run
+---
+
+First start the browser application, then start the demoUI or test app. See documentation on wiki for details.
