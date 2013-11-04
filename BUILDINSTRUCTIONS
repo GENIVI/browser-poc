@@ -34,4 +34,6 @@ To build the separate applications on its own, run
 Run
 ---
 
-First start the browser application, then start the demoUI or test app. See documentation on wiki for details.
+Always start the browser application first, then start the demoUI or test application. 
+
+For more detailed information about usage and overview, see documentation on the Genivi wiki.
