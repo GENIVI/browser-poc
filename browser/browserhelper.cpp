@@ -25,7 +25,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
 {
     registertypes();
 
-    *connection = QDBusConnection::sessionBus();
+    connection = new QDBusConnection(QDBusConnection::sessionBus());
     if(!connection->isConnected()) {
         qDebug() << "failed to connect to dbus";
         exit(1);
