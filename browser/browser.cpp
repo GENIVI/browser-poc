@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QDBusConnection>
 #include <QDeclarativeView>
+#include <QFile>
 
 browser::browser(QObject *parent) :
     QObject(parent)
@@ -28,14 +29,27 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     Q_UNUSED(a_eDeviceId);
 
     QDeclarativeView *webview = new QDeclarativeView();
-    webview->setSource(QUrl::fromLocalFile("qml/browser/main.qml"));
+    QString qmlurl = "qml/browser/main.qml";
+    QFile qmlfile (qmlurl);
+    QGraphicsObject *rootqmlobject;
+
+    if(!qmlfile.exists()) {
+        qDebug() << "Can not find QML file:" << qmlurl;
+        exit(1);
+    }
+
+    webview->setSource(qmlurl);
     webview->setWindowFlags(Qt::CustomizeWindowHint);
     webview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
     webview->show();
     a_hPageWindowHandle = webview->winId();
     windowhash.insert(a_hPageWindowHandle, webview->window());
-    QGraphicsObject *rootqmlobject;
     rootqmlobject = webview->rootObject();
+
+    if (!rootqmlobject) {
+        qDebug() << "Root QML Object is NULL at " << __FILE__ << ":" << __LINE__ << "!";
+        exit (1);
+    }
     wpw->webitem = rootqmlobject;
 
     connect(rootqmlobject, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
