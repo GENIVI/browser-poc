@@ -221,11 +221,8 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
 
     emit setOutputWebview(message().path());
 
-    bool ret = webitem->metaObject()->invokeMethod(webitem, "pagestop");
-    if(ret)
-        return conn::brw::EID_NO_ERROR;
-    else
-        return conn::brw::EID_INVALID_ARGUMENT;
+    webitem->pageStop();
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {

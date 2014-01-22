@@ -131,4 +131,6 @@ void TestBrowser::testReload ()
 	QVERIFY(bvi.getURL().contains("pelagicore"));
 }
 
+//void TestBrowser::testStop () {} //FIXME: How should this be tested..?
+
 QTEST_MAIN (TestBrowser);

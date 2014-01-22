@@ -16,7 +16,8 @@ public:
     const QString getTitle() { return m_webview.title(); }
     void goBack() { m_webview.back(); }
     void goForward() { m_webview.forward(); }
-    void pageReload() {m_webview.reload(); }
+    void pageReload() { m_webview.reload(); }
+    void pageStop() { m_webview.stop(); }
 
 signals:
     void pageLoadStarted();
