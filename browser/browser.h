@@ -20,6 +20,7 @@
 #include "../common/browserdefs.h"
 #include "webpagewindow.h"
 #include "userinput.h"
+#include "browserview.h"
 
 class browser : public QObject, protected QDBusContext
 {
@@ -46,7 +47,8 @@ public Q_SLOTS:
     
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
-    QHash<QString, QGraphicsObject *> webviewhash;
+    QHash<QString, BrowserView *> webviewhash;
+    BrowserView *bvi;
 };
 
 #endif // BROWSER_H

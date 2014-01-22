@@ -34,8 +34,7 @@ void webpagewindow::browserStartLoading() {
 void webpagewindow::reportprogress() {
     qDebug() << __PRETTY_FUNCTION__;
     int progress;
-
-    progress = webitem->property("progress").toFloat() * 100;
+    progress = webitem->getProgress();
 
     qDebug() << progress;
     emit onLoadProgress(progress);
@@ -45,10 +44,10 @@ void webpagewindow::reportprogress() {
 }
 
 void webpagewindow::getUrlTitle() {
-    qDebug() << webitem->property("url") << webitem->property("title");
+    qDebug() << webitem->getURL() << webitem->getTitle();
 
-    localurl = webitem->property("url").toString();
-    localtitle = webitem->property("title").toString();
+    localurl = webitem->getURL();
+    localtitle = webitem->getTitle();
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
@@ -56,11 +55,8 @@ conn::brw::ERROR_IDS webpagewindow::back() {
 
     emit setOutputWebview(message().path());
 
-    bool ret = webitem->metaObject()->invokeMethod(webitem, "goBack");
-    if(ret)
-        return conn::brw::EID_NO_ERROR;
-    else
-        return conn::brw::EID_INVALID_ARGUMENT;
+    webitem->goBack();
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::forward() {
@@ -68,11 +64,8 @@ conn::brw::ERROR_IDS webpagewindow::forward() {
 
     emit setOutputWebview(message().path());
 
-    bool ret = webitem->metaObject()->invokeMethod(webitem, "goForward");
-    if(ret)
-        return conn::brw::EID_NO_ERROR;
-    else
-        return conn::brw::EID_INVALID_ARGUMENT;
+    webitem->goForward();
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
@@ -84,7 +77,7 @@ conn::brw::ERROR_IDS webpagewindow::load(const QString &a_Url) {
 
     emit setOutputWebview(message().path());
 
-    bool ret = webitem->setProperty("url", a_Url);
+    bool ret = webitem->load(a_Url);
     if(ret)
         return conn::brw::EID_NO_ERROR;
     else
@@ -96,11 +89,8 @@ conn::brw::ERROR_IDS webpagewindow::reload() {
 
     emit setOutputWebview(message().path());
 
-    bool ret = webitem->metaObject()->invokeMethod(webitem, "pagereload");
-    if(ret)
-        return conn::brw::EID_NO_ERROR;
-    else
-        return conn::brw::EID_INVALID_ARGUMENT;
+    webitem->pageReload();
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserActions &a_browserActionsState) {
@@ -147,10 +137,8 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
 
     emit setOutputWebview(message().path());
 
-    a_sRect.i32X = webitem->property("x").toInt();
-    a_sRect.i32Y = webitem->property("y").toInt();
-    a_sRect.i32Width = webitem->property("width").toInt();
-    a_sRect.i32Height = webitem->property("height").toInt();
+    webitem->setGeometry(a_sRect.i32X, a_sRect.i32Y, a_sRect.i32Width,
+                         a_sRect.i32Height);
 
     return conn::brw::EID_NO_ERROR;
 }
@@ -160,10 +148,8 @@ conn::brw::ERROR_IDS webpagewindow::setGeometry(const conn::brw::Rect & a_sRect)
 
     emit setOutputWebview(message().path());
 
-    webitem->setProperty("x", a_sRect.i32X);
-    webitem->setProperty("y", a_sRect.i32Y);
-    webitem->setProperty("width", a_sRect.i32Width);
-    webitem->setProperty("height", a_sRect.i32Height);
+    webitem->setGeometry(a_sRect.i32X, a_sRect.i32Y, a_sRect.i32Width,
+                         a_sRect.i32Height);
 
     return conn::brw::EID_NO_ERROR;
 }

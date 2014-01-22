@@ -19,6 +19,7 @@
 #include <QDBusContext>
 
 #include "../common/browserdefs.h"
+#include "browserview.h"
 
 class webpagewindow : public QObject, protected QDBusContext
 {
@@ -28,7 +29,7 @@ public:
 
     QString localurl;
     QString localtitle;
-    QGraphicsObject *webitem;
+    BrowserView *webitem;
 
 signals:
     void urlTitleReady();

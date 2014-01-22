@@ -1,5 +1,6 @@
 
-QT += dbus declarative
+QT += dbus declarative webkitwidgets
+CONFIG += qt debug
 
 my_dbus_bookmark_adaptors.files += ../common/IBookmarkManager.xml
 my_dbus_bookmark_adaptors.header_flags = -i bookmarkmanager.h -i ../common/browserdefs.h -l bookmarkmanager
@@ -24,6 +25,7 @@ SOURCES += main.cpp \
     webpagewindow.cpp \
     browser.cpp \
     browserhelper.cpp \
+    browserview.cpp \
     ../common/bookmark.cpp \
 
 HEADERS += \
@@ -32,6 +34,7 @@ HEADERS += \
     webpagewindow.h \
     browser.h \
     browserhelper.h \
+    browserview.h \
     ../common/bookmark.h \
     ../common/browserdefs.h \
 

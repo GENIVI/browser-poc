@@ -11,11 +11,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-#include "browser.h"
 #include <QDebug>
 #include <QDBusConnection>
-#include <QDeclarativeView>
+#include <QGraphicsView>
 #include <QFile>
+
+#include "browser.h"
+#include "browserview.h"
 
 browser::browser(QObject *parent) :
     QObject(parent)
@@ -28,41 +30,27 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     Q_UNUSED(a_eDeviceId);
 
-    QDeclarativeView *webview = new QDeclarativeView();
-    QString qmlurl = "qml/browser/main.qml";
-    QFile qmlfile (qmlurl);
-    QGraphicsObject *rootqmlobject;
+    bvi = new BrowserView();
+    bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
+                         a_oGeometry.i32Height);
+    bvi->load("http://www.pelagicore.com");
+    bvi->show();
+    a_hPageWindowHandle = bvi->winId();
 
-    if(!qmlfile.exists()) {
-        qDebug() << "Can not find QML file:" << qmlurl;
-        exit(1);
-    }
+    windowhash.insert(a_hPageWindowHandle, bvi->window());
 
-    webview->setSource(qmlurl);
-    webview->setWindowFlags(Qt::CustomizeWindowHint);
-    webview->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width, a_oGeometry.i32Height);
-    webview->show();
-    a_hPageWindowHandle = webview->winId();
-    windowhash.insert(a_hPageWindowHandle, webview->window());
-    rootqmlobject = webview->rootObject();
-
-    if (!rootqmlobject) {
-        qDebug() << "Root QML Object is NULL at " << __FILE__ << ":" << __LINE__ << "!";
-        exit (1);
-    }
-    wpw->webitem = rootqmlobject;
-
-    connect(rootqmlobject, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
-    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
-    connect(rootqmlobject, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
-    connect(rootqmlobject, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+    wpw->webitem = bvi;
+    connect(bvi, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
+    connect(bvi, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
+    connect(bvi, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
+    connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
     connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
     connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
 
-    webviewhash.insert(*webpagewindowservice, rootqmlobject);
+    webviewhash.insert(*webpagewindowservice, bvi);
 
     QDBusConnection conn = connection();
     if(!conn.registerObject(*webpagewindowservice, wpw)) {
