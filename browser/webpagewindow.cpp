@@ -15,6 +15,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QDBusMessage>
+#include <QRect>
 
 webpagewindow::webpagewindow(QObject *parent) :
     QObject(parent)
@@ -137,8 +138,11 @@ conn::brw::ERROR_IDS webpagewindow::getGeometry(conn::brw::Rect &a_sRect) {
 
     emit setOutputWebview(message().path());
 
-    webitem->setGeometry(a_sRect.i32X, a_sRect.i32Y, a_sRect.i32Width,
-                         a_sRect.i32Height);
+    QRect rect = webitem->geometry();
+    a_sRect.i32X = rect.x();
+    a_sRect.i32Y = rect.y();
+    a_sRect.i32Width = rect.width();
+    a_sRect.i32Height = rect.height();
 
     return conn::brw::EID_NO_ERROR;
 }
@@ -159,44 +163,36 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
 
     emit setOutputWebview(message().path());
 
-    int i = 0;
-    int scrollheight = (webitem->property("height").toInt())-(webitem->property("contentheight").toInt());
-    int scrollwidth = (webitem->property("width").toInt())-(webitem->property("contentwidth").toInt());
+    BrowserView::ScrollDirection direction = BrowserView::SCROLLDIRECTION_INVALID;
+    BrowserView::ScrollType      type      = BrowserView::SCROLLTYPE_INVALID;
 
-    int scrolltype = 50;
-    if(a_eScrollType == conn::brw::ST_PAGE) {
-        if(a_eScrollDirection == conn::brw::SD_BOTTOM || a_eScrollDirection == conn::brw::SD_TOP)
-            scrolltype = webitem->property("height").toInt();
-        else
-            scrolltype = webitem->property("width").toInt();
-    }
+    if(a_eScrollType == conn::brw::ST_PAGE)
+        type = BrowserView::SCROLLTYPE_PAGESTEP;
 
     switch (a_eScrollDirection) {
-    case conn::brw::SD_TOP:
-        i = webitem->property("y").toInt();
-        if(i != 0)
-            webitem->setProperty("y", i + scrolltype);
-        break;
-    case conn::brw::SD_BOTTOM:
-        i = webitem->property("y").toInt();
-        if(i > scrollheight)
-            webitem->setProperty("y", i - scrolltype);
-        break;
-    case conn::brw::SD_RIGHT:
-        i = webitem->property("x").toInt();
-        if(i > scrollwidth)
-            webitem->setProperty("x", i - scrolltype);
-        break;
-    case conn::brw::SD_LEFT:
-        i = webitem->property("x").toInt();
-        if(i != 0)
-            webitem->setProperty("x", i + scrolltype);
-        break;
-    default:
-        break;
+        case conn::brw::SD_TOP:
+            direction = BrowserView::SCROLLDIRECTION_UP;
+            break;
+        case conn::brw::SD_BOTTOM:
+            direction = BrowserView::SCROLLDIRECTION_DOWN;
+            break;
+        case conn::brw::SD_RIGHT:
+            direction = BrowserView::SCROLLDIRECTION_RIGHT;
+            break;
+        case conn::brw::SD_LEFT:
+            direction = BrowserView::SCROLLDIRECTION_LEFT;
+            break;
+        default:
+            break;
     }
 
-    return conn::brw::EID_NO_ERROR;
+    webitem->scroll(direction, type);
+    if (direction != BrowserView::SCROLLDIRECTION_INVALID &&
+        type      != BrowserView::SCROLLTYPE_INVALID) {
+        return conn::brw::EID_NO_ERROR;
+    } else {
+        return conn::brw::EID_INVALID_ARGUMENT;
+    }
 }
 
 bool webpagewindow::getVisible() {

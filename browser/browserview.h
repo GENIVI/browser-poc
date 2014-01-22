@@ -10,6 +10,19 @@ class BrowserView : public QGraphicsView
      Q_OBJECT
 public:
     BrowserView();
+    enum ScrollDirection {
+        SCROLLDIRECTION_UP,
+        SCROLLDIRECTION_DOWN,
+        SCROLLDIRECTION_LEFT,
+        SCROLLDIRECTION_RIGHT,
+        SCROLLDIRECTION_INVALID
+    };
+
+    enum ScrollType {
+        SCROLLTYPE_SINGLESTEP,
+        SCROLLTYPE_PAGESTEP,
+        SCROLLTYPE_INVALID
+    };
     bool load(const QString &a_Url);
     int getProgress() { return m_currentProgress; }
     QString getURL() { return m_webview.url().toString(); }
@@ -18,6 +31,7 @@ public:
     void goForward() { m_webview.forward(); }
     void pageReload() { m_webview.reload(); }
     void pageStop() { m_webview.stop(); }
+    void scroll (BrowserView::ScrollDirection dir, BrowserView::ScrollType type);
 
 signals:
     void pageLoadStarted();
