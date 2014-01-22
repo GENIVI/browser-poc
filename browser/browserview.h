@@ -1,13 +1,9 @@
 #ifndef BROWSERVIEW_H
 #define BROWSERVIEW_H
 
-#include <QGraphicsWidget>
 #include <QGraphicsWebView>
-#include <QGraphicsScene>
-#include <QDebug>
 #include <QGraphicsView>
 #include <QResizeEvent>
-#include <QRect>
 
 class BrowserView : public QGraphicsView
 {
@@ -28,11 +24,7 @@ signals:
     void pageLoadProgress(int);
 
 protected:
-    virtual void resizeEvent (QResizeEvent *event) {
-        int w = event->size().width();
-        int h = event->size().height();
-        m_webview.setGeometry (QRect(0,0,w,h));
-    }
+    virtual void resizeEvent (QResizeEvent *event);
 
 protected slots:
     void loadProgress(int);

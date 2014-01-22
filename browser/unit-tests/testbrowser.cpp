@@ -5,13 +5,13 @@
 #include <QGraphicsView>
 
 #include "testbrowser.h"
-#include "../browserviewportitem.h"
+#include "../browserview.h"
 
 /////////////// Test cases  ///////////////
 
 void TestBrowser::testCanCreate()
 {
-	BrowserViewportItem *bvi = new BrowserViewportItem();
+	BrowserView *bvi = new BrowserView();
 	QVERIFY (bvi);
 }
 
@@ -21,7 +21,7 @@ void TestBrowser::testCanLoadWebpage()
 	FIXME: It seems like the pageLoadStarted signal is not triggered
 	correctly
 	*/
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 
 	bvi.show();
 
@@ -32,7 +32,7 @@ void TestBrowser::testCanLoadWebpage()
 
 void TestBrowser::testCanFinishLoadingWebpage()
 {
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 
 	bvi.show();
 
@@ -43,7 +43,7 @@ void TestBrowser::testCanFinishLoadingWebpage()
 
 void TestBrowser::testProgressIncreases ()
 {
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 	QSignalSpy spy (&bvi, SIGNAL(pageLoadProgress(int)));
 
 	bvi.load("http://www.pelagicore.com");
@@ -56,7 +56,7 @@ void TestBrowser::testProgressIncreases ()
 
 void TestBrowser::testBack ()
 {
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 	bvi.show();
 
 	bvi.load("http://www.pelagicore.com");
@@ -82,7 +82,7 @@ void TestBrowser::testBack ()
 
 void TestBrowser::testForward ()
 {
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 	bvi.show();
 
 	bvi.load("http://www.pelagicore.com");
@@ -114,7 +114,7 @@ void TestBrowser::testForward ()
 
 void TestBrowser::testReload ()
 {
-	BrowserViewportItem bvi;
+	BrowserView bvi;
 	bvi.show();
 
 	bvi.load("http://www.pelagicore.com");

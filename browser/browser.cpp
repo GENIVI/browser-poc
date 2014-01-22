@@ -13,7 +13,6 @@
 
 #include <QDebug>
 #include <QDBusConnection>
-#include <QGraphicsView>
 #include <QFile>
 
 #include "browser.h"

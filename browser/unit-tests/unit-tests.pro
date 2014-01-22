@@ -9,5 +9,5 @@ INCLUDEPATH += .
 QT += dbus declarative webkitwidgets
 
 # Input
-HEADERS += testbrowser.h ../browserviewportitem.h
-SOURCES += testbrowser.cpp ../browserviewportitem.cpp
+HEADERS += testbrowser.h ../browserview.h
+SOURCES += testbrowser.cpp ../browserview.cpp

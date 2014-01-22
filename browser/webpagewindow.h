@@ -15,7 +15,6 @@
 #define WEBPAGEWINDOW_H
 
 #include <QObject>
-#include <QGraphicsObject>
 #include <QDBusContext>
 
 #include "../common/browserdefs.h"

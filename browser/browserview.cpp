@@ -11,16 +11,23 @@ BrowserView::BrowserView()
     connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
     connect(&m_webview, SIGNAL (loadFinished(bool)), this, SIGNAL (pageLoadFinished (bool)));
     connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
+
 }
 
 bool BrowserView::load(const QString &a_Url)
 {
-	m_webview.load(a_Url);
-	return true;
+    m_webview.load(a_Url);
+    return true;
 }
 
 void BrowserView::loadProgress(int progress)
 {
-	m_currentProgress = progress;
-	emit pageLoadProgress (progress);
+    m_currentProgress = progress;
+    emit pageLoadProgress (progress);
+}
+
+void BrowserView::resizeEvent (QResizeEvent *event) {
+    int w = event->size().width();
+    int h = event->size().height();
+    m_webview.setGeometry (QRect(0,0,w,h));
 }
