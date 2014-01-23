@@ -163,36 +163,9 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
 
     emit setOutputWebview(message().path());
 
-    BrowserView::ScrollDirection direction = BrowserView::SCROLLDIRECTION_INVALID;
-    BrowserView::ScrollType      type      = BrowserView::SCROLLTYPE_INVALID;
 
-    if(a_eScrollType == conn::brw::ST_PAGE)
-        type = BrowserView::SCROLLTYPE_PAGESTEP;
-
-    switch (a_eScrollDirection) {
-        case conn::brw::SD_TOP:
-            direction = BrowserView::SCROLLDIRECTION_UP;
-            break;
-        case conn::brw::SD_BOTTOM:
-            direction = BrowserView::SCROLLDIRECTION_DOWN;
-            break;
-        case conn::brw::SD_RIGHT:
-            direction = BrowserView::SCROLLDIRECTION_RIGHT;
-            break;
-        case conn::brw::SD_LEFT:
-            direction = BrowserView::SCROLLDIRECTION_LEFT;
-            break;
-        default:
-            break;
-    }
-
-    webitem->scroll(direction, type);
-    if (direction != BrowserView::SCROLLDIRECTION_INVALID &&
-        type      != BrowserView::SCROLLTYPE_INVALID) {
-        return conn::brw::EID_NO_ERROR;
-    } else {
-        return conn::brw::EID_INVALID_ARGUMENT;
-    }
+    webitem->scroll(a_eScrollDirection, a_eScrollType);
+    return conn::brw::EID_NO_ERROR;
 }
 
 bool webpagewindow::getVisible() {
