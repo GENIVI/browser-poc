@@ -1,5 +1,6 @@
 #include <QDebug>
 #include <QWebFrame>
+#include <QCoreApplication>
 
 #include "browserview.h"
 
@@ -11,6 +12,8 @@ BrowserView::BrowserView()
     this->scene()->addItem (&m_webview);
 
     this->load("http://www.bmw.com");
+
+    setWindowFlags(Qt::FramelessWindowHint);
 
     connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
     connect(&m_webview, SIGNAL (loadFinished(bool)), this, SIGNAL (pageLoadFinished (bool)));
@@ -58,6 +61,13 @@ void BrowserView::scroll (BrowserView::ScrollDirection dir, BrowserView::ScrollT
     if (m_webview.page() && m_webview.page()->mainFrame())
         m_webview.page()->mainFrame()->scroll(stepSize*xMultiplier,
                                               stepSize*yMultiplier);
+}
+
+void BrowserView::inputText (QString input)
+{
+	QInputMethodEvent event;
+	event.setCommitString(input);
+	QCoreApplication::sendEvent(m_webview.page(), &event);
 }
 
 void BrowserView::resizeEvent (QResizeEvent *event) {

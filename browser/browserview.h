@@ -32,6 +32,7 @@ public:
     void pageReload() { m_webview.reload(); }
     void pageStop() { m_webview.stop(); }
     void scroll (BrowserView::ScrollDirection dir, BrowserView::ScrollType type);
+    void inputText (QString input);
 
 signals:
     void pageLoadStarted();

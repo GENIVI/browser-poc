@@ -79,8 +79,7 @@ void browser::setView(QString viewpath) {
 void browser::inputText(QString input) {
     qDebug() << __PRETTY_FUNCTION__ << input;
 
-    wpw->webitem->setProperty("input", input);
-    wpw->webitem->metaObject()->invokeMethod(wpw->webitem, "inputText");
+    wpw->webitem->inputText(input);
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {
