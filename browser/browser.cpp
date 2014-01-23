@@ -29,7 +29,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     Q_UNUSED(a_eDeviceId);
 
-    bvi = new BrowserView();
+    BrowserView *bvi = new BrowserView();
     bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
                          a_oGeometry.i32Height);
     bvi->show();

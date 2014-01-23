@@ -48,7 +48,6 @@ public Q_SLOTS:
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
     QHash<QString, BrowserView *> webviewhash;
-    BrowserView *bvi;
 };
 
 #endif // BROWSER_H
