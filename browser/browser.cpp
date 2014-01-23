@@ -32,7 +32,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     bvi = new BrowserView();
     bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
                          a_oGeometry.i32Height);
-    bvi->load("http://www.pelagicore.com");
     bvi->show();
     a_hPageWindowHandle = bvi->winId();
 

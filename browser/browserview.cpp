@@ -10,6 +10,8 @@ BrowserView::BrowserView()
     }
     this->scene()->addItem (&m_webview);
 
+    this->load("http://www.bmw.com");
+
     connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
     connect(&m_webview, SIGNAL (loadFinished(bool)), this, SIGNAL (pageLoadFinished (bool)));
     connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
