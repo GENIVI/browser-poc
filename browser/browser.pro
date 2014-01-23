@@ -1,5 +1,5 @@
 
-QT += dbus declarative webkitwidgets
+QT += dbus webkitwidgets
 
 my_dbus_bookmark_adaptors.files += ../common/IBookmarkManager.xml
 my_dbus_bookmark_adaptors.header_flags = -i bookmarkmanager.h -i ../common/browserdefs.h -l bookmarkmanager

@@ -6,7 +6,7 @@ CONFIG += qtestlib
 TEMPLATE = app
 TARGET = unit-tests
 INCLUDEPATH += .
-QT += dbus declarative webkitwidgets
+QT += dbus webkitwidgets
 
 # Input
 HEADERS += testbrowser.h ../browserview.h
