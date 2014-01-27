@@ -123,12 +123,10 @@ conn::brw::ERROR_IDS webpagewindow::getContentSize(uint &a_u32Width, uint &a_u32
     qDebug() << __PRETTY_FUNCTION__;
 
     emit setOutputWebview(message().path());
+    QSize contentSize = webitem->contentSize();
 
-    uint width = webitem->property("contentWidth").toInt();
-    uint height = webitem->property("contentHeight").toInt();
-
-    a_u32Width = width;
-    a_u32Height = height;
+    a_u32Width = contentSize.width();
+    a_u32Height = contentSize.height();
 
     return conn::brw::EID_NO_ERROR;
 }

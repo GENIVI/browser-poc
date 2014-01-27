@@ -89,3 +89,8 @@ void BrowserView::resizeEvent (QResizeEvent *event) {
     int h = event->size().height();
     m_webview.setGeometry (QRect(0,0,w,h));
 }
+
+QSize BrowserView::contentSize()
+{
+    return this->viewport()->size();
+}

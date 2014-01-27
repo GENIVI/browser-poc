@@ -35,6 +35,7 @@ public:
     void pageStop() { m_webview.stop(); }
     void scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type);
     void inputText (QString input);
+    QSize contentSize();
 
 signals:
     void pageLoadStarted();
