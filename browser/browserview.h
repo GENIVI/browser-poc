@@ -17,8 +17,32 @@
 #include <QGraphicsWebView>
 #include <QGraphicsView>
 #include <QResizeEvent>
+#include <QWebElement>
+#include <QDebug>
 
 #include "../common/browserdefs.h"
+
+
+class InputHandler : public QObject {
+Q_OBJECT
+public slots:
+    void setCurrentFocus (const QWebElement &elem) {
+    emit onInputText (elem.attribute("name"), elem.attribute("value"),
+                      elem.attribute("type", "0").toInt(),
+                      elem.attribute("maxlength", "0").toInt(),
+                      elem.attribute("max", "0").toInt(),
+                      elem.attribute("min","0").toInt(),
+                      elem.attribute("step","0").toInt());
+    }
+    const QWebElement *currentFocus () { return m_elem; }
+
+signals:
+    void onInputText(QString name, QString value, int type, int maxlength,
+                     int max, int min, int step);
+
+private:
+    QWebElement *m_elem;
+};
 
 class BrowserView : public QGraphicsView
 {
@@ -41,17 +65,21 @@ signals:
     void pageLoadStarted();
     void pageLoadFinished(bool);
     void pageLoadProgress(int);
+    void onInputText(QString name, QString value, int type, int maxlength,
+                     int max, int min, int step);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
 
 protected slots:
     void loadProgress(int);
+    void loadFinished(bool);
 
 private:
-     QGraphicsWebView m_webview;
-     int m_currentProgress;
-
+    QGraphicsWebView m_webview;
+    InputHandler m_inputHandler;
+    int m_currentProgress;
 };
+
 
 #endif /* BROWSERVIEW_H */

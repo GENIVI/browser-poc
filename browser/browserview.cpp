@@ -30,8 +30,10 @@ BrowserView::BrowserView()
     setWindowFlags(Qt::FramelessWindowHint);
 
     connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
-    connect(&m_webview, SIGNAL (loadFinished(bool)), this, SIGNAL (pageLoadFinished (bool)));
+    connect(&m_webview, SIGNAL (loadFinished(bool)), this, SLOT   (loadFinished (bool)));
     connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
+    connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
+        this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -45,6 +47,22 @@ void BrowserView::loadProgress(int progress)
     m_currentProgress = progress;
     emit pageLoadProgress (progress);
 }
+
+void BrowserView::loadFinished(bool ok)
+{
+    // Inject some JS into the page, and hook it up to an object of ours, this
+    // allows us to detect when the user toggles an input field
+
+    m_webview.page()->mainFrame()->addToJavaScriptWindowObject("inputHandler", &m_inputHandler);
+
+    m_webview.page()->mainFrame()->evaluateJavaScript(
+    "document.addEventListener('focus', function(e){"
+    "    window.inputHandler.setCurrentFocus(e.target);"
+    "}, true);");
+
+    emit pageLoadFinished (ok);
+}
+
 void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type)
 {
     int stepSize = 50;
@@ -79,9 +97,9 @@ void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYP
 
 void BrowserView::inputText (QString input)
 {
-	QInputMethodEvent event;
-	event.setCommitString(input);
-	QCoreApplication::sendEvent(m_webview.page(), &event);
+    QInputMethodEvent event;
+    event.setCommitString(input);
+    QCoreApplication::sendEvent(m_webview.page(), &event);
 }
 
 void BrowserView::resizeEvent (QResizeEvent *event) {
