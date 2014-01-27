@@ -12,4 +12,6 @@ private slots:
 	void testBack();
 	void testForward();
 	void testReload();
+    void testGetTitle();
+    void testGetUrl();
 };

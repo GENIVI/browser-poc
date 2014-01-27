@@ -36,12 +36,56 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
+    <method name="getScrollPosition">
+      <arg name="retval" type="(i)" direction="out"/>
+      <arg name="a_u32ScrollPosX" type="u" direction="out"/>
+      <arg name="a_u32ScrollPosY" type="u" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="setScrollPosition">
+      <arg name="a_u32ScrollPosX" type="u" direction="in"/>
+      <arg name="a_u32ScrollPosY" type="u" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="getPageIcon">
+      <arg name="a_strIconPath" type="s" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <arg name="a_strIconFilePath" type="s" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="activate">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
     <method name="getVisible">
       <arg name="retval" type="b" direction="out"/>
     </method>
 
     <method name="setVisible">
       <arg name="a_bVisible" type="b" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
+    <method name="getTitle">
+      <arg name="retval" type="s" direction="out"/>
+    </method>
+
+    <method name="getUrl">
+      <arg name="retval" type="s" direction="out"/>
+    </method>
+
+    <method name="getZoomFactor">
+      <arg name="retval" type="d" direction="out"/>
+    </method>
+
+    <method name="setZoomFactor">
+      <arg name="a_fZoomFactor" type="d" direction="in"/>
       <arg name="retval" type="(i)" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
@@ -72,6 +116,11 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
+    <method name="select">
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
     <method name="scroll">
       <arg name="a_eScrollDirection" type="(i)" direction="in"/>
       <arg name="a_eScrollType" type="(i)" direction="in"/>
@@ -81,13 +130,32 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
-   <method name="getCurrentUrlTitle">
-       <arg name="retval" type="(i)" direction="out"/>
-       <arg name="strCurrentUrl" type="s" direction="out"/>
-       <arg name="strCurrentTitle" type="s" direction="out"/> 
-       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
-   </method>    
-       
+    <signal name="onActionStateChanged">
+      <arg name="a_u32BrowserActionsChanageMask" type="u"/>
+    </signal>
+
+    <signal name="onContentSizeChanged">
+      <arg name="a_u32Width" type="u"/>
+      <arg name="a_u32Height" type="u"ß/>
+    </signal>
+
+    <signal name="onScrollPositionChanged">
+      <arg name="a_u32ScrollPosX" type="u"/>
+      <arg name="a_u32ScrollPosY" type="u"/>
+    </signal>            
+    
+    <signal name="onVisibilityChanged">
+      <arg name="a_bVisibility" type="b"/>
+    </signal>
+    
+    <signal name="onZoomFactorChanged">
+      <arg name="a_fZoomFactor" type="d"/>
+    </signal>
+
+    <signal name="onLinkClicked">
+      <arg name="a_strUrl" type="s"/>
+    </signal>
+
     <signal name="onLoadStarted">
     </signal>
 
@@ -98,6 +166,20 @@
     <signal name="onLoadFinished">
       <arg name="a_fState" type="b"/>
     </signal>
+
+    <signal name="onTitleChanged">
+      <arg name="a_strTitle" type="s"/>
+    </signal>
+
+    <signal name="onStatusTextChanged">
+      <arg name="a_strText" type="s"/>
+    </signal>
+
+    <signal name="onUrlChanged">
+      <arg name="a_strUrl" type="s"/>
+    </signal>
+
+    <signal name="onSelectionChanged"/>
 
     <signal name="onClose"/>
 

@@ -45,10 +45,18 @@ void webpagewindow::reportprogress() {
 }
 
 void webpagewindow::getUrlTitle() {
-    qDebug() << webitem->getURL() << webitem->getTitle();
+    qDebug() << webitem->getUrl() << webitem->getTitle();
 
-    localurl = webitem->getURL();
+    localurl = webitem->getUrl();
     localtitle = webitem->getTitle();
+}
+
+conn::brw::ERROR_IDS webpagewindow::activate() {
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}
+
+conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString iconFilePath) {
+    return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
@@ -161,7 +169,6 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
 
     emit setOutputWebview(message().path());
 
-
     webitem->scroll(a_eScrollDirection, a_eScrollType);
     return conn::brw::EID_NO_ERROR;
 }
@@ -192,12 +199,28 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
     return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {
+// FIXME: API doesn't match XML
+QString webpagewindow::getTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
+/*  FIXME: These used to be reference parameters
     url = localurl;
     title = localtitle;
+*/
 
     emit urlTitleReady();
-    return conn::brw::EID_NO_ERROR;
+    return "conn::brw::EID_NO_ERROR";
 }
+
+QString webpagewindow::getUrl() {
+    return "not implemented";
+}
+
+
+conn::brw::ERROR_IDS getScrollPosition(int &posX, int &posY) { }
+double webpagewindow::getZoomFactor() {}
+conn::brw::ERROR_IDS webpagewindow::getScrollPosition(uint &posX, uint &posY) {}
+conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &posX, uint &posY) {}
+conn::brw::ERROR_IDS webpagewindow::select(){}
+conn::brw::ERROR_IDS webpagewindow::setZoomFactor(double &zoomFactor) {}
+

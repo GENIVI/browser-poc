@@ -51,7 +51,18 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setGeometry(const conn::brw::Rect & a_sRect);
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
-    conn::brw::ERROR_IDS getCurrentUrlTitle(QString &url, QString &title);
+    conn::brw::ERROR_IDS activate();
+    conn::brw::ERROR_IDS getPageIcon(QString iconPath, QString iconFilePath);
+
+    conn::brw::ERROR_IDS getScrollPosition(uint &posX, uint &posY);
+    QString getTitle();
+    QString getUrl();
+
+    double getZoomFactor();
+    conn::brw::ERROR_IDS select();
+    conn::brw::ERROR_IDS setScrollPosition(uint &posX, uint &posY);
+    conn::brw::ERROR_IDS setZoomFactor(double &zoomFactor);
+
 
     void browserStartLoading();
     void reportprogress();

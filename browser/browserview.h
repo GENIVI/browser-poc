@@ -51,7 +51,7 @@ public:
     BrowserView();
     bool load(const QString &a_Url);
     int getProgress() { return m_currentProgress; }
-    QString getURL() { return m_webview.url().toString(); }
+    QString getUrl() { return m_webview.url().toString(); }
     const QString getTitle() { return m_webview.title(); }
     void goBack() { m_webview.back(); }
     void goForward() { m_webview.forward(); }

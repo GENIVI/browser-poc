@@ -508,12 +508,14 @@ void BrowserDbus::WindowClosed() {
 void BrowserDbus::getCurrentUrlAndTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = actualtab->getCurrentUrlTitle();
-    reply.waitForFinished();
-    if(reply.isValid()) {
-        conn::brw::ERROR_IDS ret = reply.value();
-        setUrl(reply.argumentAt<1>());
-        setTitle(reply.argumentAt<2>());
+    QDBusPendingReply<conn::brw::ERROR_IDS, QString> replyUrl = actualtab->getUrl();
+    QDBusPendingReply<conn::brw::ERROR_IDS, QString> replyTitle = actualtab->getTitle();
+    replyUrl.waitForFinished();
+    replyTitle.waitForFinished();
+    if(replyUrl.isValid()) {
+        conn::brw::ERROR_IDS ret = replyUrl.value();
+        setUrl(replyUrl.argumentAt<1>());
+        setTitle(replyTitle.argumentAt<1>());
 
         qDebug() << __PRETTY_FUNCTION__ << ret << url() << title();
     }
