@@ -79,7 +79,7 @@ public:
 signals:
     void bookmarkListChanged();
     void urlChanged(QString);
-    void titleChanged();
+    void titleChanged(QString);
     void pageloadingChanged();
     void progressChanged();
     void connectedChanged();

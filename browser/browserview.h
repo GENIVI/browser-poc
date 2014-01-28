@@ -68,6 +68,7 @@ signals:
     void onInputText(QString name, QString value, int type, int maxlength,
                      int max, int min, int step);
     void onUrlChanged(QString url);
+    void onTitleChanged(QString title);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
@@ -76,6 +77,7 @@ protected slots:
     void loadProgress(int);
     void loadFinished(bool);
     void urlChanged(QUrl);
+    void titleChanged(QString);
 
 private:
     QGraphicsWebView m_webview;

@@ -35,6 +35,7 @@ BrowserView::BrowserView()
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
     connect(&m_webview, SIGNAL (urlChanged(QUrl)), this, SLOT (urlChanged(QUrl)));
+    connect(&m_webview, SIGNAL (titleChanged(QString)), this, SLOT (titleChanged(QString)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -119,4 +120,10 @@ void BrowserView::urlChanged (QUrl url)
     QString strUrl = url.toString();
     if (strUrl.compare("") != 0)
         emit onUrlChanged (strUrl);
+}
+
+void BrowserView::titleChanged (QString title)
+{
+    if (title.compare("") != 0)
+        emit onTitleChanged (title);
 }

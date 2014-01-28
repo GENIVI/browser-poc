@@ -38,6 +38,7 @@ signals:
     void onUrlChanged(QString);
     void onClose();
     void setOutputWebview(QString viewpath);
+    void onTitleChanged(QString);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

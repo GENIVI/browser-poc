@@ -12,6 +12,7 @@ private slots:
     void testCallUninitialized();
     void testGetTitle();
     void testGetsNotifiedOnUrlChange();
+    void testGetsNotifiedOnTitleChange();
 
 private:
     BrowserDbus *m_bdb = NULL;

@@ -42,4 +42,14 @@ void TestBrowserDBus::testGetsNotifiedOnUrlChange() {
     QVERIFY(spy.value(0).value(0).toString().contains("google"));
 }
 
+void TestBrowserDBus::testGetsNotifiedOnTitleChange() {
+    m_bdb->createPageWindow(1,0,0,10,10);
+    QSignalSpy spy (m_bdb, SIGNAL (titleChanged (QString)));
+    m_bdb->loadurl("http://www.google.com");
+
+    spy.wait(10000);
+    qDebug() << spy.value(0).value(0).toString();
+    QVERIFY(spy.value(0).value(0).toString().contains("Google"));
+}
+
 QTEST_MAIN (TestBrowserDBus);
