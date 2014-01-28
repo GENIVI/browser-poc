@@ -63,6 +63,8 @@ public:
     Q_INVOKABLE void inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInputValue);
     Q_INVOKABLE void connectdbussession(QString id);
     Q_INVOKABLE void selectTab(int tabnumber);
+    Q_INVOKABLE QString getUrl();
+    Q_INVOKABLE QString getTitle();
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

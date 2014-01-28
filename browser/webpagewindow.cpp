@@ -199,21 +199,15 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
     return conn::brw::EID_NO_ERROR;
 }
 
-// FIXME: API doesn't match XML
 QString webpagewindow::getTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
-/*  FIXME: These used to be reference parameters
-    url = localurl;
-    title = localtitle;
-*/
-
     emit urlTitleReady();
-    return "conn::brw::EID_NO_ERROR";
+    return webitem->getTitle();
 }
 
 QString webpagewindow::getUrl() {
-    return "not implemented";
+    return webitem->getUrl();
 }
 
 

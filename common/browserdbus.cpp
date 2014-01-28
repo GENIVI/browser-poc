@@ -520,3 +520,27 @@ void BrowserDbus::getCurrentUrlAndTitle() {
         qDebug() << __PRETTY_FUNCTION__ << ret << url() << title();
     }
 }
+
+QString BrowserDbus::getUrl() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<QString> reply = actualtab->getUrl();
+    reply.waitForFinished();
+    if (reply.isValid()) {
+        setUrl(reply.value());
+        qDebug() << __PRETTY_FUNCTION__ << url();
+    }
+    return url();
+}
+
+QString BrowserDbus::getTitle() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<QString> reply = actualtab->getTitle();
+    reply.waitForFinished();
+    if (reply.isValid()) {
+        setTitle(reply.value());
+        qDebug() << __PRETTY_FUNCTION__ << title();
+    }
+    return title();
+}
