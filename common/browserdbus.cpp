@@ -382,7 +382,8 @@ void BrowserDbus::pageloadingstarted() {
 void BrowserDbus::pageloadingfinished(bool success) {
     qDebug() << __PRETTY_FUNCTION__ << success;
     if(success) {
-        getCurrentUrlAndTitle();
+        getUrl();
+        getTitle();
         emit urlChanged();
         qDebug() << __PRETTY_FUNCTION__ << url() << title();
     }
@@ -505,24 +506,12 @@ void BrowserDbus::WindowClosed() {
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void BrowserDbus::getCurrentUrlAndTitle() {
-    qDebug() << __PRETTY_FUNCTION__;
-
-    QDBusPendingReply<conn::brw::ERROR_IDS, QString> replyUrl = actualtab->getUrl();
-    QDBusPendingReply<conn::brw::ERROR_IDS, QString> replyTitle = actualtab->getTitle();
-    replyUrl.waitForFinished();
-    replyTitle.waitForFinished();
-    if(replyUrl.isValid()) {
-        conn::brw::ERROR_IDS ret = replyUrl.value();
-        setUrl(replyUrl.argumentAt<1>());
-        setTitle(replyTitle.argumentAt<1>());
-
-        qDebug() << __PRETTY_FUNCTION__ << ret << url() << title();
-    }
-}
-
 QString BrowserDbus::getUrl() {
     qDebug() << __PRETTY_FUNCTION__;
+    if (!actualtab) {
+        qDebug() << "No browser window present";
+        return "";
+    }
 
     QDBusPendingReply<QString> reply = actualtab->getUrl();
     reply.waitForFinished();
@@ -535,6 +524,10 @@ QString BrowserDbus::getUrl() {
 
 QString BrowserDbus::getTitle() {
     qDebug() << __PRETTY_FUNCTION__;
+    if (!actualtab) {
+        qDebug() << "No browser window present";
+        return "";
+    }
 
     QDBusPendingReply<QString> reply = actualtab->getTitle();
     reply.waitForFinished();

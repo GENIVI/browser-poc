@@ -46,7 +46,6 @@ public:
     Q_INVOKABLE void addBookmark(int type, QString folder, QString title, QString url, QString iconpath, QString thumbnailpath);
     Q_INVOKABLE void deleteBookmark(int uid);
     Q_INVOKABLE void deleteAllBookmarks(int type);
-    Q_INVOKABLE void getCurrentUrlAndTitle();
     Q_INVOKABLE void goRight(conn::brw::SCROLL_TYPE type);
     Q_INVOKABLE void goLeft(conn::brw::SCROLL_TYPE type);
     Q_INVOKABLE void goUp(conn::brw::SCROLL_TYPE type);
@@ -95,13 +94,13 @@ public slots:
     void InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
 
 private:
-    conn::brw::IBookmarkManager *bookmark;
-    conn::brw::IUserInput *userinput;
-    conn::brw::IWebPageWindow *webpagewindow;
-    conn::brw::IWebPageWindow *actualtab;
-    conn::brw::IUserInput *actualuserinput;
+    conn::brw::IBookmarkManager *bookmark = NULL;
+    conn::brw::IUserInput *userinput = NULL;
+    conn::brw::IWebPageWindow *webpagewindow = NULL;
+    conn::brw::IWebPageWindow *actualtab = NULL;
+    conn::brw::IUserInput *actualuserinput = NULL;
     QList<conn::brw::OBJECT_HANDLE> handlelist;
-    conn::brw::IBrowser *browser;
+    conn::brw::IBrowser *browser = NULL;
     QString m_title;
     QString m_url;
     QList<Bookmark*> m_bookmarkList;
@@ -109,7 +108,7 @@ private:
     int m_progress;
     QString m_instanceId;
     bool m_isconnected;
-    QString *dbusservicename;
+    QString *dbusservicename = NULL;
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
     void registertypes();
     QHash<conn::brw::OBJECT_HANDLE, conn::brw::IWebPageWindow *> webpagehash;
