@@ -35,6 +35,7 @@ signals:
     void onLoadStarted();
     void onLoadFinished(bool a_fState);
     void onLoadProgress(int a_i32Progress);
+    void onUrlChanged(QString);
     void onClose();
     void setOutputWebview(QString viewpath);
     

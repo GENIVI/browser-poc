@@ -33,4 +33,13 @@ void TestBrowserDBus::testGetTitle() {
     QVERIFY (m_bdb->getTitle().compare("") != 0);
 }
 
+void TestBrowserDBus::testGetsNotifiedOnUrlChange() {
+    m_bdb->createPageWindow(1,0,0,10,10);
+    QSignalSpy spy (m_bdb, SIGNAL (urlChanged (QString)));
+    m_bdb->loadurl("http://www.google.com");
+
+    spy.wait(1000);
+    QVERIFY(spy.value(0).value(0).toString().contains("google"));
+}
+
 QTEST_MAIN (TestBrowserDBus);

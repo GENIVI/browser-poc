@@ -34,6 +34,7 @@ BrowserView::BrowserView()
     connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
+    connect(&m_webview, SIGNAL (urlChanged(QUrl)), this, SLOT (urlChanged(QUrl)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -111,4 +112,11 @@ void BrowserView::resizeEvent (QResizeEvent *event) {
 QSize BrowserView::contentSize()
 {
     return this->viewport()->size();
+}
+
+void BrowserView::urlChanged (QUrl url)
+{
+    QString strUrl = url.toString();
+    if (strUrl.compare("") != 0)
+        emit onUrlChanged (strUrl);
 }

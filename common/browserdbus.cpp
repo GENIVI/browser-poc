@@ -191,6 +191,7 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         connect(actualtab, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
         connect(actualtab, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
         connect(actualtab, SIGNAL(onClose()), this, SLOT(WindowClosed()));
+        connect(actualtab, SIGNAL(onUrlChanged(QString)), this, SIGNAL (urlChanged(QString)));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 
@@ -384,7 +385,6 @@ void BrowserDbus::pageloadingfinished(bool success) {
     if(success) {
         getUrl();
         getTitle();
-        emit urlChanged();
         qDebug() << __PRETTY_FUNCTION__ << url() << title();
     }
     setPageLoading(false);
