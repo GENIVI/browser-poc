@@ -84,6 +84,7 @@ signals:
     void progressChanged();
     void connectedChanged();
     void linkClicked(QString);
+    void selectionChanged(void);
 
 public slots:
     void pageloadingstarted();

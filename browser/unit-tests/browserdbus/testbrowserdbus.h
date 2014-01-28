@@ -14,6 +14,7 @@ private slots:
     void testGetsNotifiedOnUrlChange();
     void testGetsNotifiedOnTitleChange();
     void testGetsNotifiedWhenLinkIsClicked();
+    void testGetsNotifiedWhenSelectionChanges();
 
 private:
     BrowserDbus *m_bdb = NULL;

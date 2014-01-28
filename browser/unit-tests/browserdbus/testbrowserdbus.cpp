@@ -62,4 +62,14 @@ void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
     QVERIFY(spy.wait(10000));
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenSelectionChanges() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (selectionChanged ()));
+    m_bdb->loadurl("http://www.bmw.com");
+
+    qDebug() << "Please select some text in the browser window, this test"
+             << "will fail if text is not selected";
+    QVERIFY(spy.wait(10000));
+}
+
 QTEST_MAIN (TestBrowserDBus);

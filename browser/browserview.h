@@ -70,6 +70,7 @@ signals:
     void onUrlChanged(QString url);
     void onTitleChanged(QString title);
     void onLinkClicked(QString);
+    void onSelectionChanged();
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
