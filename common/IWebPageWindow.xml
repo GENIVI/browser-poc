@@ -136,7 +136,7 @@
 
     <signal name="onContentSizeChanged">
       <arg name="a_u32Width" type="u"/>
-      <arg name="a_u32Height" type="u"ß/>
+      <arg name="a_u32Height" type="u"/>
     </signal>
 
     <signal name="onScrollPositionChanged">
