@@ -39,6 +39,7 @@ signals:
     void onClose();
     void setOutputWebview(QString viewpath);
     void onTitleChanged(QString);
+    void onLinkClicked(QString);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

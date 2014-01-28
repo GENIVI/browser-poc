@@ -13,6 +13,7 @@ private slots:
     void testGetTitle();
     void testGetsNotifiedOnUrlChange();
     void testGetsNotifiedOnTitleChange();
+    void testGetsNotifiedWhenLinkIsClicked();
 
 private:
     BrowserDbus *m_bdb = NULL;

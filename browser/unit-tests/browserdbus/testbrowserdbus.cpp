@@ -52,4 +52,14 @@ void TestBrowserDBus::testGetsNotifiedOnTitleChange() {
     QVERIFY(spy.value(0).value(0).toString().contains("Google"));
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (linkClicked (QString)));
+    m_bdb->loadurl("http://www.bmw.com");
+
+    qDebug() << "Please click a link in the browser window, this test "
+             << "will fail if a link is not clicked.";
+    QVERIFY(spy.wait(10000));
+}
+
 QTEST_MAIN (TestBrowserDBus);

@@ -83,6 +83,7 @@ signals:
     void pageloadingChanged();
     void progressChanged();
     void connectedChanged();
+    void linkClicked(QString);
 
 public slots:
     void pageloadingstarted();

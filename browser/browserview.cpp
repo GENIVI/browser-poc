@@ -13,6 +13,7 @@
 
 #include <QDebug>
 #include <QWebFrame>
+#include <QWebPage>
 #include <QCoreApplication>
 
 #include "browserview.h"
@@ -28,6 +29,7 @@ BrowserView::BrowserView()
     this->load("http://www.bmw.com");
 
     setWindowFlags(Qt::FramelessWindowHint);
+    m_webview.page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
     connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
     connect(&m_webview, SIGNAL (loadFinished(bool)), this, SLOT   (loadFinished (bool)));
@@ -36,6 +38,7 @@ BrowserView::BrowserView()
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
     connect(&m_webview, SIGNAL (urlChanged(QUrl)), this, SLOT (urlChanged(QUrl)));
     connect(&m_webview, SIGNAL (titleChanged(QString)), this, SLOT (titleChanged(QString)));
+    connect(&m_webview, SIGNAL (linkClicked(QUrl)), this, SLOT (linkClicked(QUrl)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -126,4 +129,10 @@ void BrowserView::titleChanged (QString title)
 {
     if (title.compare("") != 0)
         emit onTitleChanged (title);
+}
+
+void BrowserView::linkClicked(QUrl url) {
+    QString strUrl = url.toString();
+    this->load(strUrl);
+    emit onLinkClicked(strUrl);
 }

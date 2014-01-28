@@ -69,6 +69,7 @@ signals:
                      int max, int min, int step);
     void onUrlChanged(QString url);
     void onTitleChanged(QString title);
+    void onLinkClicked(QString);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
@@ -78,6 +79,7 @@ protected slots:
     void loadFinished(bool);
     void urlChanged(QUrl);
     void titleChanged(QString);
+    void linkClicked(QUrl);
 
 private:
     QGraphicsWebView m_webview;

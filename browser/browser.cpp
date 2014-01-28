@@ -46,6 +46,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
     connect(bvi, SIGNAL(onUrlChanged(QString)), wpw, SIGNAL(onUrlChanged(QString)));
     connect(bvi, SIGNAL(onTitleChanged(QString)), wpw, SIGNAL(onTitleChanged(QString)));
+    connect(bvi, SIGNAL(onLinkClicked(QString)), wpw, SIGNAL(onLinkClicked(QString)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
