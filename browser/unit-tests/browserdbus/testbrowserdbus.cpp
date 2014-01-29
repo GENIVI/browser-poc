@@ -73,10 +73,9 @@ void TestBrowserDBus::testGetsNotifiedOnTitleChange() {
 void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QSignalSpy spy (m_bdb, SIGNAL (linkClicked (QString)));
-    QSignalSpy spy2 (m_bdb, SIGNAL (pageLoadFinished ()));
     m_bdb->loadurl(testFileUrl());
 
-    spy2.wait();
+    QTest::qSleep(200);
     QProcess::execute("xdotool mousemove 100 100");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(10000));
@@ -85,10 +84,9 @@ void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
 void TestBrowserDBus::testGetsNotifiedWhenSelectionChanges() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QSignalSpy spy (m_bdb, SIGNAL (selectionChanged ()));
-    QSignalSpy spy2 (m_bdb, SIGNAL (pageLoadFinished ()));
     m_bdb->loadurl(testFileUrl());
 
-    spy2.wait();
+    QTest::qSleep(200);
     QProcess::execute("xdotool mousemove 100 200");
     QProcess::execute("xdotool mousedown 1");
     QProcess::execute("xdotool mousemove 100 300");
@@ -100,9 +98,20 @@ void TestBrowserDBus::testGetsNotifiedWhenStatusBarChanges() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QSignalSpy spy (m_bdb, SIGNAL (onStatusTextChanged (QString)));
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(200);
+    QProcess::execute("xdotool mousemove 100 400");
+    QProcess::execute("xdotool click 1");
 
-    QVERIFY(spy.value(0).value(0).toString().contains("browser-poc"));
-    QVERIFY(spy.wait(10000));
+    bool success = false;
+    for (int i = 0; i < 10; i++){
+        spy.wait(1000);
+        if (spy.last().value(0).toString().contains("browser-poc")) {
+            success = true;
+            break;
+        }
+    }
+
+    QVERIFY(success);
 }
 
 QTEST_MAIN (TestBrowserDBus);

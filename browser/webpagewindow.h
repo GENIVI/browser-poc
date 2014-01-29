@@ -41,6 +41,7 @@ signals:
     void onTitleChanged(QString);
     void onLinkClicked(QString);
     void onSelectionChanged(void);
+    void onStatusTextChanged(QString);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

@@ -71,6 +71,7 @@ signals:
     void onTitleChanged(QString title);
     void onLinkClicked(QString);
     void onSelectionChanged();
+    void onStatusTextChanged(QString);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);

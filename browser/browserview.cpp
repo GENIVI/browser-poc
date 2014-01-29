@@ -31,15 +31,18 @@ BrowserView::BrowserView()
     setWindowFlags(Qt::FramelessWindowHint);
     m_webview.page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
-    connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
-    connect(&m_webview, SIGNAL (loadFinished(bool)), this, SLOT   (loadFinished (bool)));
-    connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
+    connect(&m_webview, SIGNAL (loadStarted()),             this, SIGNAL (pageLoadStarted ()));
+    connect(&m_webview, SIGNAL (statusBarMessage(QString)), this, SIGNAL (onStatusTextChanged(QString)));
+    connect(&m_webview, SIGNAL (loadFinished(bool)),        this, SLOT   (loadFinished (bool)));
+    connect(&m_webview, SIGNAL (loadProgress(int)),         this, SLOT   (loadProgress(int)));
+    connect(&m_webview, SIGNAL (urlChanged(QUrl)),          this, SLOT   (urlChanged(QUrl)));
+    connect(&m_webview, SIGNAL (titleChanged(QString)),     this, SLOT   (titleChanged(QString)));
+    connect(&m_webview, SIGNAL (linkClicked(QUrl)),         this, SLOT   (linkClicked(QUrl)));
+
+    connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
+
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
-    connect(&m_webview, SIGNAL (urlChanged(QUrl)), this, SLOT (urlChanged(QUrl)));
-    connect(&m_webview, SIGNAL (titleChanged(QString)), this, SLOT (titleChanged(QString)));
-    connect(&m_webview, SIGNAL (linkClicked(QUrl)), this, SLOT (linkClicked(QUrl)));
-    connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
 }
 
 bool BrowserView::load(const QString &a_Url)

@@ -38,16 +38,17 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     windowhash.insert(a_hPageWindowHandle, bvi->window());
 
     wpw->webitem = bvi;
-    connect(bvi, SIGNAL(pageLoadStarted()), wpw, SLOT(browserStartLoading()));
-    connect(bvi, SIGNAL(pageLoadFinished(bool)), wpw, SIGNAL(onLoadFinished(bool)));
-    connect(bvi, SIGNAL(pageLoadFinished(bool)), wpw, SLOT(getUrlTitle()));
-    connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+    connect(bvi,  SIGNAL(pageLoadFinished(bool)),       wpw,  SLOT(getUrlTitle()));
+    connect(ui,   SIGNAL(inputText(QString)),           this, SLOT(inputText(QString)));
+    connect(bvi,  SIGNAL(pageLoadStarted()),            wpw,  SLOT(browserStartLoading()));
+    connect(bvi,  SIGNAL(pageLoadFinished(bool)),       wpw,  SIGNAL(onLoadFinished(bool)));
+    connect(bvi,  SIGNAL(onUrlChanged(QString)),        wpw,  SIGNAL(onUrlChanged(QString)));
+    connect(bvi,  SIGNAL(onTitleChanged(QString)),      wpw,  SIGNAL(onTitleChanged(QString)));
+    connect(bvi,  SIGNAL(onLinkClicked(QString)),       wpw,  SIGNAL(onLinkClicked(QString)));
+    connect(bvi,  SIGNAL(onSelectionChanged(void)),     wpw,  SIGNAL(onSelectionChanged(void)));
+    connect(bvi,  SIGNAL(onStatusTextChanged(QString)), wpw,  SIGNAL(onStatusTextChanged(QString)));
+    connect(bvi,  SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
     connect(this, SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
-    connect(ui, SIGNAL(inputText(QString)), this, SLOT(inputText(QString)));
-    connect(bvi, SIGNAL(onUrlChanged(QString)), wpw, SIGNAL(onUrlChanged(QString)));
-    connect(bvi, SIGNAL(onTitleChanged(QString)), wpw, SIGNAL(onTitleChanged(QString)));
-    connect(bvi, SIGNAL(onLinkClicked(QString)), wpw, SIGNAL(onLinkClicked(QString)));
-    connect(bvi, SIGNAL(onSelectionChanged(void)), wpw, SIGNAL(onSelectionChanged(void)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
