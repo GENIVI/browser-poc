@@ -28,6 +28,8 @@ BrowserView::BrowserView()
 
     this->load("http://www.bmw.com");
 
+    this->installEventFilter(this);
+
     setWindowFlags(Qt::FramelessWindowHint);
     m_webview.page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
 
@@ -139,4 +141,14 @@ void BrowserView::linkClicked(QUrl url) {
     QString strUrl = url.toString();
     this->load(strUrl);
     emit onLinkClicked(strUrl);
+}
+
+bool BrowserView::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type()      == QEvent::Show)
+        emit onVisibilityChanged(true);
+    else if (event->type() == QEvent::Hide)
+        emit onVisibilityChanged(false);
+
+    return QGraphicsView::eventFilter(obj, event);
 }

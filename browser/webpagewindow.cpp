@@ -220,4 +220,3 @@ conn::brw::ERROR_IDS webpagewindow::getScrollPosition(uint &posX, uint &posY) {}
 conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &posX, uint &posY) {}
 conn::brw::ERROR_IDS webpagewindow::select(){}
 conn::brw::ERROR_IDS webpagewindow::setZoomFactor(double &zoomFactor) {}
-

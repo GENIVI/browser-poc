@@ -86,6 +86,7 @@ signals:
     void linkClicked(QString);
     void selectionChanged(void);
     void onStatusTextChanged(QString);
+    void onVisibilityChanged(bool);
 
 public slots:
     void pageloadingstarted();

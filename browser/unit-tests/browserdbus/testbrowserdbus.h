@@ -30,6 +30,7 @@ private slots:
     void testGetsNotifiedWhenLinkIsClicked();
     void testGetsNotifiedWhenSelectionChanges();
     void testGetsNotifiedWhenStatusBarChanges();
+    void testGetsNotifiedWhenVisibilityChanges();
 
 private:
     QString testFileUrl() {

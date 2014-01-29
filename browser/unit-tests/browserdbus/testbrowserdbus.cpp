@@ -114,4 +114,15 @@ void TestBrowserDBus::testGetsNotifiedWhenStatusBarChanges() {
     QVERIFY(success);
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenVisibilityChanges() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onVisibilityChanged (bool)));
+    m_bdb->setVisible(false);
+    QVERIFY(spy.wait(1000));
+    QVERIFY(spy.last().value(0).toBool() == false);
+    m_bdb->setVisible(true);
+    QVERIFY(spy.wait(1000));
+    QVERIFY(spy.last().value(0).toBool() == true);
+}
+
 QTEST_MAIN (TestBrowserDBus);

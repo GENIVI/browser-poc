@@ -72,9 +72,11 @@ signals:
     void onLinkClicked(QString);
     void onSelectionChanged();
     void onStatusTextChanged(QString);
+    void onVisibilityChanged(bool);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
+    virtual bool eventFilter (QObject *obj, QEvent *evt);
 
 protected slots:
     void loadProgress(int);
