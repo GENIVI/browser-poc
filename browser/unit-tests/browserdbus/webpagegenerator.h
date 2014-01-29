@@ -28,6 +28,7 @@ public:
         "                  onClick=\"JavaScript:window.status='browser-poc';\" >"
         "           Set status bar text"
         "       </DIV>"
+        "       <DIV style='height:900;width:900;'></DIV>"
         "    </BODY>"
         "</HTML>"
         );

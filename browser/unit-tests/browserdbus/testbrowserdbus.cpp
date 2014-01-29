@@ -125,4 +125,17 @@ void TestBrowserDBus::testGetsNotifiedWhenVisibilityChanges() {
     QVERIFY(spy.last().value(0).toBool() == true);
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenScrollingChanges() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onScrollPositionChanged (uint,uint)));
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(200);
+    QProcess::execute("xdotool mousemove 100 200");
+    QProcess::execute("xdotool click 1");
+    QProcess::execute("xdotool click 5");
+    QVERIFY(spy.wait(10000));
+    QProcess::execute("xdotool click 4");
+    QVERIFY(spy.wait(10000));
+}
+
 QTEST_MAIN (TestBrowserDBus);

@@ -45,6 +45,7 @@ BrowserView::BrowserView()
 
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
+    connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -69,6 +70,11 @@ void BrowserView::loadFinished(bool ok)
     m_webview.page()->mainFrame()->evaluateJavaScript(
     "document.addEventListener('focus', function(e){"
     "    window.inputHandler.setCurrentFocus(e.target);"
+    "}, true);");
+
+    m_webview.page()->mainFrame()->evaluateJavaScript(
+    "document.addEventListener('scroll', function(){"
+    "    window.inputHandler.setScrollPosition(window.pageXOffset, window.pageYOffset);"
     "}, true);");
 
     emit pageLoadFinished (ok);

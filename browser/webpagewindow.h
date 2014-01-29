@@ -43,6 +43,7 @@ signals:
     void onSelectionChanged(void);
     void onStatusTextChanged(QString);
     void onVisibilityChanged(bool);
+    void onScrollPositionChanged(uint,uint);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();

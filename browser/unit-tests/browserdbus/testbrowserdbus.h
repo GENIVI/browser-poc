@@ -31,6 +31,7 @@ private slots:
     void testGetsNotifiedWhenSelectionChanges();
     void testGetsNotifiedWhenStatusBarChanges();
     void testGetsNotifiedWhenVisibilityChanges();
+    void testGetsNotifiedWhenScrollingChanges();
 
 private:
     QString testFileUrl() {

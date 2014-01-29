@@ -26,6 +26,9 @@
 class InputHandler : public QObject {
 Q_OBJECT
 public slots:
+    void setScrollPosition (const int &x, const int &y) {
+        emit onScroll ((uint)x,(uint)y);
+    }
     void setCurrentFocus (const QWebElement &elem) {
     emit onInputText (elem.attribute("name"), elem.attribute("value"),
                       elem.attribute("type", "0").toInt(),
@@ -39,6 +42,7 @@ public slots:
 signals:
     void onInputText(QString name, QString value, int type, int maxlength,
                      int max, int min, int step);
+    void onScroll(uint x, uint y);
 
 private:
     QWebElement *m_elem;
@@ -73,6 +77,7 @@ signals:
     void onSelectionChanged();
     void onStatusTextChanged(QString);
     void onVisibilityChanged(bool);
+    void onScrollPositionChanged(uint,uint);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
