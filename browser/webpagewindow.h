@@ -73,7 +73,7 @@ public Q_SLOTS:
     void getUrlTitle();
 
 private:
-    QTimer *progresstimer;
+    QTimer *progresstimer = NULL;
 };
 
 #endif // WEBPAGEWINDOW_H

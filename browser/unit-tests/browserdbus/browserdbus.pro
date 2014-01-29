@@ -16,5 +16,5 @@ my_dbus_interfaces.header_flags = -i ../../../common/browserdefs.h
 DBUS_INTERFACES += my_dbus_interfaces
 
 # Input
-HEADERS += testbrowserdbus.h ../../../common/browserdbus.h ../../../common/bookmark.h
+HEADERS += testbrowserdbus.h webpagegenerator.h ../../../common/browserdbus.h ../../../common/bookmark.h
 SOURCES += testbrowserdbus.cpp ../../../common/browserdbus.cpp ../../../common/bookmark.cpp
