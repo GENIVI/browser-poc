@@ -27,6 +27,9 @@ void webpagewindow::browserStartLoading() {
     qDebug() << __PRETTY_FUNCTION__;
     emit onLoadStarted();
 
+    if (progresstimer)
+        delete progresstimer;
+
     progresstimer = new QTimer(this);
     connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
     progresstimer->start(250);
@@ -37,11 +40,11 @@ void webpagewindow::reportprogress() {
     int progress;
     progress = webitem->getProgress();
 
-    qDebug() << progress;
     emit onLoadProgress(progress);
 
     if(progress >= 100)
         progresstimer->stop();
+
 }
 
 void webpagewindow::getUrlTitle() {
