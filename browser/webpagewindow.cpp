@@ -215,8 +215,14 @@ QString webpagewindow::getUrl() {
 
 
 conn::brw::ERROR_IDS getScrollPosition(int &posX, int &posY) { }
-double webpagewindow::getZoomFactor() {}
 conn::brw::ERROR_IDS webpagewindow::getScrollPosition(uint &posX, uint &posY) {}
 conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &posX, uint &posY) {}
 conn::brw::ERROR_IDS webpagewindow::select(){}
-conn::brw::ERROR_IDS webpagewindow::setZoomFactor(double &zoomFactor) {}
+
+double webpagewindow::getZoomFactor() {
+    return webitem->getZoomFactor();
+}
+conn::brw::ERROR_IDS webpagewindow::setZoomFactor(double &zoomFactor) {
+    webitem->setZoomFactor(zoomFactor);
+    return conn::brw::EID_NO_ERROR;
+}

@@ -394,6 +394,44 @@ Item {
             anchors.left: scrolltype.left
         }
     }
+
+    GroupBox {
+        id: groupzoom
+        y: 6
+        anchors.left: groupscroll.right
+        anchors.leftMargin: 10
+        Button {
+            id: buttonZoomPlus
+            onClicked: {
+                browserinterface.setZoomFactor(
+                            browserinterface.getZoomFactor() + 0.1)
+            }
+            text: "+"
+        }
+
+        Button {
+        id: buttonZoomMinus
+        anchors.leftMargin: 10
+        anchors.left: buttonZoomPlus.right
+        anchors.top: buttonZoomPlus.top
+        text: "-"
+        onClicked: {
+            browserinterface.setZoomFactor(
+                        browserinterface.getZoomFactor() - 0.1)
+        }
+    }
+
+        Text {
+            text: "scroll type"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+            anchors.left: parent.left
+            anchors.top: buttonZoomPlus.bottom
+        }
+        anchors.topMargin: 10
+        anchors.top: groupsetgeometry.bottom
+        title: "set/getZoomFactor(double)"
+    }
 }
 
 

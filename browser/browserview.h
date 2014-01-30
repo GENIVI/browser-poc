@@ -64,6 +64,8 @@ public:
     void scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type);
     void inputText (QString input);
     QSize contentSize();
+    void setZoomFactor(double);
+    double getZoomFactor();
 
 signals:
     void pageLoadStarted();
@@ -78,6 +80,7 @@ signals:
     void onStatusTextChanged(QString);
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
+    void onZoomFactorChanged(double);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);

@@ -158,3 +158,14 @@ bool BrowserView::eventFilter(QObject *obj, QEvent *event)
 
     return QGraphicsView::eventFilter(obj, event);
 }
+
+void BrowserView::setZoomFactor(double factor)
+{
+    m_webview.setZoomFactor(factor);
+    emit onZoomFactorChanged (factor);
+}
+
+double BrowserView::getZoomFactor()
+{
+    return m_webview.zoomFactor();
+}

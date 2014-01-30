@@ -138,4 +138,20 @@ void TestBrowserDBus::testGetsNotifiedWhenScrollingChanges() {
     QVERIFY(spy.wait(10000));
 }
 
+void TestBrowserDBus::testCanSetAndGetZoomFactor() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onZoomFactorChanged (double)));
+    m_bdb->loadurl(testFileUrl());
+
+    m_bdb->setZoomFactor(2);
+    QVERIFY(m_bdb->getZoomFactor() == 2);
+    QVERIFY(spy.wait(10000));
+    QVERIFY(spy.last().value(0).toDouble() == 2);
+
+    m_bdb->setZoomFactor(1);
+    QVERIFY(m_bdb->getZoomFactor() == 1);
+    QVERIFY(spy.wait(10000));
+    QVERIFY(spy.last().value(0).toDouble() == 1);
+}
+
 QTEST_MAIN (TestBrowserDBus);

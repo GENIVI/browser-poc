@@ -44,6 +44,8 @@ signals:
     void onStatusTextChanged(QString);
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
+    void onZoomFactorChanged(double);
+
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS back();
@@ -69,7 +71,6 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS select();
     conn::brw::ERROR_IDS setScrollPosition(uint &posX, uint &posY);
     conn::brw::ERROR_IDS setZoomFactor(double &zoomFactor);
-
 
     void browserStartLoading();
     void reportprogress();

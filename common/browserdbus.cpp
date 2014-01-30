@@ -198,6 +198,7 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         connect(actualtab, SIGNAL(onStatusTextChanged(QString)),     this, SIGNAL(onStatusTextChanged(QString)));
         connect(actualtab, SIGNAL(onVisibilityChanged(bool)),        this, SIGNAL(onVisibilityChanged(bool)));
         connect(actualtab, SIGNAL(onScrollPositionChanged(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
+        connect(actualtab, SIGNAL(onZoomFactorChanged(double)),      this, SIGNAL(onZoomFactorChanged(double)));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 
@@ -542,4 +543,33 @@ QString BrowserDbus::getTitle() {
         qDebug() << __PRETTY_FUNCTION__ << title();
     }
     return title();
+}
+
+void BrowserDbus::setZoomFactor(double factor) {
+    qDebug() << __PRETTY_FUNCTION__ << factor;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setZoomFactor(factor);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+double BrowserDbus::getZoomFactor() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<double> reply = actualtab->getZoomFactor();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        double ret = reply.value();
+        return ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+        return 0;
+    }
 }

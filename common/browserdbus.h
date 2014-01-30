@@ -64,6 +64,8 @@ public:
     Q_INVOKABLE void selectTab(int tabnumber);
     Q_INVOKABLE QString getUrl();
     Q_INVOKABLE QString getTitle();
+    Q_INVOKABLE double getZoomFactor();
+    Q_INVOKABLE void setZoomFactor(double);
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
@@ -88,6 +90,7 @@ signals:
     void onStatusTextChanged(QString);
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
+    void onZoomFactorChanged(double);
 
 public slots:
     void pageloadingstarted();
