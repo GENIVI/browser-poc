@@ -66,6 +66,8 @@ public:
     Q_INVOKABLE QString getTitle();
     Q_INVOKABLE double getZoomFactor();
     Q_INVOKABLE void setZoomFactor(double);
+    Q_INVOKABLE void getScrollPosition(uint &x, uint &y);
+    Q_INVOKABLE void setScrollPosition(uint &x, uint &y);
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

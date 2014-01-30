@@ -154,4 +154,28 @@ void TestBrowserDBus::testCanSetAndGetZoomFactor() {
     QVERIFY(spy.last().value(0).toDouble() == 1);
 }
 
+void TestBrowserDBus::testCanSetAndGetScrollPosition() {
+    uint x = 0, y = 0;
+    uint setX = 0, setY = 0;
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onScrollPositionChanged (uint, uint)));
+    m_bdb->loadurl(testFileUrl());
+
+    QTest::qSleep(300);
+
+    setX = 0; setY = 30;
+    m_bdb->setScrollPosition(setX, setY);
+    m_bdb->getScrollPosition(x,y);
+    QVERIFY(y == 30);
+    QVERIFY(spy.wait(10000));
+    QVERIFY(spy.last().value(1).toUInt() == 30);
+
+    setX = 0; setY = 0;
+    m_bdb->setScrollPosition(setX, setY);
+    m_bdb->getScrollPosition(x,y);
+    QVERIFY(y == 0);
+    QVERIFY(spy.wait(10000));
+    QVERIFY(spy.last().value(1).toUInt() == 0);
+}
+
 QTEST_MAIN (TestBrowserDBus);

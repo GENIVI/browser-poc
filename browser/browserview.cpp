@@ -45,7 +45,7 @@ BrowserView::BrowserView()
 
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
-    connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
+    connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SLOT(scrollPositionChanged(uint,uint)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -168,4 +168,25 @@ void BrowserView::setZoomFactor(double factor)
 double BrowserView::getZoomFactor()
 {
     return m_webview.zoomFactor();
+}
+
+void BrowserView::scrollPositionChanged(uint x, uint y)
+{
+    m_scrollPositionX = x;
+    m_scrollPositionY = y;
+    emit onScrollPositionChanged(x,y);
+}
+
+void BrowserView::setScrollPosition(uint x, uint y)
+{
+    QString cmd = QString("window.scrollTo(%1,%2);").arg(QString::number(x), QString::number(y));
+    m_webview.page()->mainFrame()->evaluateJavaScript(cmd); 
+    m_scrollPositionX = x;
+    m_scrollPositionY = y;
+}
+
+void BrowserView::getScrollPosition(uint &x, uint &y)
+{
+    x = m_scrollPositionX;
+    y = m_scrollPositionY;
 }

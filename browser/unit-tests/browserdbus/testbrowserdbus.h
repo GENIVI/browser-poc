@@ -33,6 +33,7 @@ private slots:
     void testGetsNotifiedWhenVisibilityChanges();
     void testGetsNotifiedWhenScrollingChanges();
     void testCanSetAndGetZoomFactor();
+    void testCanSetAndGetScrollPosition();
 
 private:
     QString testFileUrl() {

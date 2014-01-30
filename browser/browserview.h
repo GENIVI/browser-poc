@@ -66,6 +66,8 @@ public:
     QSize contentSize();
     void setZoomFactor(double);
     double getZoomFactor();
+    void getScrollPosition(uint&, uint&);
+    void setScrollPosition(uint, uint);
 
 signals:
     void pageLoadStarted();
@@ -92,11 +94,14 @@ protected slots:
     void urlChanged(QUrl);
     void titleChanged(QString);
     void linkClicked(QUrl);
+    void scrollPositionChanged(uint x, uint y);
 
 private:
     QGraphicsWebView m_webview;
     InputHandler m_inputHandler;
     int m_currentProgress;
+    uint m_scrollPositionX = 0;
+    uint m_scrollPositionY = 0;
 };
 
 

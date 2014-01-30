@@ -573,3 +573,30 @@ double BrowserDbus::getZoomFactor() {
         return 0;
     }
 }
+
+void BrowserDbus::getScrollPosition(uint &x, uint &y) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->getScrollPosition(x,y);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::setScrollPosition(uint &x, uint &y) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setScrollPosition(x,y);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
