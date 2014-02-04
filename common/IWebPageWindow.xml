@@ -22,6 +22,13 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
+    <method name="getFavicon">
+      <arg name="retval" type="(i)" direction="out"/>
+      <arg name="a_strFaviconFolderPath" type="s" direction="in"/>
+      <arg name="a_strFaviconFilePath" type="s" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
     <method name="getGeometry">
       <arg name="retval" type="(i)" direction="out"/>
       <arg name="a_sRect" type="(iiii)" direction="out"/>
@@ -139,6 +146,8 @@
       <arg name="a_u32Height" type="u"/>
     </signal>
 
+    <signal name="onFaviconReceived"/>
+
     <signal name="onScrollPositionChanged">
       <arg name="a_u32ScrollPosX" type="u"/>
       <arg name="a_u32ScrollPosY" type="u"/>
@@ -153,6 +162,10 @@
     </signal>
 
     <signal name="onLinkClicked">
+      <arg name="a_strUrl" type="s"/>
+    </signal>
+
+    <signal name="onLinkHovered">
       <arg name="a_strUrl" type="s"/>
     </signal>
 
