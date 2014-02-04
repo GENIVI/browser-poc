@@ -213,8 +213,6 @@ QString webpagewindow::getUrl() {
     return webitem->getUrl();
 }
 
-
-conn::brw::ERROR_IDS getScrollPosition(int &posX, int &posY) { }
 conn::brw::ERROR_IDS webpagewindow::select(){}
 
 double webpagewindow::getZoomFactor() {

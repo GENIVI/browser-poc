@@ -100,8 +100,8 @@ private:
     QGraphicsWebView m_webview;
     InputHandler m_inputHandler;
     int m_currentProgress;
-    uint m_scrollPositionX = 0;
-    uint m_scrollPositionY = 0;
+    uint m_scrollPositionX;
+    uint m_scrollPositionY;
 };
 
 
