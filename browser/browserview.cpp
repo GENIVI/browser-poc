@@ -13,6 +13,7 @@
 
 #include <QDebug>
 #include <QWebFrame>
+#include <QWebPage>
 #include <QCoreApplication>
 
 #include "browserview.h"
@@ -27,13 +28,24 @@ BrowserView::BrowserView()
 
     this->load("http://www.bmw.com");
 
-    setWindowFlags(Qt::FramelessWindowHint);
+    this->installEventFilter(this);
 
-    connect(&m_webview, SIGNAL (loadStarted()),      this, SIGNAL (pageLoadStarted ()));
-    connect(&m_webview, SIGNAL (loadFinished(bool)), this, SLOT   (loadFinished (bool)));
-    connect(&m_webview, SIGNAL (loadProgress(int)),  this, SLOT   (loadProgress(int)));
+    setWindowFlags(Qt::FramelessWindowHint);
+    m_webview.page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+
+    connect(&m_webview, SIGNAL (loadStarted()),             this, SIGNAL (pageLoadStarted ()));
+    connect(&m_webview, SIGNAL (statusBarMessage(QString)), this, SIGNAL (onStatusTextChanged(QString)));
+    connect(&m_webview, SIGNAL (loadFinished(bool)),        this, SLOT   (loadFinished (bool)));
+    connect(&m_webview, SIGNAL (loadProgress(int)),         this, SLOT   (loadProgress(int)));
+    connect(&m_webview, SIGNAL (urlChanged(QUrl)),          this, SLOT   (urlChanged(QUrl)));
+    connect(&m_webview, SIGNAL (titleChanged(QString)),     this, SLOT   (titleChanged(QString)));
+    connect(&m_webview, SIGNAL (linkClicked(QUrl)),         this, SLOT   (linkClicked(QUrl)));
+
+    connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
+
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
+    connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SLOT(scrollPositionChanged(uint,uint)));
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -58,6 +70,11 @@ void BrowserView::loadFinished(bool ok)
     m_webview.page()->mainFrame()->evaluateJavaScript(
     "document.addEventListener('focus', function(e){"
     "    window.inputHandler.setCurrentFocus(e.target);"
+    "}, true);");
+
+    m_webview.page()->mainFrame()->evaluateJavaScript(
+    "document.addEventListener('scroll', function(){"
+    "    window.inputHandler.setScrollPosition(window.pageXOffset, window.pageYOffset);"
     "}, true);");
 
     emit pageLoadFinished (ok);
@@ -111,4 +128,65 @@ void BrowserView::resizeEvent (QResizeEvent *event) {
 QSize BrowserView::contentSize()
 {
     return this->viewport()->size();
+}
+
+void BrowserView::urlChanged (QUrl url)
+{
+    QString strUrl = url.toString();
+    if (strUrl.compare("") != 0)
+        emit onUrlChanged (strUrl);
+}
+
+void BrowserView::titleChanged (QString title)
+{
+    if (title.compare("") != 0)
+        emit onTitleChanged (title);
+}
+
+void BrowserView::linkClicked(QUrl url) {
+    QString strUrl = url.toString();
+    this->load(strUrl);
+    emit onLinkClicked(strUrl);
+}
+
+bool BrowserView::eventFilter(QObject *obj, QEvent *event)
+{
+    if (event->type()      == QEvent::Show)
+        emit onVisibilityChanged(true);
+    else if (event->type() == QEvent::Hide)
+        emit onVisibilityChanged(false);
+
+    return QGraphicsView::eventFilter(obj, event);
+}
+
+void BrowserView::setZoomFactor(double factor)
+{
+    m_webview.setZoomFactor(factor);
+    emit onZoomFactorChanged (factor);
+}
+
+double BrowserView::getZoomFactor()
+{
+    return m_webview.zoomFactor();
+}
+
+void BrowserView::scrollPositionChanged(uint x, uint y)
+{
+    m_scrollPositionX = x;
+    m_scrollPositionY = y;
+    emit onScrollPositionChanged(x,y);
+}
+
+void BrowserView::setScrollPosition(uint x, uint y)
+{
+    QString cmd = QString("window.scrollTo(%1,%2);").arg(QString::number(x), QString::number(y));
+    m_webview.page()->mainFrame()->evaluateJavaScript(cmd); 
+    m_scrollPositionX = x;
+    m_scrollPositionY = y;
+}
+
+void BrowserView::getScrollPosition(uint &x, uint &y)
+{
+    x = m_scrollPositionX;
+    y = m_scrollPositionY;
 }

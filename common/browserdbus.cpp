@@ -187,10 +187,18 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         if(!actualtab->isValid())
             qDebug() << "failed create object /Browser/IWebPageWindow*";
 
-        connect(actualtab, SIGNAL(onLoadStarted()), this, SLOT(pageloadingstarted()));
-        connect(actualtab, SIGNAL(onLoadFinished(bool)), this, SLOT(pageloadingfinished(bool)));
-        connect(actualtab, SIGNAL(onLoadProgress(int)), this, SLOT(pageloadingprogress(int)));
-        connect(actualtab, SIGNAL(onClose()), this, SLOT(WindowClosed()));
+        connect(actualtab, SIGNAL(onLoadStarted()),                  this, SLOT(pageloadingstarted()));
+        connect(actualtab, SIGNAL(onLoadFinished(bool)),             this, SLOT(pageloadingfinished(bool)));
+        connect(actualtab, SIGNAL(onLoadProgress(int)),              this, SLOT(pageloadingprogress(int)));
+        connect(actualtab, SIGNAL(onClose()),                        this, SLOT(WindowClosed()));
+        connect(actualtab, SIGNAL(onUrlChanged(QString)),            this, SIGNAL(urlChanged(QString)));
+        connect(actualtab, SIGNAL(onTitleChanged(QString)),          this, SIGNAL(titleChanged(QString)));
+        connect(actualtab, SIGNAL(onLinkClicked(QString)),           this, SIGNAL(linkClicked(QString)));
+        connect(actualtab, SIGNAL(onSelectionChanged(void)),         this, SIGNAL(selectionChanged(void)));
+        connect(actualtab, SIGNAL(onStatusTextChanged(QString)),     this, SIGNAL(onStatusTextChanged(QString)));
+        connect(actualtab, SIGNAL(onVisibilityChanged(bool)),        this, SIGNAL(onVisibilityChanged(bool)));
+        connect(actualtab, SIGNAL(onScrollPositionChanged(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
+        connect(actualtab, SIGNAL(onZoomFactorChanged(double)),      this, SIGNAL(onZoomFactorChanged(double)));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 
@@ -382,8 +390,8 @@ void BrowserDbus::pageloadingstarted() {
 void BrowserDbus::pageloadingfinished(bool success) {
     qDebug() << __PRETTY_FUNCTION__ << success;
     if(success) {
-        getCurrentUrlAndTitle();
-        emit urlChanged();
+        getUrl();
+        getTitle();
         qDebug() << __PRETTY_FUNCTION__ << url() << title();
     }
     setPageLoading(false);
@@ -505,16 +513,90 @@ void BrowserDbus::WindowClosed() {
     qDebug() << __PRETTY_FUNCTION__;
 }
 
-void BrowserDbus::getCurrentUrlAndTitle() {
+QString BrowserDbus::getUrl() {
     qDebug() << __PRETTY_FUNCTION__;
+    if (!actualtab) {
+        qDebug() << "No browser window present";
+        return "";
+    }
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, QString, QString> reply = actualtab->getCurrentUrlTitle();
+    QDBusPendingReply<QString> reply = actualtab->getUrl();
+    reply.waitForFinished();
+    if (reply.isValid()) {
+        setUrl(reply.value());
+        qDebug() << __PRETTY_FUNCTION__ << url();
+    }
+    return url();
+}
+
+QString BrowserDbus::getTitle() {
+    qDebug() << __PRETTY_FUNCTION__;
+    if (!actualtab) {
+        qDebug() << "No browser window present";
+        return "";
+    }
+
+    QDBusPendingReply<QString> reply = actualtab->getTitle();
+    reply.waitForFinished();
+    if (reply.isValid()) {
+        setTitle(reply.value());
+        qDebug() << __PRETTY_FUNCTION__ << title();
+    }
+    return title();
+}
+
+void BrowserDbus::setZoomFactor(double factor) {
+    qDebug() << __PRETTY_FUNCTION__ << factor;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setZoomFactor(factor);
     reply.waitForFinished();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
-        setUrl(reply.argumentAt<1>());
-        setTitle(reply.argumentAt<2>());
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
 
-        qDebug() << __PRETTY_FUNCTION__ << ret << url() << title();
+double BrowserDbus::getZoomFactor() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<double> reply = actualtab->getZoomFactor();
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        double ret = reply.value();
+        return ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+        return 0;
+    }
+}
+
+void BrowserDbus::getScrollPosition(uint &x, uint &y) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->getScrollPosition(x,y);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::setScrollPosition(uint &x, uint &y) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setScrollPosition(x,y);
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
     }
 }

@@ -89,10 +89,79 @@ Item {
     }
 
     GroupBox {
+        id: groupgeturl
+        x: 30
+        y: 198
+        width: 400 + 130 + 20 + 30
+        anchors.leftMargin: 0
+        anchors.top: groupload.bottom
+        anchors.topMargin: 10
+        title: "getUrl()"
+        Text {
+            id: inputfieldgeturl
+            width: 400
+            height: 40
+            text: ""
+            font.pixelSize: 16
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+        }
+
+        Button {
+            width: 130
+            height: inputfieldgeturl.height
+            text: "Retrieve Url"
+            anchors.leftMargin: 20
+            anchors.top: inputfieldgeturl.top
+            anchors.left: inputfieldgeturl.right
+            onClicked: {
+                inputfieldgeturl.text = browserinterface.getUrl()
+            }
+        }
+        anchors.left: groupcontrolbuttons.left
+    }
+
+    GroupBox {
+        id: groupgettitle
+        x: 30
+        y: 290
+        width: 400 + 130 + 20 + 30
+        anchors.leftMargin: 0
+        anchors.top: groupgeturl.bottom
+        anchors.topMargin: 10
+        title: "getTitle()"
+        Text {
+            id: inputfieldgettitle
+            width: 400
+            height: 40
+            text: ""
+            font.pixelSize: 16
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            enabled: false
+        }
+
+        Button {
+            width: 130
+            height: inputfieldgettitle.height
+            text: "Retrieve title"
+            anchors.leftMargin: 20
+            anchors.top: inputfieldgettitle.top
+            anchors.left: inputfieldgettitle.right
+            onClicked: {
+                inputfieldgettitle.text = browserinterface.getTitle()
+            }
+        }
+        anchors.left: groupcontrolbuttons.left
+    }
+    GroupBox {
         id: groupcontrolbuttons2
+        x: 30
+        y: 392
         title: "getVisible()/getGeometry()/getContentSize()/getBrowserActionsState()    "
         width: 4 * 130 + 3 * 20 + 30
-        anchors.top: groupload.bottom
+        anchors.leftMargin: 0
+        anchors.top: groupgettitle.bottom
         anchors.topMargin: 10
         anchors.left: groupload.left
 
@@ -324,6 +393,44 @@ Item {
             anchors.top: scrolltype.bottom
             anchors.left: scrolltype.left
         }
+    }
+
+    GroupBox {
+        id: groupzoom
+        y: 6
+        anchors.left: groupscroll.right
+        anchors.leftMargin: 10
+        Button {
+            id: buttonZoomPlus
+            onClicked: {
+                browserinterface.setZoomFactor(
+                            browserinterface.getZoomFactor() + 0.1)
+            }
+            text: "+"
+        }
+
+        Button {
+        id: buttonZoomMinus
+        anchors.leftMargin: 10
+        anchors.left: buttonZoomPlus.right
+        anchors.top: buttonZoomPlus.top
+        text: "-"
+        onClicked: {
+            browserinterface.setZoomFactor(
+                        browserinterface.getZoomFactor() - 0.1)
+        }
+    }
+
+        Text {
+            text: "scroll type"
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
+            anchors.left: parent.left
+            anchors.top: buttonZoomPlus.bottom
+        }
+        anchors.topMargin: 10
+        anchors.top: groupsetgeometry.bottom
+        title: "set/getZoomFactor(double)"
     }
 }
 

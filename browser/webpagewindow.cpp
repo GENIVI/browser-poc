@@ -27,6 +27,9 @@ void webpagewindow::browserStartLoading() {
     qDebug() << __PRETTY_FUNCTION__;
     emit onLoadStarted();
 
+    if (progresstimer)
+        delete progresstimer;
+
     progresstimer = new QTimer(this);
     connect(progresstimer, SIGNAL(timeout()), this, SLOT(reportprogress()));
     progresstimer->start(250);
@@ -37,18 +40,26 @@ void webpagewindow::reportprogress() {
     int progress;
     progress = webitem->getProgress();
 
-    qDebug() << progress;
     emit onLoadProgress(progress);
 
     if(progress >= 100)
         progresstimer->stop();
+
 }
 
 void webpagewindow::getUrlTitle() {
-    qDebug() << webitem->getURL() << webitem->getTitle();
+    qDebug() << webitem->getUrl() << webitem->getTitle();
 
-    localurl = webitem->getURL();
+    localurl = webitem->getUrl();
     localtitle = webitem->getTitle();
+}
+
+conn::brw::ERROR_IDS webpagewindow::activate() {
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}
+
+conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString iconFilePath) {
+    return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
@@ -161,7 +172,6 @@ conn::brw::ERROR_IDS webpagewindow::scroll(conn::brw::SCROLL_DIRECTION a_eScroll
 
     emit setOutputWebview(message().path());
 
-
     webitem->scroll(a_eScrollDirection, a_eScrollType);
     return conn::brw::EID_NO_ERROR;
 }
@@ -192,12 +202,33 @@ conn::brw::ERROR_IDS webpagewindow::stop() {
     return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getCurrentUrlTitle(QString &url, QString &title) {
+QString webpagewindow::getTitle() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    url = localurl;
-    title = localtitle;
-
     emit urlTitleReady();
+    return webitem->getTitle();
+}
+
+QString webpagewindow::getUrl() {
+    return webitem->getUrl();
+}
+
+conn::brw::ERROR_IDS webpagewindow::select(){}
+
+double webpagewindow::getZoomFactor() {
+    return webitem->getZoomFactor();
+}
+conn::brw::ERROR_IDS webpagewindow::setZoomFactor(double &zoomFactor) {
+    webitem->setZoomFactor(zoomFactor);
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS webpagewindow::getScrollPosition(uint &x, uint &y) {
+    webitem->getScrollPosition(x,y);
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &x, uint &y) {
+    webitem->setScrollPosition(x,y);
     return conn::brw::EID_NO_ERROR;
 }
