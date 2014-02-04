@@ -71,6 +71,8 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS select();
     conn::brw::ERROR_IDS setScrollPosition(uint &posX, uint &posY);
     conn::brw::ERROR_IDS setZoomFactor(double &zoomFactor);
+    conn::brw::ERROR_IDS getFavicon(const QString&, QString&);
+
 
     void browserStartLoading();
     void reportprogress();

@@ -161,6 +161,69 @@ namespace conn {
         //## class BookmarkItemList
         typedef QList<conn::brw::BookmarkItem> BookmarkItemList;    
         
+        /*!
+        * 
+        */
+        //## type SelectableOption
+        struct SelectableOption {
+            /*!
+             * True - option can be selected; False - not - probably optgroup
+             */
+            bool bIsSelectableOption;
+            /*!
+            * 
+            */
+            QString strValue;		//## attribute strValue
+            /*!
+            * 
+            */
+            bool bSelected;		//## attribute bSelected
+
+            SelectableOption() : bIsSelectableOption(true), strValue(), bSelected(false) {}
+        };
+        
+        //## package connImports::Interfaces::conn::brw::def
+        
+        //## class SelectableOptionList
+        /*!
+        * 
+        */
+        typedef QList<conn::brw::SelectableOption> SelectableOptionList;
+
+        //## operation operator>>(QDBusArgument,SelectableOption)
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, SelectableOption& selectableOption) {
+            //#[ operation operator>>(QDBusArgument,SelectableOption)
+
+            args.beginStructure();
+
+            args >> selectableOption.bIsSelectableOption
+                 >> selectableOption.strValue
+                 >> selectableOption.bSelected;
+
+            args.endStructure();
+            return args;
+
+            //#]
+        }
+
+
+        //## operation operator<<(QDBusArgument,SelectableOption)
+        inline QDBusArgument& operator<<(QDBusArgument& args, const SelectableOption& selectableOption) {
+            //#[ operation operator<<(QDBusArgument,SelectableOption)
+
+            args.beginStructure();
+
+            args << selectableOption.bIsSelectableOption
+                 << selectableOption.strValue
+                 << selectableOption.bSelected;
+
+            args.endStructure();
+
+            return args;
+
+            //#]
+        }
+        
 
         /*!
                 * Result of dialog.
@@ -477,5 +540,6 @@ Q_DECLARE_METATYPE(conn::brw::BrowserScrollDirections)
 Q_DECLARE_METATYPE(conn::brw::BrowserActions)
 Q_DECLARE_METATYPE(conn::brw::OBJECT_HANDLE)
 Q_DECLARE_METATYPE(conn::brw::ObjectHandleList)
+Q_DECLARE_METATYPE(conn::brw::SelectableOption);
 
 #endif // BROWSERDEFS_H
