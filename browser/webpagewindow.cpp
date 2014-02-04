@@ -232,3 +232,5 @@ conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &x, uint &y) {
     webitem->setScrollPosition(x,y);
     return conn::brw::EID_NO_ERROR;
 }
+
+conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString&, QString&) {}
