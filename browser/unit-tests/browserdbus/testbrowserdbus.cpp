@@ -81,6 +81,26 @@ void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
     QVERIFY(spy.wait(10000));
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenLinkIsHovered() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (linkHovered (QString)));
+    m_bdb->loadurl(testFileUrl());
+
+    QTest::qSleep(200);
+    QProcess::execute("xdotool mousemove 100 100");
+
+    bool success = false;
+    for (int i = 0; i < 10; i++){
+        spy.wait(1000);
+        if (spy.last().value(0).toString().contains("google")) {
+            success = true;
+            break;
+        }
+    }
+
+    QVERIFY(success);
+}
+
 void TestBrowserDBus::testGetsNotifiedWhenSelectionChanges() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QSignalSpy spy (m_bdb, SIGNAL (selectionChanged ()));

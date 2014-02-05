@@ -93,6 +93,7 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void onLinkHovered(QString);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
