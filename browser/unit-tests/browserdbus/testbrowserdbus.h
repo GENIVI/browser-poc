@@ -34,6 +34,7 @@ private slots:
     void testGetsNotifiedWhenScrollingChanges();
     void testCanSetAndGetZoomFactor();
     void testCanSetAndGetScrollPosition();
+    void testCanGeneratePageIcon();
 
 private:
     QString testFileUrl() {

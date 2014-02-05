@@ -3,9 +3,10 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QFileInfo>
 
 #include "testbrowser.h"
-#include "../browserview.h"
+#include "../../browserview.h"
 
 /////////////// Test cases  ///////////////
 
@@ -173,6 +174,17 @@ void TestBrowser::testGetUrl()
     }
     after = bvi.getUrl();
     QVERIFY (before.compare(after) != 0);
+}
+
+void TestBrowser::testCanCreateScreenshot() {
+    BrowserView bvi;
+    bvi.show();
+    {
+        QSignalSpy spy (&bvi, SIGNAL(pageLoadFinished(bool)));
+        spy.wait(1000);
+    }
+    QString fileName = bvi.createScreenshot();
+    QVERIFY(QFileInfo(fileName).size() > 0);
 }
 
 QTEST_MAIN (TestBrowser);

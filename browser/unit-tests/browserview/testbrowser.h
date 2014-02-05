@@ -14,4 +14,5 @@ private slots:
 	void testReload();
     void testGetTitle();
     void testGetUrl();
+    void testCanCreateScreenshot();
 };

@@ -178,4 +178,13 @@ void TestBrowserDBus::testCanSetAndGetScrollPosition() {
     QVERIFY(spy.last().value(1).toUInt() == 0);
 }
 
+void TestBrowserDBus::testCanGeneratePageIcon() {
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QString iconPath;
+    m_bdb->getPageIcon(testFileUrl(), iconPath);
+    qDebug() << iconPath;
+    QVERIFY(iconPath.compare(QString("")) != 0);
+}
+
 QTEST_MAIN (TestBrowserDBus);

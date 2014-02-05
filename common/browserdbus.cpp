@@ -600,3 +600,17 @@ void BrowserDbus::setScrollPosition(uint &x, uint &y) {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
+
+void BrowserDbus::getPageIcon(QString iconPath, QString &iconFilePath) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply =
+                       actualtab->getPageIcon(iconPath,iconFilePath);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}

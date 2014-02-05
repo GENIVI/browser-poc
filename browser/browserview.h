@@ -19,9 +19,17 @@
 #include <QResizeEvent>
 #include <QWebElement>
 #include <QDebug>
+#include <QSemaphore>
 
 #include "../common/browserdefs.h"
 
+class WebPageWaiter : public QObject {
+Q_OBJECT
+public slots:
+    void loadFinished() { finishedSem.release(1); }
+public:
+    QSemaphore finishedSem;
+};
 
 class InputHandler : public QObject {
 Q_OBJECT
@@ -68,6 +76,7 @@ public:
     double getZoomFactor();
     void getScrollPosition(uint&, uint&);
     void setScrollPosition(uint, uint);
+    static QString createScreenshot(QString url);
 
 signals:
     void pageLoadStarted();
