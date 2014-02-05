@@ -17,6 +17,7 @@
 #include <QCoreApplication>
 #include <QTemporaryFile>
 #include <QSemaphore>
+#include <QWebSettings>
 
 #include "browserview.h"
 #include "../common/browserdefs.h"
@@ -221,5 +222,23 @@ QString BrowserView::createScreenshot(QString url) {
     painter->end();
     image->save(&outFile, "PNG");
     outFile.close();
+    return outFile.fileName();
+}
+
+QString BrowserView::getFaviconFilePath(QString url) {
+
+    QIcon icon = QWebSettings::globalSettings()->iconForUrl(QUrl(url));
+    if (icon.isNull())
+        return "";
+
+    QImage image = icon.pixmap(15).toImage();
+
+    QTemporaryFile outFile("XXXXXX.png");
+    outFile.setAutoRemove(false);
+    outFile.open();
+
+    image.save(&outFile, "PNG");
+    outFile.close();
+
     return outFile.fileName();
 }

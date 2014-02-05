@@ -618,3 +618,19 @@ QString BrowserDbus::getPageIcon(QString iconPath) {
     }
     return iconFilePath;
 }
+
+QString BrowserDbus::getFavicon(QString iconPath) {
+    qDebug() << __PRETTY_FUNCTION__;
+    QString iconFilePath;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply =
+                       actualtab->getFavicon(iconPath,iconFilePath);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return iconFilePath;
+}

@@ -186,4 +186,12 @@ void TestBrowserDBus::testCanGeneratePageIcon() {
     QVERIFY(iconPath.compare(QString("")) != 0);
 }
 
+void TestBrowserDBus::testCanGetFavicon() {
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QString iconPath = m_bdb->getFavicon(testFileUrl());
+    qDebug() << iconPath;
+    QVERIFY(iconPath.compare(QString("")) != 0);
+}
+
 QTEST_MAIN (TestBrowserDBus);

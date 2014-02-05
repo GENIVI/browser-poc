@@ -76,7 +76,8 @@ public:
     double getZoomFactor();
     void getScrollPosition(uint&, uint&);
     void setScrollPosition(uint, uint);
-    static QString createScreenshot(QString url);
+    QString createScreenshot(QString url);
+    QString getFaviconFilePath(QString url);
 
 signals:
     void pageLoadStarted();

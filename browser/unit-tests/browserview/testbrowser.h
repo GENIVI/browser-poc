@@ -15,4 +15,5 @@ private slots:
     void testGetTitle();
     void testGetUrl();
     void testCanCreateScreenshot();
+    void testCanGetFavicon();
 };
