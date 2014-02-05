@@ -432,6 +432,46 @@ Item {
         anchors.top: groupsetgeometry.bottom
         title: "set/getZoomFactor(double)"
     }
+
+    GroupBox {
+        id: grouppageicon
+        x: 536
+        y: 543
+        width: 164
+        height: 150
+        anchors.left: groupsetgeometry.right
+        anchors.leftMargin: 66
+        anchors.top: groupsetvisible.bottom
+        anchors.topMargin: 10
+
+        Image {
+            id: pageiconimage
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+            anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.top: parent.top
+            anchors.topMargin: -1
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 32
+        }
+
+        Button {
+            id: pageiconbutton
+            text: "Fetch image"
+            anchors.right: parent.right
+            anchors.rightMargin: 0
+            anchors.left: parent.left
+            anchors.leftMargin: 0
+            anchors.top: pageiconimage.bottom
+            anchors.topMargin: 10
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+        onClicked: {
+        pageiconimage.source = browserinterface.getPageIcon(browserinterface.getUrl());
+}
+        }
+    }
 }
 
 

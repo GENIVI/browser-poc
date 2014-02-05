@@ -6,7 +6,7 @@ ApplicationWindow {
     id: root
     title: "Genivi Browser PoC test application"
     width: 800
-    height: 700
+    height: 1000
     color: "gray"
 
     BrowserInterface {

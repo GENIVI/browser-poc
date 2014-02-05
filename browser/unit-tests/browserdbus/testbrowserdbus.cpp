@@ -181,8 +181,7 @@ void TestBrowserDBus::testCanSetAndGetScrollPosition() {
 void TestBrowserDBus::testCanGeneratePageIcon() {
     m_bdb->loadurl(testFileUrl());
     QTest::qSleep(300);
-    QString iconPath;
-    m_bdb->getPageIcon(testFileUrl(), iconPath);
+    QString iconPath = m_bdb->getPageIcon(testFileUrl());
     qDebug() << iconPath;
     QVERIFY(iconPath.compare(QString("")) != 0);
 }
