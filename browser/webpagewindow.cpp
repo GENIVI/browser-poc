@@ -234,5 +234,10 @@ conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &x, uint &y) {
     return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString&, QString&) {
+conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString& url, QString& fname) {
+    fname = webitem->getFaviconFilePath(url);
+    if (fname.compare("") == 0)
+        return conn::brw::EID_NOT_EXISTS;
+    else
+        return conn::brw::EID_NO_ERROR;
 }

@@ -179,11 +179,15 @@ void TestBrowser::testGetUrl()
 void TestBrowser::testCanCreateScreenshot() {
     BrowserView bvi;
     bvi.show();
-    {
-        QSignalSpy spy (&bvi, SIGNAL(pageLoadFinished(bool)));
-        spy.wait(1000);
-    }
-    QString fileName = bvi.createScreenshot();
+    QString fileName = bvi.createScreenshot("http://pelagicore.com");
+    QVERIFY(QFileInfo(fileName).size() > 0);
+}
+
+void TestBrowser::testCanGetFavicon () {
+    BrowserView bvi;
+    bvi.show();
+    QString fileName = bvi.getFaviconFilePath("http://www.bmw.com");
+    qDebug() << fileName;
     QVERIFY(QFileInfo(fileName).size() > 0);
 }
 
