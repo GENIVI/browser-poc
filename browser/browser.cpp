@@ -49,6 +49,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(bvi, SIGNAL(onSelectionChanged(void)),     wpw,  SIGNAL(onSelectionChanged(void)));
     connect(bvi, SIGNAL(onStatusTextChanged(QString)), wpw,  SIGNAL(onStatusTextChanged(QString)));
     connect(bvi, SIGNAL(onZoomFactorChanged(double)),  wpw,  SIGNAL(onZoomFactorChanged(double)));
+    connect(bvi, SIGNAL(onLinkHovered(QString)),       wpw,  SIGNAL(onLinkHovered(QString)));
     connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
     connect(this,SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
     connect(bvi, SIGNAL(onScrollPositionChanged(uint,uint)), wpw, SIGNAL(onScrollPositionChanged(uint,uint)));

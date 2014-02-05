@@ -45,6 +45,7 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void onLinkHovered(QString);
 
     
 public Q_SLOTS:

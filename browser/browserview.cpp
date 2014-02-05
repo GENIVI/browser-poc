@@ -45,6 +45,7 @@ BrowserView::BrowserView()
     connect(&m_webview, SIGNAL (linkClicked(QUrl)),         this, SLOT   (linkClicked(QUrl)));
 
     connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
+    connect(m_webview.page(), SIGNAL (linkHovered(const QString&,const QString&,const QString&)), this, SIGNAL(onLinkHovered(QString)));
 
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));

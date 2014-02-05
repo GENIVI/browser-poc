@@ -95,6 +95,7 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void linkHovered(QString);
 
 public slots:
     void pageloadingstarted();
