@@ -15,6 +15,8 @@
 #include <QWebFrame>
 #include <QWebPage>
 #include <QCoreApplication>
+#include <QTemporaryFile>
+#include <QSemaphore>
 
 #include "browserview.h"
 #include "../common/browserdefs.h"
@@ -180,7 +182,7 @@ void BrowserView::scrollPositionChanged(uint x, uint y)
 void BrowserView::setScrollPosition(uint x, uint y)
 {
     QString cmd = QString("window.scrollTo(%1,%2);").arg(QString::number(x), QString::number(y));
-    m_webview.page()->mainFrame()->evaluateJavaScript(cmd); 
+    m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
     m_scrollPositionX = x;
     m_scrollPositionY = y;
 }
@@ -189,4 +191,35 @@ void BrowserView::getScrollPosition(uint &x, uint &y)
 {
     x = m_scrollPositionX;
     y = m_scrollPositionY;
+}
+
+QString BrowserView::createScreenshot(QString url) {
+    WebPageWaiter waiter;
+    QWebPage wp;
+    QSize renderSize(640,480);
+
+    connect(&wp, SIGNAL(loadFinished(bool)), &waiter, SLOT (loadFinished(void)));
+
+    wp.mainFrame()->load(QUrl(url));
+    wp.setViewportSize(renderSize);
+    wp.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+    wp.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+
+    for (int i = 0; i < 100; i++) {
+        waiter.finishedSem.tryAcquire(1,10);
+        QCoreApplication::processEvents();
+    }
+
+    QImage *image = new QImage(renderSize,
+                               QImage::Format_ARGB32);
+    QPainter *painter = new QPainter(image);
+    QTemporaryFile outFile("XXXXXX.png");
+    outFile.setAutoRemove(false);
+    outFile.open();
+    wp.mainFrame()->render(painter);
+
+    painter->end();
+    image->save(&outFile, "PNG");
+    outFile.close();
+    return outFile.fileName();
 }

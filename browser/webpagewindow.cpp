@@ -58,8 +58,9 @@ conn::brw::ERROR_IDS webpagewindow::activate() {
     return conn::brw::EID_NOT_IMPLEMENTED;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString iconFilePath) {
-    return conn::brw::EID_NOT_IMPLEMENTED;
+conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString &iconFilePath) {
+    iconFilePath = webitem->createScreenshot(iconPath);
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
@@ -233,4 +234,5 @@ conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &x, uint &y) {
     return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString&, QString&) {}
+conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString&, QString&) {
+}
