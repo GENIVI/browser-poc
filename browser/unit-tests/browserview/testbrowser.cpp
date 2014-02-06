@@ -7,6 +7,7 @@
 
 #include "testbrowser.h"
 #include "../../browserview.h"
+#include "../../browserconfig.h"
 
 /////////////// Test cases  ///////////////
 
@@ -189,6 +190,15 @@ void TestBrowser::testCanGetFavicon () {
     QString fileName = bvi.getFaviconFilePath("http://www.bmw.com");
     qDebug() << fileName;
     QVERIFY(QFileInfo(fileName).size() > 0);
+}
+
+void TestBrowser::testCanSetGetConfigParameter() {
+    BrowserConfig conf;
+    conf.setValue<int>(BrowserConfig::CONFIG_CACHESIZE, 1337);
+    QVERIFY(conf.getValue<int>(BrowserConfig::CONFIG_CACHESIZE) == 1337);
+
+    conf.setValue<QString>(BrowserConfig::CONFIG_CACHESIZE, "1337");
+    QVERIFY(conf.getValue<QString>(BrowserConfig::CONFIG_CACHESIZE).compare("1337") == 0);
 }
 
 QTEST_MAIN (TestBrowser);
