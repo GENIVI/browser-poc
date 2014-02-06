@@ -21,6 +21,7 @@
 #include "webpagewindow.h"
 #include "userinput.h"
 #include "browserview.h"
+#include "cachemanager.h"
 
 class browser : public QObject, protected QDBusContext
 {
