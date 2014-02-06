@@ -94,6 +94,9 @@ signals:
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
     void onLinkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
@@ -106,6 +109,7 @@ protected slots:
     void titleChanged(QString);
     void linkClicked(QUrl);
     void scrollPositionChanged(uint x, uint y);
+    void contentSizeChanged(const QSize&);
 
 private:
     QGraphicsWebView m_webview;

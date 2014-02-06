@@ -87,6 +87,7 @@ void TestBrowserDBus::testGetsNotifiedWhenLinkIsHovered() {
     m_bdb->loadurl(testFileUrl());
 
     QTest::qSleep(200);
+    QProcess::execute("xdotool mousemove 0 0");
     QProcess::execute("xdotool mousemove 100 100");
 
     bool success = false;
@@ -212,6 +213,24 @@ void TestBrowserDBus::testCanGetFavicon() {
     QString iconPath = m_bdb->getFavicon(testFileUrl());
     qDebug() << iconPath;
     QVERIFY(iconPath.compare(QString("")) != 0);
+}
+
+void TestBrowserDBus::testOnContentSizeChanged() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onContentSizeChanged (uint, uint)));
+    m_bdb->loadurl(testFileUrl());
+    m_bdb->loadurl("http://google.com");
+    QVERIFY(spy.wait(1000));
+}
+
+void TestBrowserDBus::testOnActionStateChanged() {}
+void TestBrowserDBus::testOnFaviconReceived() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onFaviconReceived()));
+    m_bdb->loadurl(testFileUrl());
+    m_bdb->loadurl("http://google.com");
+    qDebug() << spy;
+    QVERIFY(spy.wait(1000));
 }
 
 QTEST_MAIN (TestBrowserDBus);

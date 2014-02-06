@@ -46,6 +46,9 @@ signals:
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
     void onLinkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
     
 public Q_SLOTS:

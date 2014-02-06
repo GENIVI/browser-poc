@@ -96,6 +96,9 @@ signals:
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
     void linkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
 public slots:
     void pageloadingstarted();
