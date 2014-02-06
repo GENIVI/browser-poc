@@ -202,6 +202,9 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         connect(actualtab, SIGNAL(onScrollPositionChanged(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
         connect(actualtab, SIGNAL(onZoomFactorChanged(double)),      this, SIGNAL(onZoomFactorChanged(double)));
         connect(actualtab, SIGNAL(onLinkHovered(QString)),           this, SIGNAL(linkHovered(QString)));
+        connect(actualtab, SIGNAL(onActionStateChanged(uint)),       this, SIGNAL(onActionStateChanged(uint)));
+        connect(actualtab, SIGNAL(onContentSizeChanged(uint, uint)), this, SIGNAL(onContentSizeChanged(uint,uint)));
+        connect(actualtab, SIGNAL(onFaviconReceived()),              this, SIGNAL(onFaviconReceived()));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 

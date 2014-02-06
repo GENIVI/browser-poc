@@ -29,6 +29,8 @@ BrowserView::BrowserView()
     }
     this->scene()->addItem (&m_webview);
 
+    QWebSettings::setIconDatabasePath(".");
+
     this->load("http://www.bmw.com");
 
     this->installEventFilter(this);
@@ -46,6 +48,8 @@ BrowserView::BrowserView()
 
     connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
     connect(m_webview.page(), SIGNAL (linkHovered(const QString&,const QString&,const QString&)), this, SIGNAL(onLinkHovered(QString)));
+    connect(m_webview.page()->mainFrame(), SIGNAL (contentsSizeChanged(const QSize &)), this, SLOT (contentSizeChanged(const QSize&)));
+    connect(&m_webview, SIGNAL (iconChanged()),             this, SIGNAL (onFaviconReceived()));
 
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
@@ -242,4 +246,8 @@ QString BrowserView::getFaviconFilePath(QString url) {
     outFile.close();
 
     return outFile.fileName();
+}
+
+void BrowserView::contentSizeChanged(const QSize &size) {
+    emit onContentSizeChanged(size.width(), size.height());
 }

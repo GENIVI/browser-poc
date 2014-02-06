@@ -37,6 +37,9 @@ private slots:
     void testCanSetAndGetScrollPosition();
     void testCanGeneratePageIcon();
     void testCanGetFavicon();
+    void testOnActionStateChanged();
+    void testOnContentSizeChanged();
+    void testOnFaviconReceived();
 
 private:
     QString testFileUrl() {
