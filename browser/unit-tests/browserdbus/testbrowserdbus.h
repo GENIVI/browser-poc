@@ -40,6 +40,8 @@ private slots:
     void testOnActionStateChanged();
     void testOnContentSizeChanged();
     void testOnFaviconReceived();
+    void testSelect();
+    void testActivate();
 
 private:
     QString testFileUrl() {

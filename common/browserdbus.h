@@ -70,6 +70,8 @@ public:
     Q_INVOKABLE void setScrollPosition(uint &x, uint &y);
     Q_INVOKABLE QString getPageIcon(QString);
     Q_INVOKABLE QString getFavicon(QString);
+    Q_INVOKABLE void activate();
+    Q_INVOKABLE void select();
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

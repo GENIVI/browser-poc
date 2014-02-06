@@ -2,16 +2,16 @@
 
 class TestBrowser: public QObject
 {
-	Q_OBJECT
+    Q_OBJECT
 
 private slots:
-	void testCanCreate();
-	void testCanLoadWebpage();
-	void testCanFinishLoadingWebpage();
-	void testProgressIncreases();
-	void testBack();
-	void testForward();
-	void testReload();
+    void testCanCreate();
+    void testCanLoadWebpage();
+    void testCanFinishLoadingWebpage();
+    void testProgressIncreases();
+    void testBack();
+    void testForward();
+    void testReload();
     void testGetTitle();
     void testGetUrl();
     void testCanCreateScreenshot();

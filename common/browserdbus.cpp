@@ -636,3 +636,28 @@ QString BrowserDbus::getFavicon(QString iconPath) {
     }
     return iconFilePath;
 }
+
+void BrowserDbus::activate() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->activate();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+void BrowserDbus::select() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->select();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}

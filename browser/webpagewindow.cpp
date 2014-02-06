@@ -55,7 +55,8 @@ void webpagewindow::getUrlTitle() {
 }
 
 conn::brw::ERROR_IDS webpagewindow::activate() {
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    webitem->activate();
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString &iconFilePath) {
@@ -214,7 +215,10 @@ QString webpagewindow::getUrl() {
     return webitem->getUrl();
 }
 
-conn::brw::ERROR_IDS webpagewindow::select(){}
+conn::brw::ERROR_IDS webpagewindow::select(){
+    webitem->select();
+    return conn::brw::EID_NO_ERROR;
+}
 
 double webpagewindow::getZoomFactor() {
     return webitem->getZoomFactor();

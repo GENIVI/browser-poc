@@ -251,3 +251,10 @@ QString BrowserView::getFaviconFilePath(QString url) {
 void BrowserView::contentSizeChanged(const QSize &size) {
     emit onContentSizeChanged(size.width(), size.height());
 }
+
+void BrowserView::select() {
+    this->setFocus(Qt::OtherFocusReason);
+}
+void BrowserView::activate() {
+    this->activateWindow();
+}
