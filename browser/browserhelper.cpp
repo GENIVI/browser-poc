@@ -18,6 +18,7 @@
 #include "iuserinput_adaptor.h"
 #include "iwebpagewindow_adaptor.h"
 #include "ibrowser_adaptor.h"
+#include "icachemanager_adaptor.h"
 
 
 browserhelper::browserhelper(QString instanceId, QObject *parent) :
@@ -50,6 +51,13 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     new IBookmarkManagerAdaptor(bm);
     if(!connection->registerObject("/Browser/IBookmarkManager", bm)) {
         qDebug() << "failed register object IBookmarkManager";
+        exit(1);
+    }
+
+    cachemanager *cm = new cachemanager();
+    new ICacheManagerAdaptor(cm);
+    if(!connection->registerObject("/Browser/ICacheManager", cm)) {
+        qDebug() << "failed register object ICacheManager";
         exit(1);
     }
 

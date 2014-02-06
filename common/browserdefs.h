@@ -524,6 +524,19 @@ namespace conn {
             return argument;
         }
         
+        /*!
+        * Defines policy of cache usage.
+        CP_CACHE_ONLINE - Use cache if present, network if not.
+        CP_CACHE_ONLY - Only cache is used.
+        CP_ONLINE_ONLY - Cache is disabled.
+        
+        */
+        //## type CACHE_POLICY
+        enum CACHE_POLICY {
+            CP_ONLINE_CACHE = 0x00,
+            CP_CACHE_ONLY = 0x01,
+            CP_ONLINE_ONLY = 0x02
+        };
     }
 }
 

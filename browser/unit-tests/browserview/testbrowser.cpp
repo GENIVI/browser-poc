@@ -194,7 +194,7 @@ void TestBrowser::testCanGetFavicon () {
 
 void TestBrowser::testCanSetGetConfigParameter() {
     BrowserConfig conf;
-    conf.setValue<int>(BrowserConfig::CONFIG_CACHESIZE, 1337);
+    conf.setValue(BrowserConfig::CONFIG_CACHESIZE, 1337);
     QVERIFY(conf.getValue<int>(BrowserConfig::CONFIG_CACHESIZE) == 1337);
 
     conf.setValue<QString>(BrowserConfig::CONFIG_CACHESIZE, "1337");
