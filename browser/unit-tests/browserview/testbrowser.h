@@ -16,4 +16,5 @@ private slots:
     void testGetUrl();
     void testCanCreateScreenshot();
     void testCanGetFavicon();
+    void testCanSetGetConfigParameter();
 };
