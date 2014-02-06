@@ -78,6 +78,8 @@ public:
     void setScrollPosition(uint, uint);
     QString createScreenshot(QString url);
     QString getFaviconFilePath(QString url);
+    void activate();
+    void select();
 
 signals:
     void pageLoadStarted();

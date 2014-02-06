@@ -233,4 +233,19 @@ void TestBrowserDBus::testOnFaviconReceived() {
     QVERIFY(spy.wait(1000));
 }
 
+void TestBrowserDBus::testSelect() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QTest::qSleep(300);
+    m_bdb->select();
+    QTest::qSleep(300);
+    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
+}
+void TestBrowserDBus::testActivate() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QTest::qSleep(300);
+    m_bdb->activate();
+    QTest::qSleep(300);
+    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
+}
+
 QTEST_MAIN (TestBrowserDBus);
