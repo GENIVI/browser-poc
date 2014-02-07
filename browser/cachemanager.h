@@ -29,12 +29,16 @@ public:
 signals:
     void onCacheChanged();
 
+    // Intenal signals
+    void onCachePolicyChanged(conn::brw::CACHE_POLICY);
+    void onClearCache();
+
 public Q_SLOTS:
     qlonglong getCacheSize();
     conn::brw::CACHE_POLICY getCachePolicy();
-    conn::brw::ERROR_IDS getMaximumCacheSize();
-    conn::brw::ERROR_IDS setCachePolicy(conn::brw::CACHE_POLICY);
-    conn::brw::ERROR_IDS clearCache();
+    qlonglong               getMaximumCacheSize();
+    conn::brw::ERROR_IDS    setCachePolicy(conn::brw::CACHE_POLICY);
+    conn::brw::ERROR_IDS    clearCache();
 
 private:
     BrowserConfig *m_config = NULL;

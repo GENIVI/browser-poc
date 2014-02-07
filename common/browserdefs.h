@@ -537,6 +537,47 @@ namespace conn {
             CP_CACHE_ONLY = 0x01,
             CP_ONLINE_ONLY = 0x02
         };
+
+        //## operation operator>>(QDBusArgument,CACHE_POLICY)
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, CACHE_POLICY& cachePolicy) {
+            //#[ operation operator>>(QDBusArgument,CACHE_POLICY)
+            args.beginStructure();
+            int temp =0;
+            args>>temp;
+            switch (temp )
+            {
+            case CP_ONLINE_CACHE:
+            {
+                cachePolicy = CP_ONLINE_CACHE;
+            }
+                break;
+            case CP_CACHE_ONLY :
+            {
+                cachePolicy = CP_CACHE_ONLY;
+            }
+                break;
+            case CP_ONLINE_ONLY:
+            {
+                cachePolicy = CP_ONLINE_ONLY;
+            }
+                break;
+            }
+
+            args.endStructure();
+            return args;
+            //#]
+        }
+
+        //## operation operator<<(QDBusArgument,CACHE_POLICY)
+        inline const QDBusArgument& operator<<(QDBusArgument& args, CACHE_POLICY cachePolicy) {
+            //#[ operation operator<<(QDBusArgument,CACHE_POLICY)
+            args.beginStructure();
+            int param = cachePolicy;
+            args << param;
+            args.endStructure();
+            return args;
+            //#]
+        }
     }
 }
 
@@ -554,5 +595,6 @@ Q_DECLARE_METATYPE(conn::brw::BrowserActions)
 Q_DECLARE_METATYPE(conn::brw::OBJECT_HANDLE)
 Q_DECLARE_METATYPE(conn::brw::ObjectHandleList)
 Q_DECLARE_METATYPE(conn::brw::SelectableOption);
+Q_DECLARE_METATYPE(conn::brw::CACHE_POLICY);
 
 #endif // BROWSERDEFS_H
