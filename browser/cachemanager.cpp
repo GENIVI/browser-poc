@@ -13,13 +13,14 @@
 
 #include <QObject>
 #include <QDBusContext>
+#include <QDebug>
 
 #include "cachemanager.h"
 #include "../common/browserdefs.h"
 
 cachemanager::cachemanager(QObject *parent) : 
     QObject(parent)
- {
+{
     m_config = new BrowserConfig();
 }
 
@@ -27,7 +28,18 @@ qlonglong cachemanager::getCacheSize(){
     return m_config->getValue<qlonglong>(BrowserConfig::CONFIG_CACHESIZE);
 }
 
-conn::brw::CACHE_POLICY cachemanager::getCachePolicy(){}
-conn::brw::ERROR_IDS    cachemanager::getMaximumCacheSize(){}
-conn::brw::ERROR_IDS    cachemanager::setCachePolicy(conn::brw::CACHE_POLICY){}
-conn::brw::ERROR_IDS    cachemanager::clearCache(){}
+conn::brw::CACHE_POLICY cachemanager::getCachePolicy(){
+    qDebug() << "Getting cache policy";
+    return conn::brw::CP_CACHE_ONLY;
+}
+qlonglong cachemanager::getMaximumCacheSize(){}
+conn::brw::ERROR_IDS cachemanager::setCachePolicy(conn::brw::CACHE_POLICY pol)
+{
+    emit onCachePolicyChanged(pol);
+    qDebug() << "TODO: setCachePolicy";
+}
+conn::brw::ERROR_IDS cachemanager::clearCache()
+{
+    emit onClearCache();
+    qDebug() << "TODO: clearCache";
+}
