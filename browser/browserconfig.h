@@ -13,10 +13,12 @@
 #include <QObject>
 #include <QSettings>
 
+#include "../common/browserdefs.h"
+
 class BrowserConfig : public QObject{
 Q_OBJECT
 public:
-   enum BrowserConfigKey {CONFIG_CACHESIZE};
+   enum BrowserConfigKey {CONFIG_CACHEPOLICY};
    BrowserConfig();
 
    template<typename T>
@@ -24,6 +26,8 @@ public:
 
    template<typename T>
    void setValue(BrowserConfigKey, T);
+
+   bool contains(BrowserConfig::BrowserConfigKey key);
 
 private:
     QSettings *m_qsettings = NULL;
