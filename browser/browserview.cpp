@@ -58,7 +58,15 @@ BrowserView::BrowserView()
 
 bool BrowserView::load(const QString &a_Url)
 {
-    m_webview.load(a_Url);
+    if (m_cacheManager) {
+        QNetworkRequest req = QNetworkRequest(QUrl(a_Url));
+        req.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
+                         m_cacheManager->getCacheLoadControl());
+        m_webview.load(req);
+    } else {
+        qDebug() << "No cacheManager present, defaulting to load(url)";
+        m_webview.load(a_Url);
+    }
     return true;
 }
 
@@ -257,4 +265,13 @@ void BrowserView::select() {
 }
 void BrowserView::activate() {
     this->activateWindow();
+}
+
+void BrowserView::setCacheManager(cachemanager *cm) {
+    if (cm) {
+        qDebug() << "Setting cacheManager" << cm;
+        m_cacheManager = cm;
+        m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
+    } else
+        qDebug() << "Setting NULL networkManager!";
 }

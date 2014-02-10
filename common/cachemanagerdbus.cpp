@@ -28,6 +28,7 @@ CacheManagerDbus::CacheManagerDbus(QObject *parent) :
 
 void CacheManagerDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::CACHE_POLICY>();
+    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
 }
 
 void CacheManagerDbus::connectdbussession(QString id) {
@@ -48,7 +49,7 @@ void CacheManagerDbus::connectdbussession(QString id) {
 }
 
 
-qlonglong CacheManagerDbus::getCacheSize() {
+qulonglong CacheManagerDbus::getCacheSize() {
     qDebug() << __PRETTY_FUNCTION__;
 
     qulonglong ret;
@@ -62,4 +63,66 @@ qlonglong CacheManagerDbus::getCacheSize() {
         qDebug() << "ERROR " << error.name() << error.message();
     }
     return ret;
+}
+
+conn::brw::CACHE_POLICY CacheManagerDbus::getCachePolicy() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    conn::brw::CACHE_POLICY ret;
+    QDBusReply<conn::brw::CACHE_POLICY> reply = m_cachemanager->getCachePolicy();
+
+    if(reply.isValid()) {
+        ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return ret;
+}
+
+void CacheManagerDbus::setCachePolicy(conn::brw::CACHE_POLICY policy) {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = m_cachemanager->setCachePolicy(policy);
+
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret;
+        ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+qulonglong CacheManagerDbus::getMaximumCacheSize() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    qlonglong ret;
+    QDBusReply<qulonglong> reply = m_cachemanager->getMaximumCacheSize();
+
+    if(reply.isValid()) {
+        ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return ret;
+}
+
+void CacheManagerDbus::clearCache() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = m_cachemanager->clearCache();
+
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret;
+        ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
 }

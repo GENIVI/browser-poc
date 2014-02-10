@@ -23,7 +23,10 @@ private slots:
     void initTestCase();
     void cleanupTestCase();
 
-    void testGetCacheSize();
+    void testSetGetCacheSize();
+    void testSetGetCachePolicy();
+    void testGetMaximumCacheSize();
+    void testCanClearCache();
 
 private:
    CacheManagerDbus *m_cdb  = NULL;

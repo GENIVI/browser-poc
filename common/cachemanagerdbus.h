@@ -28,7 +28,11 @@ public:
     explicit CacheManagerDbus(QObject *parent = 0);
 
     void connectdbussession(QString id);
-    Q_INVOKABLE qlonglong getCacheSize();
+    Q_INVOKABLE qulonglong getCacheSize();
+    Q_INVOKABLE conn::brw::CACHE_POLICY getCachePolicy();
+    Q_INVOKABLE void setCachePolicy(conn::brw::CACHE_POLICY);
+    Q_INVOKABLE qulonglong getMaximumCacheSize();
+    Q_INVOKABLE void clearCache();
 
 signals:
     void onCacheChanged();
