@@ -18,10 +18,14 @@
 #include "browser.h"
 #include "browserview.h"
 
-browser::browser(QObject *parent) :
+browser::browser(cachemanager *manager, QObject *parent) :
     QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
+    if (manager) {
+        qDebug() << "Setting default cacheManager";
+        m_cacheManager = manager;
+    }
 }
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
@@ -30,6 +34,9 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     Q_UNUSED(a_eDeviceId);
 
     BrowserView *bvi = new BrowserView();
+    if (m_cacheManager)
+        bvi->setCacheManager (m_cacheManager);
+
     bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
                          a_oGeometry.i32Height);
     bvi->show();

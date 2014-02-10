@@ -14,32 +14,80 @@
 #include <QObject>
 #include <QDBusContext>
 #include <QDebug>
+#include <QAbstractNetworkCache>
+#include <QNetworkDiskCache>
 
 #include "cachemanager.h"
 #include "../common/browserdefs.h"
 
-cachemanager::cachemanager(QObject *parent) : 
+cachemanager::cachemanager(QObject *parent) :
     QObject(parent)
 {
     m_config = new BrowserConfig();
+    m_manager = new QNetworkAccessManager();
+    QNetworkDiskCache *cache = new QNetworkDiskCache();
+    cache->setCacheDirectory ("cache");
+    if (cache)
+        m_manager->setCache(cache);
+    else
+        qDebug() << "Unable to create cache file!";
 }
 
 qlonglong cachemanager::getCacheSize(){
-    return m_config->getValue<qlonglong>(BrowserConfig::CONFIG_CACHESIZE);
+    if (!m_manager->cache()) {
+        qDebug() << "Unable to retreive cache!";
+        return 0;
+    }
+    return m_manager->cache()->cacheSize();
 }
 
 conn::brw::CACHE_POLICY cachemanager::getCachePolicy(){
     qDebug() << "Getting cache policy";
-    return conn::brw::CP_CACHE_ONLY;
+    return m_policy;
 }
-qlonglong cachemanager::getMaximumCacheSize(){}
+
+qlonglong cachemanager::getMaximumCacheSize(){
+    if (!m_manager->cache()) {
+        qDebug() << "Unable to retreive cache!";
+        return 0;
+    }
+    QNetworkDiskCache *cache = qobject_cast<QNetworkDiskCache *>(m_manager->cache());
+    if (cache)
+        return cache->maximumCacheSize();
+    else {
+        qDebug() << "Unable to retrieve max cache size";
+        return 0;
+    }
+}
+
 conn::brw::ERROR_IDS cachemanager::setCachePolicy(conn::brw::CACHE_POLICY pol)
 {
-    emit onCachePolicyChanged(pol);
-    qDebug() << "TODO: setCachePolicy";
+    m_policy = pol;
+    return conn::brw::EID_NO_ERROR;
 }
+
 conn::brw::ERROR_IDS cachemanager::clearCache()
 {
-    emit onClearCache();
-    qDebug() << "TODO: clearCache";
+    m_manager->cache()->clear();
+    return conn::brw::EID_NO_ERROR;
+}
+
+QNetworkAccessManager *cachemanager::getNetworkAccessManager()
+{
+    return m_manager;
+}
+
+QNetworkRequest::CacheLoadControl cachemanager::getCacheLoadControl()
+{
+    switch (m_policy) {
+        case conn::brw::CP_ONLINE_CACHE:
+            return QNetworkRequest::PreferCache;
+        case conn::brw::CP_CACHE_ONLY:
+            return QNetworkRequest::AlwaysCache;
+        case conn::brw::CP_ONLINE_ONLY:
+            return QNetworkRequest::AlwaysNetwork;
+        default:
+            qDebug() << "Illegal cache policy!";
+            return QNetworkRequest::PreferCache;
+    }
 }

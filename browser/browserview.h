@@ -20,7 +20,9 @@
 #include <QWebElement>
 #include <QDebug>
 #include <QSemaphore>
+#include <QNetworkAccessManager>
 
+#include "cachemanager.h"
 #include "../common/browserdefs.h"
 
 class WebPageWaiter : public QObject {
@@ -80,6 +82,7 @@ public:
     QString getFaviconFilePath(QString url);
     void activate();
     void select();
+    void setCacheManager (cachemanager *nm);
 
 signals:
     void pageLoadStarted();
@@ -119,6 +122,7 @@ private:
     int m_currentProgress;
     uint m_scrollPositionX;
     uint m_scrollPositionY;
+    cachemanager *m_cacheManager = NULL;
 };
 
 

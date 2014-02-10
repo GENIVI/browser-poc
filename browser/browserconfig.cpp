@@ -17,10 +17,12 @@
 template void      BrowserConfig::setValue<int>(BrowserConfig::BrowserConfigKey, int);
 template void      BrowserConfig::setValue<QString>(BrowserConfig::BrowserConfigKey, QString);
 template void      BrowserConfig::setValue<qlonglong>(BrowserConfig::BrowserConfigKey, qlonglong);
+template void      BrowserConfig::setValue<qulonglong>(BrowserConfig::BrowserConfigKey, qulonglong);
 
 template int       BrowserConfig::getValue<int>(BrowserConfig::BrowserConfigKey);
 template QString   BrowserConfig::getValue<QString>(BrowserConfig::BrowserConfigKey);
 template qlonglong BrowserConfig::getValue<qlonglong>(BrowserConfig::BrowserConfigKey);
+template qulonglong BrowserConfig::getValue<qulonglong>(BrowserConfig::BrowserConfigKey);
 
 BrowserConfig::BrowserConfig() {
     m_qsettings = new QSettings("browserpoc");

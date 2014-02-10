@@ -40,7 +40,14 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    browser *br = new browser();
+    cachemanager *cm = new cachemanager();
+    new ICacheManagerAdaptor(cm);
+    if(!connection->registerObject("/Browser/ICacheManager", cm)) {
+        qDebug() << "failed register object ICacheManager";
+        exit(1);
+    }
+
+    browser *br = new browser(cm);
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
@@ -51,13 +58,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     new IBookmarkManagerAdaptor(bm);
     if(!connection->registerObject("/Browser/IBookmarkManager", bm)) {
         qDebug() << "failed register object IBookmarkManager";
-        exit(1);
-    }
-
-    cachemanager *cm = new cachemanager();
-    new ICacheManagerAdaptor(cm);
-    if(!connection->registerObject("/Browser/ICacheManager", cm)) {
-        qDebug() << "failed register object ICacheManager";
         exit(1);
     }
 
@@ -91,5 +91,6 @@ void browserhelper::registertypes() {
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+    qDBusRegisterMetaType<conn::brw::CACHE_POLICY>();
 }
 

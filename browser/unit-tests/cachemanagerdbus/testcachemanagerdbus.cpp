@@ -30,8 +30,26 @@ void TestCacheManagerDBus::cleanupTestCase() {
 
 ///////////////// Test cases  ///////////////
 
-void TestCacheManagerDBus::testGetCacheSize() {
+void TestCacheManagerDBus::testSetGetCacheSize() {
     m_cdb->getCacheSize();
+}
+
+void TestCacheManagerDBus::testSetGetCachePolicy() {
+    m_cdb->setCachePolicy(conn::brw::CP_CACHE_ONLY);
+    QVERIFY(m_cdb->getCachePolicy() == conn::brw::CP_CACHE_ONLY);
+
+    m_cdb->setCachePolicy(conn::brw::CP_ONLINE_ONLY);
+    QVERIFY(m_cdb->getCachePolicy() == conn::brw::CP_ONLINE_ONLY);
+}
+
+void TestCacheManagerDBus::testGetMaximumCacheSize() {
+    m_cdb->getMaximumCacheSize();
+}
+
+void TestCacheManagerDBus::testCanClearCache() {
+    qulonglong old = m_cdb->getCacheSize();
+    m_cdb->clearCache();
+    QVERIFY (m_cdb->getCacheSize() <= old);
 }
 
 QTEST_MAIN (TestCacheManagerDBus);

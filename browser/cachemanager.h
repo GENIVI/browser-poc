@@ -16,6 +16,8 @@
 
 #include <QObject>
 #include <QDBusContext>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
 
 #include "browserconfig.h"
 #include "../common/browserdefs.h"
@@ -25,13 +27,11 @@ class cachemanager : public QObject, protected QDBusContext
     Q_OBJECT
 public:
     cachemanager(QObject *parent = 0);
+    QNetworkAccessManager *getNetworkAccessManager();
+    QNetworkRequest::CacheLoadControl getCacheLoadControl();
 
 signals:
-    void onCacheChanged();
-
-    // Intenal signals
-    void onCachePolicyChanged(conn::brw::CACHE_POLICY);
-    void onClearCache();
+    void cacheChanged();
 
 public Q_SLOTS:
     qlonglong getCacheSize();
@@ -42,6 +42,8 @@ public Q_SLOTS:
 
 private:
     BrowserConfig *m_config = NULL;
+    conn::brw::CACHE_POLICY m_policy;
+    QNetworkAccessManager *m_manager = NULL;
 };
 
 #endif // CACHEMANAGER_H
