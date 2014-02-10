@@ -31,6 +31,24 @@ cachemanager::cachemanager(QObject *parent) :
         m_manager->setCache(cache);
     else
         qDebug() << "Unable to create cache file!";
+
+    if (m_config && m_config->contains(BrowserConfig::CONFIG_CACHEPOLICY)) {
+        conn::brw::CACHE_POLICY policy = conn::brw::CP_ONLINE_CACHE;
+        switch (m_config->getValue<int>(BrowserConfig::CONFIG_CACHEPOLICY))
+        {
+            case 0:
+                policy = conn::brw::CP_ONLINE_CACHE;
+                break;
+            case 1:
+                policy = conn::brw::CP_CACHE_ONLY;
+                break;
+            case 2:
+                policy = conn::brw::CP_ONLINE_ONLY;
+                break;
+        }
+        qDebug() << "Reading cachePolicy from config:" << policy;
+        this->setCachePolicy(policy);
+    }
 }
 
 qlonglong cachemanager::getCacheSize(){
@@ -62,6 +80,7 @@ qlonglong cachemanager::getMaximumCacheSize(){
 
 conn::brw::ERROR_IDS cachemanager::setCachePolicy(conn::brw::CACHE_POLICY pol)
 {
+    m_config->setValue(BrowserConfig::CONFIG_CACHEPOLICY, pol);
     m_policy = pol;
     return conn::brw::EID_NO_ERROR;
 }
