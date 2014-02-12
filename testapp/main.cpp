@@ -15,12 +15,14 @@
 #include <QQuickWindow>
 #include <QtQml>
 #include "../common/browserdbus.h"
+#include "../common/cachemanagerdbus.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     qmlRegisterType<BrowserDbus>("browserdbusinterface",1,0,"BrowserInterface");
+    qmlRegisterType<CacheManagerDbus>("browserdbusinterface",1,0,"CacheManagerInterface");
     qmlRegisterType<Bookmark>("browserdbusinterface",1,0,"Tmp");
 
     QQmlApplicationEngine engine("qml/testapp/main.qml");

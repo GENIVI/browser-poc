@@ -13,6 +13,10 @@ ApplicationWindow {
         id: browserinterface
     }
 
+    CacheManagerInterface {
+        id: cachemanagerinterface
+    }
+
     Item {
         id: header
         width: parent.width
@@ -49,7 +53,8 @@ ApplicationWindow {
             anchors.left: inputstring.right
             anchors.leftMargin: 20
             text: "Connect"
-            onClicked: browserinterface.connectdbussession(inputstring.text)
+        onClicked: { browserinterface.connectdbussession(inputstring.text);
+            cachemanagerinterface.connectdbussession(inputstring.text);}
         }
         Component {
             id: hallo
@@ -147,6 +152,13 @@ ApplicationWindow {
             anchors.fill: parent
             clip: true
             BookmarkManager {}
+        }
+        Tab {
+            id: cachemanager
+            title: "ICacheManager"
+            anchors.fill: parent
+            clip: true
+            CacheManager {}
         }
     }
 }

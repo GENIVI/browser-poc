@@ -20,16 +20,20 @@
 #include <QWebSettings>
 
 #include "browserview.h"
+#include "cachemanager.h"
 #include "../common/browserdefs.h"
 
-BrowserView::BrowserView()
+BrowserView::BrowserView(cachemanager *cm)
 {
+    m_cacheManager = cm;
     if (!this->scene()) {
         this->setScene(new QGraphicsScene());
     }
     this->scene()->addItem (&m_webview);
 
     QWebSettings::setIconDatabasePath(".");
+
+    m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
 
     this->load("http://www.bmw.com");
 
@@ -265,13 +269,4 @@ void BrowserView::select() {
 }
 void BrowserView::activate() {
     this->activateWindow();
-}
-
-void BrowserView::setCacheManager(cachemanager *cm) {
-    if (cm) {
-        qDebug() << "Setting cacheManager" << cm;
-        m_cacheManager = cm;
-        m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
-    } else
-        qDebug() << "Setting NULL networkManager!";
 }

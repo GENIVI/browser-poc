@@ -26,7 +26,7 @@ cachemanager::cachemanager(QObject *parent) :
     m_config = new BrowserConfig();
     m_manager = new QNetworkAccessManager();
     QNetworkDiskCache *cache = new QNetworkDiskCache();
-    cache->setCacheDirectory ("cache");
+    cache->setCacheDirectory ("/tmp/browserpoc_cache");
     if (cache)
         m_manager->setCache(cache);
     else
@@ -51,7 +51,8 @@ cachemanager::cachemanager(QObject *parent) :
     }
 }
 
-qlonglong cachemanager::getCacheSize(){
+qulonglong cachemanager::getCacheSize(){
+    qDebug() << "Getting cache size";
     if (!m_manager->cache()) {
         qDebug() << "Unable to retreive cache!";
         return 0;
@@ -64,7 +65,7 @@ conn::brw::CACHE_POLICY cachemanager::getCachePolicy(){
     return m_policy;
 }
 
-qlonglong cachemanager::getMaximumCacheSize(){
+qulonglong cachemanager::getMaximumCacheSize(){
     if (!m_manager->cache()) {
         qDebug() << "Unable to retreive cache!";
         return 0;
@@ -80,6 +81,7 @@ qlonglong cachemanager::getMaximumCacheSize(){
 
 conn::brw::ERROR_IDS cachemanager::setCachePolicy(conn::brw::CACHE_POLICY pol)
 {
+    qDebug() << "Setting cache policy:" << pol;
     m_config->setValue(BrowserConfig::CONFIG_CACHEPOLICY, pol);
     m_policy = pol;
     return conn::brw::EID_NO_ERROR;

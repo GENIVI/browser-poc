@@ -51,8 +51,13 @@ void CacheManagerDbus::connectdbussession(QString id) {
 
 qulonglong CacheManagerDbus::getCacheSize() {
     qDebug() << __PRETTY_FUNCTION__;
+    qulonglong ret = 0;
 
-    qulonglong ret;
+    if (!m_cachemanager){
+        qDebug() << "Manager not initialized, call connectdbussession first";
+        return ret;
+    }
+
     QDBusReply<qulonglong> reply = m_cachemanager->getCacheSize();
 
     if(reply.isValid()) {
@@ -68,7 +73,13 @@ qulonglong CacheManagerDbus::getCacheSize() {
 conn::brw::CACHE_POLICY CacheManagerDbus::getCachePolicy() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    conn::brw::CACHE_POLICY ret;
+    conn::brw::CACHE_POLICY ret = conn::brw::CP_ONLINE_CACHE;
+
+    if (!m_cachemanager){
+        qDebug() << "Manager not initialized, call connectdbussession first";
+        return ret;
+    }
+
     QDBusReply<conn::brw::CACHE_POLICY> reply = m_cachemanager->getCachePolicy();
 
     if(reply.isValid()) {
@@ -83,6 +94,10 @@ conn::brw::CACHE_POLICY CacheManagerDbus::getCachePolicy() {
 
 void CacheManagerDbus::setCachePolicy(conn::brw::CACHE_POLICY policy) {
     qDebug() << __PRETTY_FUNCTION__;
+
+    if (!m_cachemanager){
+        qDebug() << "Manager not initialized, call connectdbussession first";
+    }
 
     QDBusReply<conn::brw::ERROR_IDS> reply = m_cachemanager->setCachePolicy(policy);
 
@@ -99,7 +114,13 @@ void CacheManagerDbus::setCachePolicy(conn::brw::CACHE_POLICY policy) {
 qulonglong CacheManagerDbus::getMaximumCacheSize() {
     qDebug() << __PRETTY_FUNCTION__;
 
-    qlonglong ret;
+    qlonglong ret = 0;
+
+    if (!m_cachemanager){
+        qDebug() << "Manager not initialized, call connectdbussession first";
+        return ret;
+    }
+
     QDBusReply<qulonglong> reply = m_cachemanager->getMaximumCacheSize();
 
     if(reply.isValid()) {
@@ -116,6 +137,10 @@ void CacheManagerDbus::clearCache() {
     qDebug() << __PRETTY_FUNCTION__;
 
     QDBusReply<conn::brw::ERROR_IDS> reply = m_cachemanager->clearCache();
+
+    if (!m_cachemanager){
+        qDebug() << "Manager not initialized, call connectdbussession first";
+    }
 
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret;

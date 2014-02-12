@@ -34,9 +34,9 @@ signals:
     void cacheChanged();
 
 public Q_SLOTS:
-    qlonglong getCacheSize();
+    qulonglong getCacheSize();
     conn::brw::CACHE_POLICY getCachePolicy();
-    qlonglong               getMaximumCacheSize();
+    qulonglong              getMaximumCacheSize();
     conn::brw::ERROR_IDS    setCachePolicy(conn::brw::CACHE_POLICY);
     conn::brw::ERROR_IDS    clearCache();
 
