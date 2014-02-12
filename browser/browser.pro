@@ -35,6 +35,7 @@ SOURCES += main.cpp \
     browserview.cpp \
     browserconfig.cpp \
     cachemanager.cpp \
+    errorlogger.cpp \
     ../common/bookmark.cpp \
 
 HEADERS += \
@@ -46,6 +47,7 @@ HEADERS += \
     browserview.h \
     browserconfig.h \
     cachemanager.h \
+    errorlogger.h \
     ../common/bookmark.h \
     ../common/browserdefs.h \
 
@@ -55,3 +57,9 @@ system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i cachemanager.h\
                                                -l cachemanager\
                                                -a icachemanager_adaptor.h:\
                                                ../common/ICacheManager.xml")
+
+system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i errorlogger.h\
+                                               -i ../common/browserdefs.h\
+                                               -l errorlogger\
+                                               -a ierrorlogger_adaptor.h:\
+                                               ../common/IErrorLogger.xml")

@@ -1,0 +1,37 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+
+<node>
+  <interface name="conn.brw.IErrorLogger">
+    <version>1.0.0</version>
+    <doc>
+      <line>Error logger. Provides list of the errors.</line>
+    </doc>
+        
+    <method name="getItemsCount">
+      <arg name="retval" type="u" direction="out"/>
+      <arg name="a_i64TimeFrom" type="x" direction="in"/>
+      <arg name="a_i64TimeTo" type="x" direction="in"/>
+    </method>
+    
+   <method name="getItems">
+      <arg name="a_i64TimeFrom" type="x" direction="in"/>
+      <arg name="a_i64TimeTo" type="x" direction="in"/>
+      <arg name="a_eSortType" type="(i)" direction="in"/>
+      <arg name="a_u32StartIndex" type="u" direction="in"/>
+      <arg name="a_u32ItemsCount" type="u" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <arg name="a_oItems" type="a(xsssss)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In2" value="conn::brw::ERROR_SORT_TYPE" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::ErrorItemList" />
+    </method>
+
+    <signal name="onErrorListChanged" />
+
+    <signal name="onNewErrorItem">
+      <arg name="a_rNewErrorItem" type="(xsssss)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::ErrorItem &amp;" />
+    </signal>
+  </interface>
+</node>
