@@ -17,7 +17,6 @@
 #include <QObject>
 #include <QDBusContext>
 
-#include "browserconfig.h"
 #include "../common/browserdefs.h"
 
 class errorlogger : public QObject, protected QDBusContext
