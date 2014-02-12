@@ -89,6 +89,17 @@ Item {
                 anchors.leftMargin: 0
                 anchors.verticalCenter: getCachePolicyButton.verticalCenter
                 font.pixelSize: 12
+            }
+
+            Button {
+                id: clearCacheButton
+                x: -376
+                width: getCachePolicyButton.width
+                text: "Clear cache"
+                anchors.top: getCachePolicyButton.bottom
+                anchors.topMargin: 10
+                anchors.horizontalCenter: cacheSizeButton.horizontalCenter
+        onClicked: cachemanagerinterface.clearCache();
 }
 
 }
@@ -109,7 +120,6 @@ Item {
         id: setCachePolicyGroup
         x: 185
         y: 0
-        width: onlineCachebutton.width*3
         height: onlineCacheButton.height
         title: ""
         anchors.horizontalCenter: parent.horizontalCenter
