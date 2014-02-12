@@ -19,6 +19,7 @@
 #include "iwebpagewindow_adaptor.h"
 #include "ibrowser_adaptor.h"
 #include "icachemanager_adaptor.h"
+#include "ierrorlogger_adaptor.h"
 
 
 browserhelper::browserhelper(QString instanceId, QObject *parent) :
@@ -37,6 +38,13 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
 
     if(!connection->registerService(*dbusservicename)) {
         qDebug() << "failed register service " << *dbusservicename;
+        exit(1);
+    }
+
+    errorlogger *err = new errorlogger();
+    new IErrorLoggerAdaptor(err);
+    if(!connection->registerObject("/Browser/IErrorLogger", err)) {
+        qDebug() << "failed register object IErrorLogger";
         exit(1);
     }
 
