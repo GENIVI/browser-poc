@@ -18,17 +18,19 @@ my_dbus_interfaces.files += ../common/IBookmarkManager.xml \
     ../common/IWebPageWindow.xml \
     ../common/IBrowser.xml
 my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
+
+my_dbus_interfaces.files += ../common/ICacheManager.xml
+my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
+
 DBUS_INTERFACES += my_dbus_interfaces
 
 include(../common/common.pri)
 
 SOURCES +=  main.cpp \
-            ../common/cachemanagerdbus.cpp \
-            ../common/icachemanager_interface.cpp
+            ../common/cachemanagerdbus.cpp
 
 HEADERS += ../common/cachemanagerdbus.h \
-           ../common/browserdefs.h \
-            ../common/icachemanager_interface.h
+           ../common/browserdefs.h
 
 OTHER_FILES += \
     qml/testapp/main.qml \

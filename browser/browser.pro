@@ -48,3 +48,10 @@ HEADERS += \
     cachemanager.h \
     ../common/bookmark.h \
     ../common/browserdefs.h \
+
+# Generation of the adaptor doesn't trigger properly, so this is a temp fix
+system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i cachemanager.h\
+                                               -i ../common/browserdefs.h\
+                                               -l cachemanager\
+                                               -a icachemanager_adaptor.h:\
+                                               ../common/ICacheManager.xml")
