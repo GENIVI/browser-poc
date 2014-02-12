@@ -19,6 +19,7 @@
 
 #include "icachemanager_interface.h"
 #include "../common/bookmark.h"
+#include "browserdefs.h"
 
 class CacheManagerDbus : public QObject
 {
@@ -27,7 +28,7 @@ class CacheManagerDbus : public QObject
 public:
     explicit CacheManagerDbus(QObject *parent = 0);
 
-    void connectdbussession(QString id);
+    Q_INVOKABLE void connectdbussession(QString id);
     Q_INVOKABLE qulonglong getCacheSize();
     Q_INVOKABLE conn::brw::CACHE_POLICY getCachePolicy();
     Q_INVOKABLE void setCachePolicy(conn::brw::CACHE_POLICY);

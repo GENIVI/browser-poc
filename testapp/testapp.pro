@@ -8,6 +8,8 @@ QT       += dbus qml quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += debug qt
+
 TARGET = testapp
 TEMPLATE = app
 
@@ -20,14 +22,19 @@ DBUS_INTERFACES += my_dbus_interfaces
 
 include(../common/common.pri)
 
-SOURCES += main.cpp \
+SOURCES +=  main.cpp \
+            ../common/cachemanagerdbus.cpp \
+            ../common/icachemanager_interface.cpp
 
-HEADERS += \
+HEADERS += ../common/cachemanagerdbus.h \
+           ../common/browserdefs.h \
+            ../common/icachemanager_interface.h
 
 OTHER_FILES += \
     qml/testapp/main.qml \
     qml/testapp/UserInput.qml \
     qml/testapp/Browser.qml \
     qml/testapp/BookmarkManager.qml \
-    qml/testapp/WebPageWindow.qml
+    qml/testapp/WebPageWindow.qml \
+    qml/testapp/CacheManager.qml
 

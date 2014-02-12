@@ -62,7 +62,7 @@ class BrowserView : public QGraphicsView
 {
      Q_OBJECT
 public:
-    BrowserView();
+    BrowserView(cachemanager *);
     bool load(const QString &a_Url);
     int getProgress() { return m_currentProgress; }
     QString getUrl() { return m_webview.url().toString(); }
@@ -82,7 +82,6 @@ public:
     QString getFaviconFilePath(QString url);
     void activate();
     void select();
-    void setCacheManager (cachemanager *nm);
 
 signals:
     void pageLoadStarted();
