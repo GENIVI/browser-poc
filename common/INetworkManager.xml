@@ -1,0 +1,45 @@
+<!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+
+<node>
+  <interface name="conn.brw.INetworkManager">     
+  
+    <method name="closeAuthenticationDialog">  
+      <arg name="a_eResult" type="(i)" direction="in"/>
+      <arg name="a_oAuthenticationData" type="(sssb)" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::DIALOG_RESULT" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In1" value="const conn::brw::AuthenticationData &amp;" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+    
+    <method name="closeSslErrorDialog">  
+      <arg name="a_eResult" type="(i)" direction="in"/>
+      <arg name="a_bSaveCertificate" type="b" direction="in"/>
+      <arg name="retval" type="(i)" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::DIALOG_RESULT" />
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>    
+
+    <signal name="onAuthenticationDialog">
+      <arg name="a_oAuthenticationData" type="(sssb)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::AuthenticationData &amp;" />
+    </signal>
+    
+    <signal name="onAuthenticationDialogCancel">
+      <arg name="a_oAuthenticationData" type="(sssb)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::AuthenticationData &amp;" />
+    </signal>
+    
+    <signal name="onSslErrorDialog">
+      <arg name="a_eSsLError" type="(iss)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::SslError &amp;" />
+    </signal>
+    
+    <signal name="onSslErrorDialogCancel">
+      <arg name="a_eSsLError" type="(iss)"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="const conn::brw::SslError &amp;" />
+    </signal>
+
+  </interface>
+</node>
+
