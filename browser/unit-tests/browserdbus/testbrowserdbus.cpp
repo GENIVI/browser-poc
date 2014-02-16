@@ -81,6 +81,27 @@ void TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked() {
     QVERIFY(spy.wait(10000));
 }
 
+void TestBrowserDBus::testGetsNotifiedWhenLinkIsHovered() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (linkHovered (QString)));
+    m_bdb->loadurl(testFileUrl());
+
+    QTest::qSleep(200);
+    QProcess::execute("xdotool mousemove 0 0");
+    QProcess::execute("xdotool mousemove 100 100");
+
+    bool success = false;
+    for (int i = 0; i < 10; i++){
+        spy.wait(1000);
+        if (spy.last().value(0).toString().contains("google")) {
+            success = true;
+            break;
+        }
+    }
+
+    QVERIFY(success);
+}
+
 void TestBrowserDBus::testGetsNotifiedWhenSelectionChanges() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QSignalSpy spy (m_bdb, SIGNAL (selectionChanged ()));
@@ -176,6 +197,55 @@ void TestBrowserDBus::testCanSetAndGetScrollPosition() {
     QVERIFY(y == 0);
     QVERIFY(spy.wait(10000));
     QVERIFY(spy.last().value(1).toUInt() == 0);
+}
+
+void TestBrowserDBus::testCanGeneratePageIcon() {
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QString iconPath = m_bdb->getPageIcon(testFileUrl());
+    qDebug() << iconPath;
+    QVERIFY(iconPath.compare(QString("")) != 0);
+}
+
+void TestBrowserDBus::testCanGetFavicon() {
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QString iconPath = m_bdb->getFavicon(testFileUrl());
+    qDebug() << iconPath;
+    QVERIFY(iconPath.compare(QString("")) != 0);
+}
+
+void TestBrowserDBus::testOnContentSizeChanged() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onContentSizeChanged (uint, uint)));
+    m_bdb->loadurl(testFileUrl());
+    m_bdb->loadurl("http://google.com");
+    QVERIFY(spy.wait(1000));
+}
+
+void TestBrowserDBus::testOnActionStateChanged() {}
+void TestBrowserDBus::testOnFaviconReceived() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QSignalSpy spy (m_bdb, SIGNAL (onFaviconReceived()));
+    m_bdb->loadurl(testFileUrl());
+    m_bdb->loadurl("http://google.com");
+    qDebug() << spy;
+    QVERIFY(spy.wait(1000));
+}
+
+void TestBrowserDBus::testSelect() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QTest::qSleep(300);
+    m_bdb->select();
+    QTest::qSleep(300);
+    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
+}
+void TestBrowserDBus::testActivate() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    QTest::qSleep(300);
+    m_bdb->activate();
+    QTest::qSleep(300);
+    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
 }
 
 QTEST_MAIN (TestBrowserDBus);

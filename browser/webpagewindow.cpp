@@ -55,11 +55,13 @@ void webpagewindow::getUrlTitle() {
 }
 
 conn::brw::ERROR_IDS webpagewindow::activate() {
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    webitem->activate();
+    return conn::brw::EID_NO_ERROR;
 }
 
-conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString iconFilePath) {
-    return conn::brw::EID_NOT_IMPLEMENTED;
+conn::brw::ERROR_IDS webpagewindow::getPageIcon(QString iconPath, QString &iconFilePath) {
+    iconFilePath = webitem->createScreenshot(iconPath);
+    return conn::brw::EID_NO_ERROR;
 }
 
 conn::brw::ERROR_IDS webpagewindow::back() {
@@ -213,7 +215,10 @@ QString webpagewindow::getUrl() {
     return webitem->getUrl();
 }
 
-conn::brw::ERROR_IDS webpagewindow::select(){}
+conn::brw::ERROR_IDS webpagewindow::select(){
+    webitem->select();
+    return conn::brw::EID_NO_ERROR;
+}
 
 double webpagewindow::getZoomFactor() {
     return webitem->getZoomFactor();
@@ -231,4 +236,12 @@ conn::brw::ERROR_IDS webpagewindow::getScrollPosition(uint &x, uint &y) {
 conn::brw::ERROR_IDS webpagewindow::setScrollPosition(uint &x, uint &y) {
     webitem->setScrollPosition(x,y);
     return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS webpagewindow::getFavicon(const QString& url, QString& fname) {
+    fname = webitem->getFaviconFilePath(url);
+    if (fname.compare("") == 0)
+        return conn::brw::EID_NOT_EXISTS;
+    else
+        return conn::brw::EID_NO_ERROR;
 }

@@ -161,6 +161,69 @@ namespace conn {
         //## class BookmarkItemList
         typedef QList<conn::brw::BookmarkItem> BookmarkItemList;    
         
+        /*!
+        * 
+        */
+        //## type SelectableOption
+        struct SelectableOption {
+            /*!
+             * True - option can be selected; False - not - probably optgroup
+             */
+            bool bIsSelectableOption;
+            /*!
+            * 
+            */
+            QString strValue;		//## attribute strValue
+            /*!
+            * 
+            */
+            bool bSelected;		//## attribute bSelected
+
+            SelectableOption() : bIsSelectableOption(true), strValue(), bSelected(false) {}
+        };
+        
+        //## package connImports::Interfaces::conn::brw::def
+        
+        //## class SelectableOptionList
+        /*!
+        * 
+        */
+        typedef QList<conn::brw::SelectableOption> SelectableOptionList;
+
+        //## operation operator>>(QDBusArgument,SelectableOption)
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, SelectableOption& selectableOption) {
+            //#[ operation operator>>(QDBusArgument,SelectableOption)
+
+            args.beginStructure();
+
+            args >> selectableOption.bIsSelectableOption
+                 >> selectableOption.strValue
+                 >> selectableOption.bSelected;
+
+            args.endStructure();
+            return args;
+
+            //#]
+        }
+
+
+        //## operation operator<<(QDBusArgument,SelectableOption)
+        inline QDBusArgument& operator<<(QDBusArgument& args, const SelectableOption& selectableOption) {
+            //#[ operation operator<<(QDBusArgument,SelectableOption)
+
+            args.beginStructure();
+
+            args << selectableOption.bIsSelectableOption
+                 << selectableOption.strValue
+                 << selectableOption.bSelected;
+
+            args.endStructure();
+
+            return args;
+
+            //#]
+        }
+        
 
         /*!
                 * Result of dialog.
@@ -461,6 +524,138 @@ namespace conn {
             return argument;
         }
         
+        /*!
+        * Defines policy of cache usage.
+        CP_CACHE_ONLINE - Use cache if present, network if not.
+        CP_CACHE_ONLY - Only cache is used.
+        CP_ONLINE_ONLY - Cache is disabled.
+        
+        */
+        //## type CACHE_POLICY
+        enum CACHE_POLICY {
+            CP_ONLINE_CACHE = 0x00,
+            CP_CACHE_ONLY = 0x01,
+            CP_ONLINE_ONLY = 0x02
+        };
+
+        //## operation operator>>(QDBusArgument,CACHE_POLICY)
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, CACHE_POLICY& cachePolicy) {
+            //#[ operation operator>>(QDBusArgument,CACHE_POLICY)
+            args.beginStructure();
+            int temp =0;
+            args>>temp;
+            switch (temp )
+            {
+            case CP_ONLINE_CACHE:
+            {
+                cachePolicy = CP_ONLINE_CACHE;
+            }
+                break;
+            case CP_CACHE_ONLY :
+            {
+                cachePolicy = CP_CACHE_ONLY;
+            }
+                break;
+            case CP_ONLINE_ONLY:
+            {
+                cachePolicy = CP_ONLINE_ONLY;
+            }
+                break;
+            }
+
+            args.endStructure();
+            return args;
+            //#]
+        }
+
+        //## operation operator<<(QDBusArgument,CACHE_POLICY)
+        inline const QDBusArgument& operator<<(QDBusArgument& args, CACHE_POLICY cachePolicy) {
+            //#[ operation operator<<(QDBusArgument,CACHE_POLICY)
+            args.beginStructure();
+            int param = cachePolicy;
+            args << param;
+            args.endStructure();
+            return args;
+            //#]
+        }
+
+        /*!
+        * Defines sorting order of error items:
+        EST_DATE_ASCENDING - the error items are sorted by the date in ascending order;
+        EST_DATE_DESCENDING - the error items are sorted by the date in descending order;
+
+        */
+        //## type ERROR_SORT_TYPE
+        enum ERROR_SORT_TYPE
+        {
+            EST_DATE_ASCENDING = 0,
+            EST_DATE_DESCENDING = 1
+        };
+
+        struct ErrorItem
+        {
+            /*!
+            * Timestamp when the error happened
+            */
+            qlonglong i64DateTime;		//## attribute i64DateTime
+            /*!
+            * Browser version
+            */
+            QString strBrowserVersion;		//## attribute strBrowserVersion
+            /*!
+            * Internet connection used.
+            */
+            QString strConnectionType;		//## attribute strConnectionType
+            /*!
+            * Error code. It could be HTTP error codes, or internal codes.
+            */
+            QString strCode;		//## attribute strCode
+            /*!
+            * Information about the place where the error happened. Could be name of a module, class or method.
+            */
+            QString strSource;		//## attribute strSource
+            /*!
+            * Short text description of the error.
+            */
+            QString strDescription;		//## attribute strDescription
+        };
+
+        //## package connInterfaces::connPublic::conn::brw::def
+        //## class ErrorItemList
+        /*!
+        *
+        */
+        typedef QList<conn::brw::ErrorItem> ErrorItemList;
+
+        //## operation operator>>(QDBusArgument,ErrorItem)
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, ErrorItem& error) {
+            //#[ operation operator>>(QDBusArgument,ErrorItem)
+            args.beginStructure();
+            args >> error.i64DateTime
+                 >> error.strBrowserVersion
+                 >> error.strConnectionType
+                 >> error.strCode
+                 >> error.strSource
+                 >> error.strDescription;
+            args.endStructure();
+            return args;
+            //#]
+        }
+
+        //## operation operator<<(QDBusArgument,ErrorItem)
+        inline QDBusArgument& operator<<(QDBusArgument& args, const ErrorItem& error) {
+            //#[ operation operator<<(QDBusArgument,ErrorItem)
+            args.beginStructure();
+            args << error.i64DateTime
+                 << error.strBrowserVersion
+                 << error.strConnectionType
+                 << error.strCode
+                 << error.strSource
+                 << error.strDescription;
+            args.endStructure();
+            return args;
+            //#]
+        }
     }
 }
 
@@ -477,5 +672,10 @@ Q_DECLARE_METATYPE(conn::brw::BrowserScrollDirections)
 Q_DECLARE_METATYPE(conn::brw::BrowserActions)
 Q_DECLARE_METATYPE(conn::brw::OBJECT_HANDLE)
 Q_DECLARE_METATYPE(conn::brw::ObjectHandleList)
+Q_DECLARE_METATYPE(conn::brw::SelectableOption);
+Q_DECLARE_METATYPE(conn::brw::CACHE_POLICY);
+Q_DECLARE_METATYPE(conn::brw::ErrorItemList);
+Q_DECLARE_METATYPE(conn::brw::ErrorItem);
+Q_DECLARE_METATYPE(conn::brw::ERROR_SORT_TYPE);
 
 #endif // BROWSERDEFS_H

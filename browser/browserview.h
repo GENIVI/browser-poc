@@ -19,9 +19,19 @@
 #include <QResizeEvent>
 #include <QWebElement>
 #include <QDebug>
+#include <QSemaphore>
+#include <QNetworkAccessManager>
 
+#include "cachemanager.h"
 #include "../common/browserdefs.h"
 
+class WebPageWaiter : public QObject {
+Q_OBJECT
+public slots:
+    void loadFinished() { finishedSem.release(1); }
+public:
+    QSemaphore finishedSem;
+};
 
 class InputHandler : public QObject {
 Q_OBJECT
@@ -52,7 +62,7 @@ class BrowserView : public QGraphicsView
 {
      Q_OBJECT
 public:
-    BrowserView();
+    BrowserView(cachemanager *);
     bool load(const QString &a_Url);
     int getProgress() { return m_currentProgress; }
     QString getUrl() { return m_webview.url().toString(); }
@@ -68,6 +78,10 @@ public:
     double getZoomFactor();
     void getScrollPosition(uint&, uint&);
     void setScrollPosition(uint, uint);
+    QString createScreenshot(QString url);
+    QString getFaviconFilePath(QString url);
+    void activate();
+    void select();
 
 signals:
     void pageLoadStarted();
@@ -83,6 +97,10 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void onLinkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);
@@ -95,6 +113,7 @@ protected slots:
     void titleChanged(QString);
     void linkClicked(QUrl);
     void scrollPositionChanged(uint x, uint y);
+    void contentSizeChanged(const QSize&);
 
 private:
     QGraphicsWebView m_webview;
@@ -102,6 +121,7 @@ private:
     int m_currentProgress;
     uint m_scrollPositionX;
     uint m_scrollPositionY;
+    cachemanager *m_cacheManager = NULL;
 };
 
 

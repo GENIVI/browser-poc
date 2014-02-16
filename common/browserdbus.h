@@ -68,6 +68,10 @@ public:
     Q_INVOKABLE void setZoomFactor(double);
     Q_INVOKABLE void getScrollPosition(uint &x, uint &y);
     Q_INVOKABLE void setScrollPosition(uint &x, uint &y);
+    Q_INVOKABLE QString getPageIcon(QString);
+    Q_INVOKABLE QString getFavicon(QString);
+    Q_INVOKABLE void activate();
+    Q_INVOKABLE void select();
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }
@@ -93,6 +97,10 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void linkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
 public slots:
     void pageloadingstarted();

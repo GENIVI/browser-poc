@@ -3,9 +3,11 @@
 #include <QMainWindow>
 #include <QGraphicsScene>
 #include <QGraphicsView>
+#include <QFileInfo>
 
 #include "testbrowser.h"
-#include "../browserview.h"
+#include "../../browserview.h"
+#include "../../browserconfig.h"
 
 /////////////// Test cases  ///////////////
 
@@ -173,6 +175,30 @@ void TestBrowser::testGetUrl()
     }
     after = bvi.getUrl();
     QVERIFY (before.compare(after) != 0);
+}
+
+void TestBrowser::testCanCreateScreenshot() {
+    BrowserView bvi;
+    bvi.show();
+    QString fileName = bvi.createScreenshot("http://pelagicore.com");
+    QVERIFY(QFileInfo(fileName).size() > 0);
+}
+
+void TestBrowser::testCanGetFavicon () {
+    BrowserView bvi;
+    bvi.show();
+    QString fileName = bvi.getFaviconFilePath("http://www.bmw.com");
+    qDebug() << fileName;
+    QVERIFY(QFileInfo(fileName).size() > 0);
+}
+
+void TestBrowser::testCanSetGetConfigParameter() {
+    BrowserConfig conf;
+    conf.setValue(BrowserConfig::CONFIG_CACHESIZE, 1337);
+    QVERIFY(conf.getValue<int>(BrowserConfig::CONFIG_CACHESIZE) == 1337);
+
+    conf.setValue<QString>(BrowserConfig::CONFIG_CACHESIZE, "1337");
+    QVERIFY(conf.getValue<QString>(BrowserConfig::CONFIG_CACHESIZE).compare("1337") == 0);
 }
 
 QTEST_MAIN (TestBrowser);

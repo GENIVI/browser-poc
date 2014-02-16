@@ -18,10 +18,14 @@
 #include "browser.h"
 #include "browserview.h"
 
-browser::browser(QObject *parent) :
+browser::browser(cachemanager *manager, QObject *parent) :
     QObject(parent)
 {
     qDebug() << __PRETTY_FUNCTION__;
+    if (manager) {
+        qDebug() << "Setting default cacheManager";
+        m_cacheManager = manager;
+    }
 }
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
@@ -29,7 +33,8 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     Q_UNUSED(a_eDeviceId);
 
-    BrowserView *bvi = new BrowserView();
+    BrowserView *bvi = new BrowserView(m_cacheManager);
+
     bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
                          a_oGeometry.i32Height);
     bvi->show();
@@ -49,9 +54,13 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(bvi, SIGNAL(onSelectionChanged(void)),     wpw,  SIGNAL(onSelectionChanged(void)));
     connect(bvi, SIGNAL(onStatusTextChanged(QString)), wpw,  SIGNAL(onStatusTextChanged(QString)));
     connect(bvi, SIGNAL(onZoomFactorChanged(double)),  wpw,  SIGNAL(onZoomFactorChanged(double)));
+    connect(bvi, SIGNAL(onLinkHovered(QString)),       wpw,  SIGNAL(onLinkHovered(QString)));
     connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
     connect(this,SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
     connect(bvi, SIGNAL(onScrollPositionChanged(uint,uint)), wpw, SIGNAL(onScrollPositionChanged(uint,uint)));
+    connect(bvi, SIGNAL(onActionStateChanged(uint)),   wpw,  SIGNAL(onActionStateChanged(uint)));
+    connect(bvi, SIGNAL(onContentSizeChanged(uint, uint)),wpw,SIGNAL(onContentSizeChanged(uint,uint)));
+    connect(bvi, SIGNAL(onFaviconReceived()),           wpw,  SIGNAL(onFaviconReceived()));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;

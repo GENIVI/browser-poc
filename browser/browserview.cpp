@@ -15,16 +15,25 @@
 #include <QWebFrame>
 #include <QWebPage>
 #include <QCoreApplication>
+#include <QTemporaryFile>
+#include <QSemaphore>
+#include <QWebSettings>
 
 #include "browserview.h"
+#include "cachemanager.h"
 #include "../common/browserdefs.h"
 
-BrowserView::BrowserView()
+BrowserView::BrowserView(cachemanager *cm)
 {
+    m_cacheManager = cm;
     if (!this->scene()) {
         this->setScene(new QGraphicsScene());
     }
     this->scene()->addItem (&m_webview);
+
+    QWebSettings::setIconDatabasePath(".");
+
+    m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
 
     this->load("http://www.bmw.com");
 
@@ -42,6 +51,9 @@ BrowserView::BrowserView()
     connect(&m_webview, SIGNAL (linkClicked(QUrl)),         this, SLOT   (linkClicked(QUrl)));
 
     connect(m_webview.page(), SIGNAL (selectionChanged(void)), this, SIGNAL(onSelectionChanged(void)));
+    connect(m_webview.page(), SIGNAL (linkHovered(const QString&,const QString&,const QString&)), this, SIGNAL(onLinkHovered(QString)));
+    connect(m_webview.page()->mainFrame(), SIGNAL (contentsSizeChanged(const QSize &)), this, SLOT (contentSizeChanged(const QSize&)));
+    connect(&m_webview, SIGNAL (iconChanged()),             this, SIGNAL (onFaviconReceived()));
 
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
@@ -50,7 +62,15 @@ BrowserView::BrowserView()
 
 bool BrowserView::load(const QString &a_Url)
 {
-    m_webview.load(a_Url);
+    if (m_cacheManager) {
+        QNetworkRequest req = QNetworkRequest(QUrl(a_Url));
+        req.setAttribute(QNetworkRequest::CacheLoadControlAttribute,
+                         m_cacheManager->getCacheLoadControl());
+        m_webview.load(req);
+    } else {
+        qDebug() << "No cacheManager present, defaulting to load(url)";
+        m_webview.load(a_Url);
+    }
     return true;
 }
 
@@ -180,7 +200,7 @@ void BrowserView::scrollPositionChanged(uint x, uint y)
 void BrowserView::setScrollPosition(uint x, uint y)
 {
     QString cmd = QString("window.scrollTo(%1,%2);").arg(QString::number(x), QString::number(y));
-    m_webview.page()->mainFrame()->evaluateJavaScript(cmd); 
+    m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
     m_scrollPositionX = x;
     m_scrollPositionY = y;
 }
@@ -189,4 +209,64 @@ void BrowserView::getScrollPosition(uint &x, uint &y)
 {
     x = m_scrollPositionX;
     y = m_scrollPositionY;
+}
+
+QString BrowserView::createScreenshot(QString url) {
+    WebPageWaiter waiter;
+    QWebPage wp;
+    QSize renderSize(640,480);
+
+    connect(&wp, SIGNAL(loadFinished(bool)), &waiter, SLOT (loadFinished(void)));
+
+    wp.mainFrame()->load(QUrl(url));
+    wp.setViewportSize(renderSize);
+    wp.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+    wp.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
+
+    for (int i = 0; i < 100; i++) {
+        waiter.finishedSem.tryAcquire(1,10);
+        QCoreApplication::processEvents();
+    }
+
+    QImage *image = new QImage(renderSize,
+                               QImage::Format_ARGB32);
+    QPainter *painter = new QPainter(image);
+    QTemporaryFile outFile("XXXXXX.png");
+    outFile.setAutoRemove(false);
+    outFile.open();
+    wp.mainFrame()->render(painter);
+
+    painter->end();
+    image->save(&outFile, "PNG");
+    outFile.close();
+    return outFile.fileName();
+}
+
+QString BrowserView::getFaviconFilePath(QString url) {
+
+    QIcon icon = QWebSettings::globalSettings()->iconForUrl(QUrl(url));
+    if (icon.isNull())
+        return "";
+
+    QImage image = icon.pixmap(15).toImage();
+
+    QTemporaryFile outFile("XXXXXX.png");
+    outFile.setAutoRemove(false);
+    outFile.open();
+
+    image.save(&outFile, "PNG");
+    outFile.close();
+
+    return outFile.fileName();
+}
+
+void BrowserView::contentSizeChanged(const QSize &size) {
+    emit onContentSizeChanged(size.width(), size.height());
+}
+
+void BrowserView::select() {
+    this->setFocus(Qt::OtherFocusReason);
+}
+void BrowserView::activate() {
+    this->activateWindow();
 }

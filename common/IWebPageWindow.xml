@@ -22,13 +22,20 @@
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
     </method>
 
+    <method name="getFavicon">
+      <arg name="retval" type="(i)" direction="out"/>
+      <arg name="a_strFaviconFolderPath" type="s" direction="in"/>
+      <arg name="a_strFaviconFilePath" type="s" direction="out"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
+    </method>
+
     <method name="getGeometry">
       <arg name="retval" type="(i)" direction="out"/>
       <arg name="a_sRect" type="(iiii)" direction="out"/>
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="conn::brw::ERROR_IDS" />
       <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="conn::brw::Rect" />
     </method>
-    
+
     <method name="setGeometry">
       <arg name="a_sRect" type="(iiii)" direction="in"/>
       <arg name="retval" type="(i)" direction="out"/>
@@ -139,20 +146,26 @@
       <arg name="a_u32Height" type="u"/>
     </signal>
 
+    <signal name="onFaviconReceived"/>
+
     <signal name="onScrollPositionChanged">
       <arg name="a_u32ScrollPosX" type="u"/>
       <arg name="a_u32ScrollPosY" type="u"/>
-    </signal>            
-    
+    </signal>
+
     <signal name="onVisibilityChanged">
       <arg name="a_bVisibility" type="b"/>
     </signal>
-    
+
     <signal name="onZoomFactorChanged">
       <arg name="a_fZoomFactor" type="d"/>
     </signal>
 
     <signal name="onLinkClicked">
+      <arg name="a_strUrl" type="s"/>
+    </signal>
+
+    <signal name="onLinkHovered">
       <arg name="a_strUrl" type="s"/>
     </signal>
 

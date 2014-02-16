@@ -18,6 +18,8 @@
 #include "iuserinput_adaptor.h"
 #include "iwebpagewindow_adaptor.h"
 #include "ibrowser_adaptor.h"
+#include "icachemanager_adaptor.h"
+#include "ierrorlogger_adaptor.h"
 
 
 browserhelper::browserhelper(QString instanceId, QObject *parent) :
@@ -39,7 +41,21 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    browser *br = new browser();
+    errorlogger *err = new errorlogger();
+    new IErrorLoggerAdaptor(err);
+    if(!connection->registerObject("/Browser/IErrorLogger", err)) {
+        qDebug() << "failed register object IErrorLogger";
+        exit(1);
+    }
+
+    cachemanager *cm = new cachemanager();
+    new ICacheManagerAdaptor(cm);
+    if(!connection->registerObject("/Browser/ICacheManager", cm)) {
+        qDebug() << "failed register object ICacheManager";
+        exit(1);
+    }
+
+    browser *br = new browser(cm);
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
@@ -61,6 +77,11 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     new IUserInputAdaptor(ui);
     br->ui = ui;
 
+    connect(cm, SIGNAL(onCachePolicyChanged(conn::brw::CACHE_POLICY)),
+            br, SLOT  (cachePolicyChanged  (conn::brw::CACHE_POLICY)));
+    connect(cm, SIGNAL(onClearCache(void)),
+            br, SLOT  (clearCache  (void)));
+
     connect(wpw, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
     connect(ui, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
 }
@@ -78,5 +99,6 @@ void browserhelper::registertypes() {
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+    qDBusRegisterMetaType<conn::brw::CACHE_POLICY>();
 }
 

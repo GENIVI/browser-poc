@@ -21,19 +21,23 @@
 #include "webpagewindow.h"
 #include "userinput.h"
 #include "browserview.h"
+#include "cachemanager.h"
 
 class browser : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    explicit browser(QObject *parent = 0);
-    
+    explicit browser(cachemanager *defaultManager = 0, QObject *parent = 0);
+
     webpagewindow *wpw;
     userinput *ui;
 
 signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);
     void onPageWindowDestroyed(qlonglong a_hPageWindowHandle);
+
+    // Distribute cache changes signals to all browser windows
+
 
 public Q_SLOTS:
     conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry,
@@ -44,10 +48,11 @@ public Q_SLOTS:
     void inputText(QString input);
     void setView(QString viewpath);
 
-    
+
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
     QHash<QString, BrowserView *> webviewhash;
+    cachemanager *m_cacheManager = NULL;
 };
 
 #endif // BROWSER_H

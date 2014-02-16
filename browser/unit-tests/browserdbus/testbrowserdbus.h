@@ -28,12 +28,20 @@ private slots:
     void testGetsNotifiedOnUrlChange();
     void testGetsNotifiedOnTitleChange();
     void testGetsNotifiedWhenLinkIsClicked();
+    void testGetsNotifiedWhenLinkIsHovered();
     void testGetsNotifiedWhenSelectionChanges();
     void testGetsNotifiedWhenStatusBarChanges();
     void testGetsNotifiedWhenVisibilityChanges();
     void testGetsNotifiedWhenScrollingChanges();
     void testCanSetAndGetZoomFactor();
     void testCanSetAndGetScrollPosition();
+    void testCanGeneratePageIcon();
+    void testCanGetFavicon();
+    void testOnActionStateChanged();
+    void testOnContentSizeChanged();
+    void testOnFaviconReceived();
+    void testSelect();
+    void testActivate();
 
 private:
     QString testFileUrl() {

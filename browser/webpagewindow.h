@@ -45,6 +45,10 @@ signals:
     void onVisibilityChanged(bool);
     void onScrollPositionChanged(uint,uint);
     void onZoomFactorChanged(double);
+    void onLinkHovered(QString);
+    void onActionStateChanged(uint);
+    void onContentSizeChanged(uint, uint);
+    void onFaviconReceived();
 
     
 public Q_SLOTS:
@@ -61,7 +65,7 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS setVisible(bool a_bVisible);
     conn::brw::ERROR_IDS stop();
     conn::brw::ERROR_IDS activate();
-    conn::brw::ERROR_IDS getPageIcon(QString iconPath, QString iconFilePath);
+    conn::brw::ERROR_IDS getPageIcon(QString iconPath, QString &iconFilePath);
 
     conn::brw::ERROR_IDS getScrollPosition(uint &posX, uint &posY);
     QString getTitle();
@@ -71,6 +75,8 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS select();
     conn::brw::ERROR_IDS setScrollPosition(uint &posX, uint &posY);
     conn::brw::ERROR_IDS setZoomFactor(double &zoomFactor);
+    conn::brw::ERROR_IDS getFavicon(const QString&, QString&);
+
 
     void browserStartLoading();
     void reportprogress();

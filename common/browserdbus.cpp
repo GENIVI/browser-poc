@@ -201,6 +201,10 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         connect(actualtab, SIGNAL(onVisibilityChanged(bool)),        this, SIGNAL(onVisibilityChanged(bool)));
         connect(actualtab, SIGNAL(onScrollPositionChanged(uint,uint)), this, SIGNAL(onScrollPositionChanged(uint,uint)));
         connect(actualtab, SIGNAL(onZoomFactorChanged(double)),      this, SIGNAL(onZoomFactorChanged(double)));
+        connect(actualtab, SIGNAL(onLinkHovered(QString)),           this, SIGNAL(linkHovered(QString)));
+        connect(actualtab, SIGNAL(onActionStateChanged(uint)),       this, SIGNAL(onActionStateChanged(uint)));
+        connect(actualtab, SIGNAL(onContentSizeChanged(uint, uint)), this, SIGNAL(onContentSizeChanged(uint,uint)));
+        connect(actualtab, SIGNAL(onFaviconReceived()),              this, SIGNAL(onFaviconReceived()));
 
         QString *userinputservice = new QString(*webpagewindowservice + "/IUserInput");
 
@@ -594,6 +598,63 @@ void BrowserDbus::setScrollPosition(uint &x, uint &y) {
 
     QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualtab->setScrollPosition(x,y);
     reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+QString BrowserDbus::getPageIcon(QString iconPath) {
+    qDebug() << __PRETTY_FUNCTION__;
+    QString iconFilePath;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply =
+                       actualtab->getPageIcon(iconPath,iconFilePath);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return iconFilePath;
+}
+
+QString BrowserDbus::getFavicon(QString iconPath) {
+    qDebug() << __PRETTY_FUNCTION__;
+    QString iconFilePath;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply =
+                       actualtab->getFavicon(iconPath,iconFilePath);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return iconFilePath;
+}
+
+void BrowserDbus::activate() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->activate();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+void BrowserDbus::select() {
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualtab->select();
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "ERROR_IDS " << ret;
