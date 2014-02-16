@@ -39,6 +39,6 @@ private:
     QString testFileUrl() {
         return (QString ("file://") + m_pagefile->fileName());
     }
-    BrowserDbus    *m_bdb      = NULL;
-    QTemporaryFile *m_pagefile = NULL;
+    BrowserDbus    *m_bdb;
+    QTemporaryFile *m_pagefile;
 };
