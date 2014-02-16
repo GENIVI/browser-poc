@@ -18,7 +18,7 @@
 #include <QRect>
 
 webpagewindow::webpagewindow(QObject *parent) :
-    QObject(parent)
+    QObject(parent), progresstimer(NULL)
 {
     qDebug() << __PRETTY_FUNCTION__;
 }

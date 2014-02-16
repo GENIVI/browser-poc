@@ -104,13 +104,13 @@ public slots:
     void InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
 
 private:
-    conn::brw::IBookmarkManager *bookmark = NULL;
-    conn::brw::IUserInput *userinput = NULL;
-    conn::brw::IWebPageWindow *webpagewindow = NULL;
-    conn::brw::IWebPageWindow *actualtab = NULL;
-    conn::brw::IUserInput *actualuserinput = NULL;
+    conn::brw::IBookmarkManager *bookmark;
+    conn::brw::IUserInput *userinput;
+    conn::brw::IWebPageWindow *webpagewindow;
+    conn::brw::IWebPageWindow *actualtab;
+    conn::brw::IUserInput *actualuserinput;
     QList<conn::brw::OBJECT_HANDLE> handlelist;
-    conn::brw::IBrowser *browser = NULL;
+    conn::brw::IBrowser *browser;
     QString m_title;
     QString m_url;
     QList<Bookmark*> m_bookmarkList;
@@ -118,7 +118,7 @@ private:
     int m_progress;
     QString m_instanceId;
     bool m_isconnected;
-    QString *dbusservicename = NULL;
+    QString *dbusservicename;
     void scrollpage(conn::brw::SCROLL_DIRECTION direction, conn::brw::SCROLL_TYPE type);
     void registertypes();
     QHash<conn::brw::OBJECT_HANDLE, conn::brw::IWebPageWindow *> webpagehash;
