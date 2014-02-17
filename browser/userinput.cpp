@@ -37,3 +37,39 @@ void userinput::inputTextReceived(QString a_strInputName, QString a_strDefaultIn
 
     emit onInputText(a_strInputName, a_strDefaultInputValue, (conn::brw::INPUT_ELEMENT_TYPE)a_i32InputValueType, a_s32MaxLength, a_s32Max, a_s32Min, a_s32Step);
 }
+
+conn::brw::ERROR_IDS userinput::closeAlertDialog (void)
+{
+    emit doCloseAlertDialog();
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS userinput::closeConfirmDialog (conn::brw::DIALOG_RESULT b)
+{
+    switch (b) {
+        case conn::brw::DR_OK:
+            emit doCloseConfirmDialog(true);
+            break;
+        case conn::brw::DR_CANCEL:
+            emit doCloseConfirmDialog(false);
+            break;
+        default:
+            qDebug() << "Bad value for conn::brw::DIALOG_RESULT";
+    }
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS userinput::closePromptDialog(QString resultStr, conn::brw::DIALOG_RESULT resultEn)
+{
+    switch (resultEn) {
+        case conn::brw::DR_OK:
+            emit doClosePromptDialog(resultStr, true);
+            break;
+        case conn::brw::DR_CANCEL:
+            emit doClosePromptDialog(resultStr, false);
+            break;
+        default:
+            qDebug() << "Bad value for conn::brw::DIALOG_RESULT";
+    }
+    return conn::brw::EID_NO_ERROR;
+}

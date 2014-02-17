@@ -42,6 +42,8 @@ private slots:
     void testOnFaviconReceived();
     void testSelect();
     void testActivate();
+    void testConfirmDialog();
+    void testPromptDialog();
 
 private:
     QString testFileUrl() {

@@ -22,8 +22,11 @@
 #include "browserview.h"
 #include "cachemanager.h"
 #include "../common/browserdefs.h"
+#include "browserpage.h"
+#include "userinput.h"
 
-BrowserView::BrowserView(cachemanager *cm)
+BrowserView::BrowserView(cachemanager *cm, userinput *uip)
+    : m_cacheManager (cm)
 {
     m_cacheManager = cm;
     if (!this->scene()) {
@@ -32,6 +35,8 @@ BrowserView::BrowserView(cachemanager *cm)
     this->scene()->addItem (&m_webview);
 
     QWebSettings::setIconDatabasePath(".");
+
+    m_webview.setPage(new BrowserPage(this, uip));
 
     m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
 

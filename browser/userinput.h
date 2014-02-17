@@ -33,11 +33,19 @@ signals:
                      int a_s32Max, int a_s32Min, int a_s32Step);
     void inputText(QString input);
     void setOutputWebview(QString path);
+
+    // Internal
+    void doCloseAlertDialog(void);
+    void doCloseConfirmDialog(bool);
+    void doClosePromptDialog(QString, bool);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue);
     void inputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, int a_i32InputValueType,
                            int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
+    conn::brw::ERROR_IDS closeAlertDialog (void);
+    conn::brw::ERROR_IDS closeConfirmDialog (conn::brw::DIALOG_RESULT);
+    conn::brw::ERROR_IDS closePromptDialog (QString, conn::brw::DIALOG_RESULT);
 };
 
 #endif // USERINPUT_H

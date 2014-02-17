@@ -48,6 +48,9 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
+    userinput *ui = new userinput();
+    new IUserInputAdaptor(ui);
+
     cachemanager *cm = new cachemanager();
     new ICacheManagerAdaptor(cm);
     if(!connection->registerObject("/Browser/ICacheManager", cm)) {
@@ -55,7 +58,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    browser *br = new browser(cm);
+    browser *br = new browser(cm, ui);
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
@@ -72,10 +75,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     wpw = new webpagewindow();
     new IWebPageWindowAdaptor(wpw);
     br->wpw = wpw;
-
-    userinput *ui = new userinput();
-    new IUserInputAdaptor(ui);
-    br->ui = ui;
 
     connect(cm, SIGNAL(onCachePolicyChanged(conn::brw::CACHE_POLICY)),
             br, SLOT  (cachePolicyChanged  (conn::brw::CACHE_POLICY)));

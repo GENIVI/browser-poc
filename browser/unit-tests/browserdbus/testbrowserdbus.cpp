@@ -248,4 +248,22 @@ void TestBrowserDBus::testActivate() {
     QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
 }
 
+void TestBrowserDBus::testConfirmDialog() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 150 500");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    m_bdb->closeConfirmDialog(conn::brw::DR_OK);
+}
+
+void TestBrowserDBus::testPromptDialog() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 250 500");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    m_bdb->closePromptDialog("Hello!", conn::brw::DR_OK);
+}
+
 QTEST_MAIN (TestBrowserDBus);

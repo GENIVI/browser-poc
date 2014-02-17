@@ -285,6 +285,57 @@ void BrowserDbus::inputText(conn::brw::DIALOG_RESULT a_eResult, QString a_strInp
     }
 }
 
+void BrowserDbus::closeAlertDialog()
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualuserinput->closeAlertDialog();
+
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::closeConfirmDialog(conn::brw::DIALOG_RESULT d)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualuserinput->closeConfirmDialog(d);
+
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::closePromptDialog(QString s, conn::brw::DIALOG_RESULT d)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusPendingReply<conn::brw::ERROR_IDS> reply = actualuserinput->closePromptDialog(s,d);
+
+    reply.waitForFinished();
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
 void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
     qDebug() << __PRETTY_FUNCTION__ << a_strInputName << a_strDefaultInputValue << a_i32InputValueType << a_s32MaxLength << a_s32Max << a_s32Min << a_s32Step;
 }

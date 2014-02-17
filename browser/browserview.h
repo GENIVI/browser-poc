@@ -24,6 +24,8 @@
 
 #include "cachemanager.h"
 #include "../common/browserdefs.h"
+#include "browserpage.h"
+#include "userinput.h"
 
 class WebPageWaiter : public QObject {
 Q_OBJECT
@@ -62,7 +64,7 @@ class BrowserView : public QGraphicsView
 {
      Q_OBJECT
 public:
-    BrowserView(cachemanager *);
+    BrowserView(cachemanager *, userinput *);
     bool load(const QString &a_Url);
     int getProgress() { return m_currentProgress; }
     QString getUrl() { return m_webview.url().toString(); }

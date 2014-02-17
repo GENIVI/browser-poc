@@ -72,6 +72,9 @@ public:
     Q_INVOKABLE QString getFavicon(QString);
     Q_INVOKABLE void activate();
     Q_INVOKABLE void select();
+    Q_INVOKABLE void closeAlertDialog();
+    Q_INVOKABLE void closeConfirmDialog(conn::brw::DIALOG_RESULT);
+    Q_INVOKABLE void closePromptDialog(QString, conn::brw::DIALOG_RESULT);
 
     QString title() { return m_title; }
     void setTitle(QString title) { m_title = title; }

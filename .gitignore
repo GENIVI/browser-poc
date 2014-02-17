@@ -1,7 +1,6 @@
 *.o
 moc_*
 Makefile
-./browser
 *.pro.user
 browser.desktop
 browser64.png
@@ -22,4 +21,3 @@ BrowserDefs*
 browserdbus-tests
 cachemanagerdbus-tests
 unit-tests
-browser

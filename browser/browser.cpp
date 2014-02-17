@@ -17,15 +17,12 @@
 
 #include "browser.h"
 #include "browserview.h"
+#include "userinput.h"
 
-browser::browser(cachemanager *manager, QObject *parent) :
-    QObject(parent)
+browser::browser(cachemanager *manager, userinput *uip, QObject *parent) :
+    QObject(parent), m_cacheManager (manager), m_userInput (uip)
 {
     qDebug() << __PRETTY_FUNCTION__;
-    if (manager) {
-        qDebug() << "Setting default cacheManager";
-        m_cacheManager = manager;
-    }
 }
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
@@ -33,7 +30,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     Q_UNUSED(a_eDeviceId);
 
-    BrowserView *bvi = new BrowserView(m_cacheManager);
+    BrowserView *bvi = new BrowserView(m_cacheManager, m_userInput);
 
     bvi->setGeometry(a_oGeometry.i32X, a_oGeometry.i32Y, a_oGeometry.i32Width,
                          a_oGeometry.i32Height);
@@ -44,7 +41,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     wpw->webitem = bvi;
     connect(bvi, SIGNAL(pageLoadFinished(bool)),       wpw,  SLOT(getUrlTitle()));
-    connect(ui,  SIGNAL(inputText(QString)),           this, SLOT(inputText(QString)));
     connect(bvi, SIGNAL(pageLoadStarted()),            wpw,  SLOT(browserStartLoading()));
     connect(bvi, SIGNAL(onVisibilityChanged(bool)),    wpw,  SIGNAL(onVisibilityChanged(bool)));
     connect(bvi, SIGNAL(pageLoadFinished(bool)),       wpw,  SIGNAL(onLoadFinished(bool)));
@@ -55,12 +51,14 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(bvi, SIGNAL(onStatusTextChanged(QString)), wpw,  SIGNAL(onStatusTextChanged(QString)));
     connect(bvi, SIGNAL(onZoomFactorChanged(double)),  wpw,  SIGNAL(onZoomFactorChanged(double)));
     connect(bvi, SIGNAL(onLinkHovered(QString)),       wpw,  SIGNAL(onLinkHovered(QString)));
-    connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), ui, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
+    connect(bvi, SIGNAL(onInputText(QString, QString, int, int, int, int, int)), m_userInput, SLOT(inputTextReceived(QString, QString, int, int, int, int, int)));
     connect(this,SIGNAL(onPageWindowDestroyed(qlonglong)), wpw, SIGNAL(onClose()));
     connect(bvi, SIGNAL(onScrollPositionChanged(uint,uint)), wpw, SIGNAL(onScrollPositionChanged(uint,uint)));
     connect(bvi, SIGNAL(onActionStateChanged(uint)),   wpw,  SIGNAL(onActionStateChanged(uint)));
     connect(bvi, SIGNAL(onContentSizeChanged(uint, uint)),wpw,SIGNAL(onContentSizeChanged(uint,uint)));
     connect(bvi, SIGNAL(onFaviconReceived()),           wpw,  SIGNAL(onFaviconReceived()));
+
+    connect(m_userInput,  SIGNAL(inputText(QString)),   this, SLOT(inputText(QString)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
@@ -75,7 +73,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     QString *userinputservice = new QString( *webpagewindowservice + "/IUserInput");
     qDebug() << *userinputservice;
-    if(!conn.registerObject(*userinputservice, ui)) {
+    if(!conn.registerObject(*userinputservice, m_userInput)) {
         qDebug() << "failed register object IUserInput";
         exit(1);
     }

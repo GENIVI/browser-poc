@@ -22,15 +22,15 @@
 #include "userinput.h"
 #include "browserview.h"
 #include "cachemanager.h"
+#include "userinput.h"
 
 class browser : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    explicit browser(cachemanager *defaultManager = 0, QObject *parent = 0);
+    explicit browser(cachemanager *, userinput *, QObject *parent = 0);
 
     webpagewindow *wpw;
-    userinput *ui;
 
 signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);
@@ -52,7 +52,8 @@ public Q_SLOTS:
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
     QHash<QString, BrowserView *> webviewhash;
-    cachemanager *m_cacheManager = NULL;
+    cachemanager *m_cacheManager;
+    userinput    *m_userInput;
 };
 
 #endif // BROWSER_H

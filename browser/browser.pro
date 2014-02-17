@@ -41,6 +41,7 @@ SOURCES += main.cpp \
     browserconfig.cpp \
     cachemanager.cpp \
     errorlogger.cpp \
+    browserpage.cpp \
     ../common/bookmark.cpp \
 
 HEADERS += \
@@ -53,6 +54,7 @@ HEADERS += \
     browserconfig.h \
     cachemanager.h \
     errorlogger.h \
+    browserpage.h \
     ../common/bookmark.h \
     ../common/browserdefs.h \
 
