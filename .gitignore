@@ -7,7 +7,6 @@ browser.desktop
 browser64.png
 browser80.png
 browser_harmattan.desktop
-testapp
 i*_interface.h
 i*_interface.cpp
 i*_adaptor.h
