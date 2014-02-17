@@ -24,8 +24,20 @@ Q_OBJECT
 
 public:
     BrowserPage(QObject *parent, userinput *input) 
-        : QWebPage (parent), m_userInput (input){}
-    ~BrowserPage(){}
+        : QWebPage (parent), m_userInput (input){
+        connect(this,        SIGNAL(onAlertDialog(QString)),
+                m_userInput, SIGNAL(onAlertDialog(QString)));
+        connect(this,        SIGNAL(onConfirmDialog(QString)),
+                m_userInput, SIGNAL(onConfirmDialog(QString)));
+        connect(this,        SIGNAL(onPromptDialog(QString, QString)),
+                m_userInput, SIGNAL(onPromptDialog(QString, QString)));
+        }
+    ~BrowserPage(){ }
+
+signals:
+    void onAlertDialog(QString);
+    void onConfirmDialog(QString);
+    void onPromptDialog(QString, QString);
 
 protected:
     void javaScriptAlert(QWebFrame *frame, const QString &message);

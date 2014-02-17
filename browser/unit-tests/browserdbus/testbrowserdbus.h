@@ -44,6 +44,7 @@ private slots:
     void testActivate();
     void testConfirmDialog();
     void testPromptDialog();
+    void testAlertDialog();
 
 private:
     QString testFileUrl() {

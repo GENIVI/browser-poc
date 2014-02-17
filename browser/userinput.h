@@ -33,6 +33,9 @@ signals:
                      int a_s32Max, int a_s32Min, int a_s32Step);
     void inputText(QString input);
     void setOutputWebview(QString path);
+    void onConfirmDialog(QString);
+    void onPromptDialog(QString,QString);
+    void onAlertDialog(QString);
 
     // Internal
     void doCloseAlertDialog(void);

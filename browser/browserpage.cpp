@@ -20,6 +20,7 @@
 
 void BrowserPage::javaScriptAlert(QWebFrame *frame, const QString &message)
 {
+    emit onAlertDialog(message);
     QEventLoop loop;
     qDebug() << "Alert dialog opened:" << message;
     connect (m_userInput, SIGNAL(doCloseAlertDialog(void)), &loop, SLOT(quit(void)));
@@ -29,6 +30,7 @@ void BrowserPage::javaScriptAlert(QWebFrame *frame, const QString &message)
 
 bool BrowserPage::javaScriptConfirm(QWebFrame *frame, const QString &message)
 {
+    emit onConfirmDialog(message);
     QEventLoop loop;
     qDebug() << "Confirm dialog opened:" << message;
     connect (m_userInput, SIGNAL(doCloseConfirmDialog(bool)), this, SLOT(confirm(bool)));
@@ -38,6 +40,7 @@ bool BrowserPage::javaScriptConfirm(QWebFrame *frame, const QString &message)
 }
 bool BrowserPage::javaScriptPrompt(QWebFrame *frame, const QString &msg, const QString &defaultValue, QString *result )
 {
+    emit onPromptDialog(msg, defaultValue);
     QEventLoop loop;
     qDebug() << "Confirm dialog opened (default:" << defaultValue << ")";
     connect (m_userInput, SIGNAL(doClosePromptDialog(QString, bool)), this, SLOT(prompt(QString, bool)));

@@ -249,21 +249,32 @@ void TestBrowserDBus::testActivate() {
 }
 
 void TestBrowserDBus::testConfirmDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onConfirmDialog(QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
     QProcess::execute("xdotool mousemove 150 500");
     QProcess::execute("xdotool click 1");
-    QTest::qSleep(300);
+    QVERIFY(spy.wait(1000));
     m_bdb->closeConfirmDialog(conn::brw::DR_OK);
 }
 
 void TestBrowserDBus::testPromptDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onPromptDialog(QString,QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
     QProcess::execute("xdotool mousemove 250 500");
     QProcess::execute("xdotool click 1");
-    QTest::qSleep(300);
+    QVERIFY(spy.wait(1000));
     m_bdb->closePromptDialog("Hello!", conn::brw::DR_OK);
 }
 
+void TestBrowserDBus::testAlertDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onAlertDialog(QString)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 50 500");
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    m_bdb->closeAlertDialog();
+}
 QTEST_MAIN (TestBrowserDBus);

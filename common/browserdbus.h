@@ -104,6 +104,9 @@ signals:
     void onActionStateChanged(uint);
     void onContentSizeChanged(uint, uint);
     void onFaviconReceived();
+    void onConfirmDialog(QString);
+    void onPromptDialog(QString,QString);
+    void onAlertDialog(QString);
 
 public slots:
     void pageloadingstarted();
