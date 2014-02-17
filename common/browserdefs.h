@@ -592,6 +592,42 @@ namespace conn {
             EST_DATE_DESCENDING = 1
         };
 
+        //## operation operator>>(QDBusArgument,ERROR_SORT_TYPE)
+        inline const QDBusArgument& operator>>(const QDBusArgument& a_rDbusArg, ERROR_SORT_TYPE& a_rArg) {
+            //#[ operation operator>>(QDBusArgument,ERROR_SORT_TYPE)
+            a_rDbusArg.beginStructure();
+
+            int param = 0;
+            a_rDbusArg >> param;
+
+            switch (param)
+            {
+            case EST_DATE_ASCENDING:
+            {
+                a_rArg = EST_DATE_ASCENDING;
+                break;
+            }
+            case EST_DATE_DESCENDING:
+            {
+                a_rArg = EST_DATE_DESCENDING;
+                break;
+            }
+            }
+            a_rDbusArg.endStructure();
+            return a_rDbusArg;
+            //#]
+        }
+
+        //## operation operator<<(QDBusArgument,ERROR_SORT_TYPE)
+        inline const QDBusArgument& operator<<(QDBusArgument& a_rDbusArg, ERROR_SORT_TYPE a_rArg) {
+            //#[ operation operator<<(QDBusArgument,ERROR_SORT_TYPE)
+            a_rDbusArg.beginStructure();
+            int param = a_rArg;
+            a_rDbusArg << param;
+            a_rDbusArg.endStructure();
+            return a_rDbusArg;
+            //#]
+        }
         struct ErrorItem
         {
             /*!
@@ -619,6 +655,16 @@ namespace conn {
             */
             QString strDescription;		//## attribute strDescription
         };
+
+        inline bool ltError(ErrorItem a, ErrorItem b)
+        {
+            return a.i64DateTime < b.i64DateTime;
+        }
+
+        inline bool gtError( ErrorItem a, ErrorItem b)
+        {
+            return a.i64DateTime > b.i64DateTime;
+        }
 
         //## package connInterfaces::connPublic::conn::brw::def
         //## class ErrorItemList

@@ -41,7 +41,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    errorlogger *err = new errorlogger();
+    errorlogger *err = errorlogger::instance();
     new IErrorLoggerAdaptor(err);
     if(!connection->registerObject("/Browser/IErrorLogger", err)) {
         qDebug() << "failed register object IErrorLogger";
