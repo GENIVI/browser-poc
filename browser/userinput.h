@@ -36,6 +36,7 @@ signals:
     void onConfirmDialog(QString);
     void onPromptDialog(QString,QString);
     void onAlertDialog(QString);
+    void onDialogCanceled(void);
 
     // Internal
     void doCloseAlertDialog(void);

@@ -214,8 +214,9 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         actualuserinput = userinput;
 
         connect(actualuserinput, SIGNAL(onAlertDialog(QString)),         this, SIGNAL(onAlertDialog(QString)));
-        connect(actualuserinput, SIGNAL(onConfirmDialog(QString)),         this, SIGNAL(onConfirmDialog(QString)));
-        connect(actualuserinput, SIGNAL(onPromptDialog(QString,QString)),         this, SIGNAL(onPromptDialog(QString,QString)));
+        connect(actualuserinput, SIGNAL(onConfirmDialog(QString)),       this, SIGNAL(onConfirmDialog(QString)));
+        connect(actualuserinput, SIGNAL(onPromptDialog(QString,QString)),this, SIGNAL(onPromptDialog(QString,QString)));
+        connect(actualuserinput, SIGNAL(onDialogCanceled(void)),         this, SIGNAL(onDialogCanceled()));
 
         if(!actualuserinput->isValid())
             qDebug() << "failed create object /Browser/IWebPageWindow*/IUserInput";

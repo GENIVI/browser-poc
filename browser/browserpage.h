@@ -31,6 +31,8 @@ public:
                 m_userInput, SIGNAL(onConfirmDialog(QString)));
         connect(this,        SIGNAL(onPromptDialog(QString, QString)),
                 m_userInput, SIGNAL(onPromptDialog(QString, QString)));
+        connect(this,        SIGNAL(onDialogCanceled(void)),
+                m_userInput, SIGNAL(onDialogCanceled(void)));
         }
     ~BrowserPage(){ }
 

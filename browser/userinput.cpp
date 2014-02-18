@@ -52,6 +52,7 @@ conn::brw::ERROR_IDS userinput::closeConfirmDialog (conn::brw::DIALOG_RESULT b)
             break;
         case conn::brw::DR_CANCEL:
             emit doCloseConfirmDialog(false);
+            emit onDialogCanceled();
             break;
         default:
             qDebug() << "Bad value for conn::brw::DIALOG_RESULT";
@@ -67,6 +68,7 @@ conn::brw::ERROR_IDS userinput::closePromptDialog(QString resultStr, conn::brw::
             break;
         case conn::brw::DR_CANCEL:
             emit doClosePromptDialog(resultStr, false);
+            emit onDialogCanceled();
             break;
         default:
             qDebug() << "Bad value for conn::brw::DIALOG_RESULT";

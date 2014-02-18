@@ -107,6 +107,7 @@ signals:
     void onConfirmDialog(QString);
     void onPromptDialog(QString,QString);
     void onAlertDialog(QString);
+    void onDialogCanceled(void);
 
 public slots:
     void pageloadingstarted();

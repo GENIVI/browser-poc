@@ -258,6 +258,18 @@ void TestBrowserDBus::testConfirmDialog() {
     m_bdb->closeConfirmDialog(conn::brw::DR_OK);
 }
 
+void TestBrowserDBus::testCancelConfirmDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onConfirmDialog(QString)));
+    QSignalSpy spy2 (m_bdb, SIGNAL(onDialogCanceled(void)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 150 500");
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    m_bdb->closeConfirmDialog(conn::brw::DR_CANCEL);
+    QVERIFY(spy2.wait(1000));
+}
+
 void TestBrowserDBus::testPromptDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onPromptDialog(QString,QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
@@ -266,6 +278,18 @@ void TestBrowserDBus::testPromptDialog() {
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
     m_bdb->closePromptDialog("Hello!", conn::brw::DR_OK);
+}
+
+void TestBrowserDBus::testCancelPromptDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onPromptDialog(QString,QString)));
+    QSignalSpy spy2 (m_bdb, SIGNAL(onDialogCanceled(void)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 250 500");
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    m_bdb->closePromptDialog("Hello!", conn::brw::DR_CANCEL);
+    QVERIFY(spy2.wait(1000));
 }
 
 void TestBrowserDBus::testAlertDialog() {

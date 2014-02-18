@@ -43,7 +43,9 @@ private slots:
     void testSelect();
     void testActivate();
     void testConfirmDialog();
+    void testCancelConfirmDialog();
     void testPromptDialog();
+    void testCancelPromptDialog();
     void testAlertDialog();
 
 private:
