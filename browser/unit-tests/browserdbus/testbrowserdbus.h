@@ -47,6 +47,7 @@ private slots:
     void testPromptDialog();
     void testCancelPromptDialog();
     void testAlertDialog();
+    void testGetPrevEnteredValues();
 
 private:
     QString testFileUrl() {

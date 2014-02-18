@@ -1,5 +1,6 @@
 
 QT += dbus webkitwidgets
+CONFIG += debug qt
 
 my_dbus_cachemanager_adaptors.files += ../common/ICacheManager.xml
 my_dbus_cachemanager_adaptors.header_flags = -i cachemanager.h -i ../common/browserdefs.h -l cachemanager
@@ -14,7 +15,8 @@ my_dbus_bookmark_adaptors.header_flags = -i bookmarkmanager.h -i ../common/brows
 my_dbus_bookmark_adaptors.source_flags = -l bookmarkmanager
 
 my_dbus_userinput_adaptors.files += ../common/IUserInput.xml
-my_dbus_userinput_adaptors.header_flags = -i ../common/browserdefs.h
+my_dbus_userinput_adaptors.header_flags = -i ../common/browserdefs.h -i userinput.h -l userinput
+my_dbus_userinput_adaptors.source_flags = -l userinput
 
 my_dbus_webpagewindow_adaptors.files += ../common/IWebPageWindow.xml
 my_dbus_webpagewindow_adaptors.header_flags = -i webpagewindow.h -i ../common/browserdefs.h -l webpagewindow

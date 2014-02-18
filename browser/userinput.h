@@ -50,6 +50,22 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS closeAlertDialog (void);
     conn::brw::ERROR_IDS closeConfirmDialog (conn::brw::DIALOG_RESULT);
     conn::brw::ERROR_IDS closePromptDialog (QString, conn::brw::DIALOG_RESULT);
+    conn::brw::ERROR_IDS getPrevEnteredValues(const QString&, const QString&, conn::brw::INPUT_ELEMENT_TYPE, QStringList&);
+    conn::brw::ERROR_IDS selectOption(const conn::brw::SelectableOptionList &);
+
+private:
+    struct inputStruct {
+        QString name;
+        QString value;
+        conn::brw::INPUT_ELEMENT_TYPE type;
+    };
+
+    struct {
+        QString name;
+        conn::brw::INPUT_ELEMENT_TYPE type;
+    } m_currentInput;
+
+    QList<struct inputStruct> *m_inputHistory;
 };
 
 #endif // USERINPUT_H

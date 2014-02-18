@@ -301,4 +301,16 @@ void TestBrowserDBus::testAlertDialog() {
     QVERIFY(spy.wait(1000));
     m_bdb->closeAlertDialog();
 }
+
+void TestBrowserDBus::testGetPrevEnteredValues() {
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QProcess::execute("xdotool mousemove 200 375");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    m_bdb->inputText(conn::brw::DR_OK, "Hello world");
+    QTest::qSleep(300);
+    QStringList list = m_bdb->getPrevEnteredValues("input", "", conn::brw::IET_TEXT);
+    QVERIFY(list.contains("Hello world"));
+}
 QTEST_MAIN (TestBrowserDBus);

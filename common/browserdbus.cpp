@@ -719,3 +719,19 @@ void BrowserDbus::select() {
         qDebug() << "ERROR " << error.name() << error.message();
     }
 }
+
+QStringList BrowserDbus::getPrevEnteredValues(QString name, QString value, conn::brw::INPUT_ELEMENT_TYPE type)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    QStringList list;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = actualuserinput->getPrevEnteredValues(name, value, type, list);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+    return list;
+}

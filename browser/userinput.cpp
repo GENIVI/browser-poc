@@ -16,7 +16,7 @@
 #include <QDBusMessage>
 
 userinput::userinput(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_inputHistory(new QList<struct inputStruct>())
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
@@ -29,11 +29,20 @@ conn::brw::ERROR_IDS userinput::inputText(conn::brw::DIALOG_RESULT a_eResult, co
     if(a_eResult == conn::brw::DR_OK)
         emit inputText(a_strInputValue);
 
+    struct inputStruct is;
+    is.name = m_currentInput.name;
+    is.type = m_currentInput.type;
+    is.value = a_strInputValue;
+    m_inputHistory->append(is);
+
     return conn::brw::EID_NO_ERROR;
 }
 
 void userinput::inputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, int a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step) {
     qDebug() << __PRETTY_FUNCTION__;
+
+    m_currentInput.name = a_strInputName;
+    m_currentInput.type = (conn::brw::INPUT_ELEMENT_TYPE)a_i32InputValueType;
 
     emit onInputText(a_strInputName, a_strDefaultInputValue, (conn::brw::INPUT_ELEMENT_TYPE)a_i32InputValueType, a_s32MaxLength, a_s32Max, a_s32Min, a_s32Step);
 }
@@ -75,3 +84,20 @@ conn::brw::ERROR_IDS userinput::closePromptDialog(QString resultStr, conn::brw::
     }
     return conn::brw::EID_NO_ERROR;
 }
+
+conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputName, const QString &a_strInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputType, QStringList &a_oInputVariants)
+{
+    for (int i = 0; i < m_inputHistory->size(); i++){
+        struct inputStruct s = m_inputHistory->at(0);;
+        qDebug() << s.value;
+        if (s.type == a_i32InputType &&
+                s.name.compare(a_strInputName) == 0) {
+            a_oInputVariants.append(s.value);
+        }
+    }
+
+    return conn::brw::EID_NO_ERROR;
+}
+
+conn::brw::ERROR_IDS userinput::selectOption(const conn::brw::SelectableOptionList &a_oOptionList)
+{}
