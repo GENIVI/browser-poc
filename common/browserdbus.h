@@ -77,6 +77,7 @@ public:
     Q_INVOKABLE void closeConfirmDialog(conn::brw::DIALOG_RESULT);
     Q_INVOKABLE void closePromptDialog(QString, conn::brw::DIALOG_RESULT);
     Q_INVOKABLE QStringList getPrevEnteredValues(QString name, QString value, conn::brw::INPUT_ELEMENT_TYPE type);
+    Q_INVOKABLE void closeAuthenticationDialog(conn::brw::DIALOG_RESULT, const conn::brw::AuthenticationData&);
 
 
     QString title() { return m_title; }

@@ -336,6 +336,19 @@ void TestBrowserDBus::testGetsNotifiedOnAuthDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
-    QVERIFY(spy.wait(5000));
+    QVERIFY(spy.wait(1000));
+}
+
+void TestBrowserDBus::testCanCloseAuthDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
+    QVERIFY(spy.wait(1000));
+
+    conn::brw::AuthenticationData d;
+    d.strUserName = "httpwatch";
+    d.strPassword = QString(qrand());
+    qDebug() << ": user" << d.strUserName << "password:" << d.strPassword;
+    m_bdb->closeAuthenticationDialog(conn::brw::DR_OK, d);
 }
 QTEST_MAIN (TestBrowserDBus);

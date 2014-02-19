@@ -745,3 +745,18 @@ QStringList BrowserDbus::getPrevEnteredValues(QString name, QString value, conn:
     }
     return list;
 }
+
+void BrowserDbus::closeAuthenticationDialog(conn::brw::DIALOG_RESULT r, const conn::brw::AuthenticationData& d)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    QStringList list;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = networkmanager->closeAuthenticationDialog(r,d);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}

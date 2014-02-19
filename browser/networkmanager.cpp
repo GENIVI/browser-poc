@@ -44,8 +44,12 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
     connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), this, SLOT(authenticate(bool, const conn::brw::AuthenticationData)));
     connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), &loop, SLOT(quit()));
     loop.exec();
-    qDebug() << "Authentication provided";
+    qDebug() << "Authentication provided: user" << m_authData.strUserName << "password:" << m_authData.strPassword;
 
-    authenticator->setUser(m_authData.strUserName);
-    authenticator->setPassword(m_authData.strPassword);
+    if (m_authBool) {
+        authenticator->setUser(m_authData.strUserName);
+        authenticator->setPassword(m_authData.strPassword);
+    } else {
+        qDebug() << "Action was cancelled";
+    }
 }
