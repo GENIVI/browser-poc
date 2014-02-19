@@ -41,6 +41,7 @@ void BrowserDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::BrowserActions>();
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
+    qDBusRegisterMetaType<conn::brw::AuthenticationData>();
 }
 
 void BrowserDbus::connectdbussession(QString id) {
@@ -223,6 +224,14 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
             qDebug() << "failed create object /Browser/IWebPageWindow*/IUserInput";
 
         connect(actualuserinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
+
+        QString *networkmanagerservice = new QString(*webpagewindowservice + "/INetworkManager");
+
+        networkmanager = new conn::brw::INetworkManager(*dbusservicename, *networkmanagerservice,
+                                              QDBusConnection::sessionBus(), this);
+
+        connect(networkmanager, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)),
+                this, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();

@@ -49,6 +49,7 @@ private slots:
     void testAlertDialog();
     void testGetPrevEnteredValues();
     void testGetsNotifiedWhenSelectIsSelected();
+    void testGetsNotifiedOnAuthDialog();
 
 private:
     QString testFileUrl() {

@@ -16,7 +16,8 @@ TEMPLATE = app
 my_dbus_interfaces.files += ../common/IBookmarkManager.xml \
     ../common/IUserInput.xml \
     ../common/IWebPageWindow.xml \
-    ../common/IBrowser.xml
+    ../common/IBrowser.xml \
+    ../common/INetworkManager.xml
 my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
 
 my_dbus_interfaces.files += ../common/ICacheManager.xml

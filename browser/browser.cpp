@@ -18,9 +18,10 @@
 #include "browser.h"
 #include "browserview.h"
 #include "userinput.h"
+#include "networkmanager.h"
 
-browser::browser(cachemanager *manager, userinput *uip, QObject *parent) :
-    QObject(parent), m_cacheManager (manager), m_userInput (uip)
+browser::browser(cachemanager *manager, userinput *uip, networkmanager *nm, QObject *parent) :
+    QObject(parent), m_cacheManager (manager), m_userInput (uip), m_networkManager(nm)
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
@@ -77,6 +78,13 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     qDebug() << *userinputservice;
     if(!conn.registerObject(*userinputservice, m_userInput)) {
         qDebug() << "failed register object IUserInput";
+        exit(1);
+    }
+
+    QString *networkmanagerservice = new QString( *webpagewindowservice + "/INetworkManager");
+    qDebug() << *networkmanagerservice;
+    if(!conn.registerObject(*networkmanagerservice, m_networkManager)) {
+        qDebug() << "failed register object INetworkManager";
         exit(1);
     }
 

@@ -23,12 +23,13 @@
 #include "browserview.h"
 #include "cachemanager.h"
 #include "userinput.h"
+#include "networkmanager.h"
 
 class browser : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    explicit browser(cachemanager *, userinput *, QObject *parent = 0);
+    explicit browser(cachemanager *, userinput *, networkmanager *, QObject *parent = 0);
 
     webpagewindow *wpw;
 
@@ -53,6 +54,7 @@ private:
     QHash<QString, BrowserView *> webviewhash;
     cachemanager *m_cacheManager;
     userinput    *m_userInput;
+    networkmanager *m_networkManager;
 };
 
 #endif // BROWSER_H

@@ -656,6 +656,110 @@ namespace conn {
             return args;
             //#]
         }
+
+        /*!
+        * Authentication data used for Server and Proxy authentication.
+        */
+        //## type AuthenticationData
+        struct AuthenticationData
+        {
+            /*!
+            * Host name or Url for which the password is valid. In case of proxy authentication the customer receives "host:port" url, in case of the content authentication the url contans the resource URI.
+            */
+            QString strHost;		//## attribute strHost
+            /*!
+            * User name
+            */
+            QString strUserName;		//## attribute strUserName
+            /*!
+            * User password
+            */
+            QString strPassword;		//## attribute strPassword
+            /*!
+            * Defines to store password into database.
+            */
+            bool bSave;		//## attribute bSave
+
+            AuthenticationData()
+                :strHost("")
+                ,strUserName("")
+                ,strPassword("")
+                ,bSave(true)
+            {}
+        };
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, AuthenticationData& ad) {
+            args.beginStructure();
+            args >> ad.strHost
+                 >> ad.strUserName
+                 >> ad.strPassword
+                 >> ad.bSave;
+            args.endStructure();
+            return args;
+        }
+
+        inline QDBusArgument& operator<<(QDBusArgument& args, const AuthenticationData& ad) {
+            args.beginStructure();
+            args << ad.strHost
+                 << ad.strUserName
+                 << ad.strPassword
+                 << ad.bSave;
+            args.endStructure();
+            return args;
+        }
+        
+        /*!
+         * SslErrors
+         */
+        //## type SSL_ERROR
+        enum SSL_ERROR {
+            NoError,
+            UnableToGetIssuerCertificate,
+            UnableToDecryptCertificateSignature,
+            UnableToDecodeIssuerPublicKey,
+            CertificateSignatureFailed,
+            CertificateNotYetValid,
+            CertificateExpired,
+            InvalidNotBeforeField,
+            InvalidNotAfterField,
+            SelfSignedCertificate,
+            SelfSignedCertificateInChain,
+            UnableToGetLocalIssuerCertificate,
+            UnableToVerifyFirstCertificate,
+            CertificateRevoked,
+            InvalidCaCertificate,
+            PathLengthExceeded,
+            InvalidPurpose,
+            CertificateUntrusted,
+            CertificateRejected,
+            SubjectIssuerMismatch,
+            hostnamemismatch,
+            AuthorityIssuerSerialNumberMismatch,
+            NoPeerCertificate,
+            HostNameMismatch,
+            NoSslSupport,
+            CertificateBlacklisted,
+            UnspecifiedError = -1
+        };
+
+        /*!
+        * The SslError structure describes the error information happens during ssl connection.
+        */
+        //## type SslError
+        struct SslError {
+            /*!
+            * Error code. It could be HTTP error codes, or internal codes.
+            */
+            SSL_ERROR sslError;		//## attribute sslError
+            /*!
+            * Url
+            */
+            QString strUrl;		//## attribute strUrl
+            /*!
+            * Short text description of the error.
+            */
+            QString strErrorMessage;		//## attribute strErrorMessage
+        };
+
     }
 }
 
@@ -678,5 +782,7 @@ Q_DECLARE_METATYPE(conn::brw::CACHE_POLICY);
 Q_DECLARE_METATYPE(conn::brw::ErrorItemList);
 Q_DECLARE_METATYPE(conn::brw::ErrorItem);
 Q_DECLARE_METATYPE(conn::brw::ERROR_SORT_TYPE);
+Q_DECLARE_METATYPE(conn::brw::AuthenticationData);
+Q_DECLARE_METATYPE(conn::brw::SslError);
 
 #endif // BROWSERDEFS_H

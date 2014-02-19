@@ -26,12 +26,17 @@ my_dbus_browser_adaptors.files += ../common/IBrowser.xml
 my_dbus_browser_adaptors.header_flags = -i browser.h -i ../common/browserdefs.h -l browser
 my_dbus_browser_adaptors.source_flags = -l browser
 
+my_dbus_networkmanager_adaptors.files += ../common/INetworkManager.xml
+my_dbus_networkmanager_adaptors.header_flags = -i networkmanager.h -i ../common/networkmanager.h -l networkmanager
+my_dbus_networkmanager_adaptors.source_flags = -l networkmanager
+
 DBUS_ADAPTORS += my_dbus_bookmark_adaptors \
                  my_dbus_cachemanager_adaptors \
                  my_dbus_userinput_adaptors \
                  my_dbus_webpagewindow_adaptors \
                  my_dbus_browser_adaptors \
-                 my_dbus_errorlogger_adaptors
+                 my_dbus_errorlogger_adaptors \
+                 my_dbus_networkmanager_adaptors
 
 SOURCES += main.cpp \
     bookmarkmanager.cpp \
@@ -44,6 +49,7 @@ SOURCES += main.cpp \
     cachemanager.cpp \
     errorlogger.cpp \
     browserpage.cpp \
+    networkmanager.cpp \
     ../common/bookmark.cpp \
 
 HEADERS += \
@@ -57,6 +63,7 @@ HEADERS += \
     cachemanager.h \
     errorlogger.h \
     browserpage.h \
+    networkmanager.h \
     ../common/bookmark.h \
     ../common/browserdefs.h \
 
@@ -72,3 +79,9 @@ system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i errorlogger.h\
                                                -l errorlogger\
                                                -a ierrorlogger_adaptor\
                                                ../common/IErrorLogger.xml")
+
+system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i networkmanager.h\
+                                               -i ../common/browserdefs.h\
+                                               -l networkmanager\
+                                               -a inetworkmanager_adaptor\
+                                               ../common/INetworkManager.xml")

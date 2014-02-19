@@ -21,6 +21,7 @@
 #include "iuserinput_interface.h"
 #include "iwebpagewindow_interface.h"
 #include "ibrowser_interface.h"
+#include "inetworkmanager_interface.h"
 #include "../common/bookmark.h"
 
 class BrowserDbus : public QObject
@@ -111,6 +112,7 @@ signals:
     void onAlertDialog(QString);
     void onDialogCanceled(void);
     void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
+    void onAuthenticationDialog(const conn::brw::AuthenticationData&);
 
 public slots:
     void pageloadingstarted();
@@ -127,6 +129,7 @@ private:
     conn::brw::IWebPageWindow *webpagewindow;
     conn::brw::IWebPageWindow *actualtab;
     conn::brw::IUserInput *actualuserinput;
+    conn::brw::INetworkManager *networkmanager;
     QList<conn::brw::OBJECT_HANDLE> handlelist;
     conn::brw::IBrowser *browser;
     QString m_title;

@@ -331,4 +331,11 @@ void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
 }
+
+void TestBrowserDBus::testGetsNotifiedOnAuthDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
+    QVERIFY(spy.wait(5000));
+}
 QTEST_MAIN (TestBrowserDBus);

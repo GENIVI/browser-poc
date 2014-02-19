@@ -20,6 +20,7 @@
 #include "ibrowser_adaptor.h"
 #include "icachemanager_adaptor.h"
 #include "ierrorlogger_adaptor.h"
+#include "inetworkmanager_adaptor.h"
 
 
 browserhelper::browserhelper(QString instanceId, QObject *parent) :
@@ -58,7 +59,10 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    browser *br = new browser(cm, ui);
+    networkmanager *nm = new networkmanager(cm->getNetworkAccessManager());
+    new INetworkManagerAdaptor(nm);
+
+    browser *br = new browser(cm, ui, nm);
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
@@ -99,5 +103,8 @@ void browserhelper::registertypes() {
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
     qDBusRegisterMetaType<conn::brw::CACHE_POLICY>();
+    qDBusRegisterMetaType<conn::brw::AuthenticationData>();
+    qDBusRegisterMetaType<conn::brw::SelectableOption>();
+    qDBusRegisterMetaType<conn::brw::SelectableOptionList>();
 }
 
