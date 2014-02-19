@@ -15,6 +15,7 @@
 #define BROWSERDEFS_H
 
 #include <QDBusArgument>
+#include <QDebug>
 
 namespace conn {
     namespace brw {
@@ -741,6 +742,23 @@ namespace conn {
             UnspecifiedError = -1
         };
 
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, SSL_ERROR& e) {
+            args.beginStructure();
+            int temp =0;
+            args>>temp;
+            e = (SSL_ERROR)temp;
+            args.endStructure();
+            return args;
+        }
+
+        inline QDBusArgument& operator<<(QDBusArgument& args, const SSL_ERROR &e) {
+            args.beginStructure();
+            int param = e;
+            args << param;
+            args.endStructure();
+            return args;
+        }
+
         /*!
         * The SslError structure describes the error information happens during ssl connection.
         */
@@ -759,7 +777,23 @@ namespace conn {
             */
             QString strErrorMessage;		//## attribute strErrorMessage
         };
+        inline const QDBusArgument& operator>>(const QDBusArgument& args, SslError& s) {
+            args.beginStructure();
+            args >> s.sslError
+                 >> s.strUrl
+                 >> s.strErrorMessage;
+            args.endStructure();
+            return args;
+        }
 
+        inline QDBusArgument& operator<<(QDBusArgument& args, const SslError& s) {
+            args.beginStructure();
+            args << s.sslError
+                 << s.strUrl
+                 << s.strErrorMessage;
+            args.endStructure();
+            return args;
+        }
     }
 }
 
@@ -784,5 +818,6 @@ Q_DECLARE_METATYPE(conn::brw::ErrorItem);
 Q_DECLARE_METATYPE(conn::brw::ERROR_SORT_TYPE);
 Q_DECLARE_METATYPE(conn::brw::AuthenticationData);
 Q_DECLARE_METATYPE(conn::brw::SslError);
+Q_DECLARE_METATYPE(conn::brw::SSL_ERROR);
 
 #endif // BROWSERDEFS_H

@@ -351,4 +351,21 @@ void TestBrowserDBus::testCanCloseAuthDialog() {
     qDebug() << ": user" << d.strUserName << "password:" << d.strPassword;
     m_bdb->closeAuthenticationDialog(conn::brw::DR_OK, d);
 }
+
+void TestBrowserDBus::testGetsNotifiedOnBadSSL() {
+    QSignalSpy spy (m_bdb, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("https://tv.eurosport.com/");
+    QVERIFY(spy.wait(1000));
+}
+
+void TestBrowserDBus::testCanCloseSslDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("https://tv.eurosport.com/");
+    QVERIFY(spy.wait(1000));
+
+    m_bdb->closeSslErrorDialog(conn::brw::DR_OK, true);
+}
+
 QTEST_MAIN (TestBrowserDBus);

@@ -16,6 +16,7 @@
 #include <QDBusMessage>
 #include <QAuthenticator>
 #include <QEventLoop>
+#include <QNetworkReply>
 
 networkmanager::networkmanager(QNetworkAccessManager *nam, QObject *parent) :
     QObject(parent), m_nam (nam)
@@ -24,6 +25,8 @@ networkmanager::networkmanager(QNetworkAccessManager *nam, QObject *parent) :
 
     connect(nam, SIGNAL(authenticationRequired(QNetworkReply *, QAuthenticator *)),
             this,SLOT  (onAuthenticationRequired(QNetworkReply *, QAuthenticator *)));
+    connect(nam, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)),
+            this,SLOT  (onSslErrors(QNetworkReply *, const QList<QSslError> &)));
 }
 
 conn::brw::ERROR_IDS networkmanager::closeAuthenticationDialog(conn::brw::DIALOG_RESULT res, const conn::brw::AuthenticationData& data)
@@ -33,6 +36,8 @@ conn::brw::ERROR_IDS networkmanager::closeAuthenticationDialog(conn::brw::DIALOG
 }
 conn::brw::ERROR_IDS networkmanager::closeSslErrorDialog(conn::brw::DIALOG_RESULT res, bool saveCert)
 {
+    emit doCloseSslErrorDialog(res == conn::brw::DR_OK, saveCert);
+    return conn::brw::EID_NO_ERROR;
 }
 
 void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
@@ -51,5 +56,25 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
         authenticator->setPassword(m_authData.strPassword);
     } else {
         qDebug() << "Action was cancelled";
+    }
+}
+
+void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & errors)
+{
+    conn::brw::SslError data;
+    data.sslError = conn::brw::UnableToGetIssuerCertificate; 
+    emit onSslErrorDialog(data);
+    qDebug() << "SSL error; action required";
+    QEventLoop loop;
+    connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), this, SLOT(closeSsl(bool, bool)));
+    connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), &loop, SLOT(quit()));
+    loop.exec();
+    qDebug() << "SSL error action provided: isOK" << m_isSslOk << "save cert:" << m_sslSaveCert;
+
+    if (m_isSslOk) {
+        reply->ignoreSslErrors();
+        qDebug() << "Ignoring error";
+    } else {
+        qDebug() << "Halting on error";
     }
 }

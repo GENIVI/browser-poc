@@ -51,6 +51,8 @@ private slots:
     void testGetsNotifiedWhenSelectIsSelected();
     void testGetsNotifiedOnAuthDialog();
     void testCanCloseAuthDialog();
+    void testGetsNotifiedOnBadSSL();
+    void testCanCloseSslDialog();
 
 private:
     QString testFileUrl() {

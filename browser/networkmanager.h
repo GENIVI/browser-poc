@@ -32,11 +32,12 @@ public:
 signals:
     void onAuthenticationDialog(const conn::brw::AuthenticationData &);
     void onAuthenticationDialogCancel(conn::brw::AuthenticationData &);
-    void onSslErrorDialog(conn::brw::AuthenticationData &);
+    void onSslErrorDialog(const conn::brw::SslError &);
     void onSslErrorDialogCancel(const conn::brw::SslError &);
 
     // Internal
     void doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData);
+    void doCloseSslErrorDialog(bool, bool);
 
 public Q_SLOTS:
     conn::brw::ERROR_IDS closeAuthenticationDialog(conn::brw::DIALOG_RESULT, const conn::brw::AuthenticationData&);
@@ -44,14 +45,20 @@ public Q_SLOTS:
 
     // Internal
     void onAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator);
+    void onSslErrors(QNetworkReply *reply, const QList<QSslError> & errors);
     void authenticate(bool b, const conn::brw::AuthenticationData ad)
     {
         m_authBool = b;
         m_authData = ad;
     }
+    void closeSsl(bool isOK, bool saveCert)
+    {
+        m_isSslOk = isOK;
+        m_sslSaveCert = saveCert;
+    }
 private:
     QNetworkAccessManager *m_nam;
-    bool m_authBool;
+    bool m_authBool, m_isSslOk, m_sslSaveCert;
     conn::brw::AuthenticationData m_authData;
 };
 

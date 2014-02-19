@@ -42,6 +42,8 @@ void BrowserDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::OBJECT_HANDLE>();
     qDBusRegisterMetaType<conn::brw::ObjectHandleList>();
     qDBusRegisterMetaType<conn::brw::AuthenticationData>();
+    qDBusRegisterMetaType<conn::brw::SSL_ERROR>();
+    qDBusRegisterMetaType<conn::brw::SslError>();
 }
 
 void BrowserDbus::connectdbussession(QString id) {
@@ -232,6 +234,8 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
 
         connect(networkmanager, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)),
                 this, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
+        connect(networkmanager, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)),
+                this, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
@@ -752,6 +756,21 @@ void BrowserDbus::closeAuthenticationDialog(conn::brw::DIALOG_RESULT r, const co
     QStringList list;
 
     QDBusReply<conn::brw::ERROR_IDS> reply = networkmanager->closeAuthenticationDialog(r,d);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::closeSslErrorDialog(conn::brw::DIALOG_RESULT r, bool b)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+    QStringList list;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = networkmanager->closeSslErrorDialog(r,b);
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "ERROR_IDS " << ret;
