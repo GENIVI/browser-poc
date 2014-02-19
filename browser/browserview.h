@@ -42,12 +42,33 @@ public slots:
         emit onScroll ((uint)x,(uint)y);
     }
     void setCurrentFocus (const QWebElement &elem) {
-    emit onInputText (elem.attribute("name"), elem.attribute("value"),
-                      elem.attribute("type", "0").toInt(),
-                      elem.attribute("maxlength", "0").toInt(),
-                      elem.attribute("max", "0").toInt(),
-                      elem.attribute("min","0").toInt(),
-                      elem.attribute("step","0").toInt());
+        if (elem.tagName().compare("INPUT", Qt::CaseInsensitive) == 0){
+            emit onInputText (elem.attribute("name"), elem.attribute("value"),
+                              elem.attribute("type", "0").toInt(),
+                              elem.attribute("maxlength", "0").toInt(),
+                              elem.attribute("max", "0").toInt(),
+                              elem.attribute("min","0").toInt(),
+                              elem.attribute("step","0").toInt());
+        } else if (elem.tagName().compare("SELECT", Qt::CaseInsensitive) == 0){
+            conn::brw::SelectableOptionList options;
+            QList<QWebElement> elems;
+            QWebElement first = elem.firstChild();
+            QWebElement last  = elem.lastChild();
+
+            conn::brw::SelectableOption o;
+            o.strValue = first.toPlainText();
+            options.append(o);
+            elems.append(first);
+            while (elems.last() != last) {
+                conn::brw::SelectableOption o;
+                o.strValue = elems.last().toPlainText();
+                elems.append(elems.last().nextSibling());
+                options.append(o);
+            }
+
+            qDebug() << "Options:" << options.size();
+            emit onSelect(elem.attribute("name", ""), options, true);
+        }
     }
     const QWebElement *currentFocus () { return m_elem; }
 
@@ -55,6 +76,7 @@ signals:
     void onInputText(QString name, QString value, int type, int maxlength,
                      int max, int min, int step);
     void onScroll(uint x, uint y);
+    void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
 
 private:
     QWebElement *m_elem;
@@ -103,6 +125,7 @@ signals:
     void onActionStateChanged(uint);
     void onContentSizeChanged(uint, uint);
     void onFaviconReceived();
+    void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
 
 protected:
     virtual void resizeEvent (QResizeEvent *event);

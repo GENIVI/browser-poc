@@ -48,7 +48,6 @@ public Q_SLOTS:
     void inputText(QString input);
     void setView(QString viewpath);
 
-
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;
     QHash<QString, BrowserView *> webviewhash;

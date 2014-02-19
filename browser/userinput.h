@@ -16,6 +16,7 @@
 
 #include <QObject>
 #include <QDBusContext>
+#include <QDebug>
 
 #include "../common/browserdefs.h"
 
@@ -37,6 +38,7 @@ signals:
     void onPromptDialog(QString,QString);
     void onAlertDialog(QString);
     void onDialogCanceled(void);
+    void onSelect(const QString &a_strSelectName, const conn::brw::SelectableOptionList & a_oOptions, bool a_bMultiSelectionAllowed);
 
     // Internal
     void doCloseAlertDialog(void);

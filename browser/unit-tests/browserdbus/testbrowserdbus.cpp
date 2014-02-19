@@ -252,6 +252,7 @@ void TestBrowserDBus::testConfirmDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onConfirmDialog(QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 150 500");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
@@ -263,6 +264,7 @@ void TestBrowserDBus::testCancelConfirmDialog() {
     QSignalSpy spy2 (m_bdb, SIGNAL(onDialogCanceled(void)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 150 500");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
@@ -274,6 +276,7 @@ void TestBrowserDBus::testPromptDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onPromptDialog(QString,QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 250 500");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
@@ -285,6 +288,7 @@ void TestBrowserDBus::testCancelPromptDialog() {
     QSignalSpy spy2 (m_bdb, SIGNAL(onDialogCanceled(void)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 250 500");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
@@ -296,6 +300,7 @@ void TestBrowserDBus::testAlertDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onAlertDialog(QString)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 50 500");
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
@@ -305,6 +310,7 @@ void TestBrowserDBus::testAlertDialog() {
 void TestBrowserDBus::testGetPrevEnteredValues() {
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
     QProcess::execute("xdotool mousemove 200 375");
     QProcess::execute("xdotool click 1");
     QTest::qSleep(300);
@@ -312,5 +318,17 @@ void TestBrowserDBus::testGetPrevEnteredValues() {
     QTest::qSleep(300);
     QStringList list = m_bdb->getPrevEnteredValues("input", "", conn::brw::IET_TEXT);
     QVERIFY(list.contains("Hello world"));
+}
+
+void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
+    QSignalSpy spy (m_bdb, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QProcess::execute("xdotool mousemove 320 375");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
 }
 QTEST_MAIN (TestBrowserDBus);

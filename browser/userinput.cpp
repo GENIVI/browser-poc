@@ -88,7 +88,7 @@ conn::brw::ERROR_IDS userinput::closePromptDialog(QString resultStr, conn::brw::
 conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputName, const QString &a_strInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputType, QStringList &a_oInputVariants)
 {
     for (int i = 0; i < m_inputHistory->size(); i++){
-        struct inputStruct s = m_inputHistory->at(0);;
+        struct inputStruct s = m_inputHistory->at(0);
         qDebug() << s.value;
         if (s.type == a_i32InputType &&
                 s.name.compare(a_strInputName) == 0) {

@@ -63,6 +63,8 @@ BrowserView::BrowserView(cachemanager *cm, userinput *uip)
     connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
     connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SLOT(scrollPositionChanged(uint,uint)));
+    connect(&m_inputHandler, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)), this, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+
 }
 
 bool BrowserView::load(const QString &a_Url)

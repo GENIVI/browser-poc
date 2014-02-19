@@ -110,6 +110,7 @@ signals:
     void onPromptDialog(QString,QString);
     void onAlertDialog(QString);
     void onDialogCanceled(void);
+    void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
 
 public slots:
     void pageloadingstarted();

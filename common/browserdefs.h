@@ -673,6 +673,7 @@ Q_DECLARE_METATYPE(conn::brw::BrowserActions)
 Q_DECLARE_METATYPE(conn::brw::OBJECT_HANDLE)
 Q_DECLARE_METATYPE(conn::brw::ObjectHandleList)
 Q_DECLARE_METATYPE(conn::brw::SelectableOption);
+Q_DECLARE_METATYPE(conn::brw::SelectableOptionList);
 Q_DECLARE_METATYPE(conn::brw::CACHE_POLICY);
 Q_DECLARE_METATYPE(conn::brw::ErrorItemList);
 Q_DECLARE_METATYPE(conn::brw::ErrorItem);

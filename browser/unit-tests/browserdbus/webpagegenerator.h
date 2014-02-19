@@ -29,6 +29,7 @@ public:
         "           Set status bar text"
         "       </DIV>"
         "       <INPUT type='text' name='input' style='float:left;'></INPUT>"
+        "       <SELECT style='float:left'><OPTION>1</OPTION><OPTION>2</OPTION><OPTION>3</OPTION></SELECT>"
         "       <DIV style='height:100; width:100; background-color:gray; float: left; clear:left'"
         "                  onClick=\"JavaScript:alert('browser-poc');\" >"
         "           Trigger alert"
@@ -45,6 +46,5 @@ public:
         "    </BODY>"
         "</HTML>"
         );
-    
     }
 };
