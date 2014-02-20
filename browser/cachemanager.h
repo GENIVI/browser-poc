@@ -41,9 +41,9 @@ public Q_SLOTS:
     conn::brw::ERROR_IDS    clearCache();
 
 private:
-    BrowserConfig *m_config = NULL;
+    BrowserConfig *m_config;
     conn::brw::CACHE_POLICY m_policy;
-    QNetworkAccessManager *m_manager = NULL;
+    QNetworkAccessManager *m_manager;
 };
 
 #endif // CACHEMANAGER_H

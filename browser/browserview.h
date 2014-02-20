@@ -146,7 +146,7 @@ private:
     int m_currentProgress;
     uint m_scrollPositionX;
     uint m_scrollPositionY;
-    cachemanager *m_cacheManager = NULL;
+    cachemanager *m_cacheManager;
 };
 
 
