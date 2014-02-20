@@ -23,15 +23,20 @@ my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
 my_dbus_interfaces.files += ../common/ICacheManager.xml
 my_dbus_interfaces.header_flags = -i ../common/browserdefs.h
 
+my_dbus_interfaces.files += ../common/IErrorLogger.xml
+my_dbus_interfaces.header_flags += -l errorlogger -i ../browser/errorlogger.h -i ../common/browserdefs.h
+
 DBUS_INTERFACES += my_dbus_interfaces
 
 include(../common/common.pri)
 
 SOURCES +=  main.cpp \
-            ../common/cachemanagerdbus.cpp
+            ../common/cachemanagerdbus.cpp \
+            ../common/errorloggerdbus.cpp
 
 HEADERS += ../common/cachemanagerdbus.h \
-           ../common/browserdefs.h
+           ../common/browserdefs.h \
+           ../common/errorloggerdbus.h
 
 OTHER_FILES += \
     qml/testapp/main.qml \
@@ -39,5 +44,6 @@ OTHER_FILES += \
     qml/testapp/Browser.qml \
     qml/testapp/BookmarkManager.qml \
     qml/testapp/WebPageWindow.qml \
-    qml/testapp/CacheManager.qml
+    qml/testapp/CacheManager.qml \
+    qml/testapp/ErrorLogger.qml
 

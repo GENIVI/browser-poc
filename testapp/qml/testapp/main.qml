@@ -17,6 +17,10 @@ ApplicationWindow {
         id: cachemanagerinterface
     }
 
+    ErrorLoggerInterface {
+    id: errorloggerinterface
+    }
+
     Item {
         id: header
         width: parent.width
@@ -54,7 +58,8 @@ ApplicationWindow {
             anchors.leftMargin: 20
             text: "Connect"
         onClicked: { browserinterface.connectdbussession(inputstring.text);
-            cachemanagerinterface.connectdbussession(inputstring.text);}
+            cachemanagerinterface.connectdbussession(inputstring.text);
+    errorloggerinterface.connectdbussession(inputstring.text);}
         }
         Component {
             id: hallo
@@ -159,6 +164,13 @@ ApplicationWindow {
             anchors.fill: parent
             clip: true
             CacheManager {}
+        }
+        Tab {
+            id: errorlogger
+            title: "IErrorLogger"
+            anchors.fill: parent
+            clip: true
+            ErrorLogger {}
         }
     }
 }

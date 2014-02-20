@@ -37,9 +37,6 @@ signals:
     void onPageWindowCreated(qlonglong a_hPageWindowHandle, conn::brw::ERROR_IDS a_eErrorId);
     void onPageWindowDestroyed(qlonglong a_hPageWindowHandle);
 
-    // Distribute cache changes signals to all browser windows
-
-
 public Q_SLOTS:
     conn::brw::ERROR_IDS createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry,
                                           conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);

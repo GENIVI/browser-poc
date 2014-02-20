@@ -16,24 +16,51 @@
 #include <QDebug>
 #include <QAbstractNetworkCache>
 #include <QNetworkDiskCache>
+#include <QDateTime>
 
 #include "errorlogger.h"
 #include "../common/browserdefs.h"
 
-errorlogger::errorlogger(QObject *parent) :
-    QObject(parent)
-{}
+errorlogger* errorlogger::m_instance = NULL;
 
 uint errorlogger::getItemsCount(qlonglong timeFrom, qlonglong timeTo)
 {
-    return 0;
+    uint num = 0;
+    for (int i = 0; i < m_errors->size(); i++) {
+        const conn::brw::ErrorItem *e = &m_errors->at(i);
+        if (timeFrom <= e->i64DateTime && timeTo >= e->i64DateTime)
+            num++;
+    }
+    return num;
 }
 conn::brw::ERROR_IDS errorlogger::getItems(qlonglong timeFrom,
                                            qlonglong timeTo,
                                            conn::brw::ERROR_SORT_TYPE type,
                                            uint startIndex,
                                            uint itemsCount,
-                                           conn::brw::ErrorItemList items)
+                                           conn::brw::ErrorItemList &items)
 {
+    if (type == conn::brw::EST_DATE_ASCENDING)
+        qSort (m_errors->begin(), m_errors->end(), conn::brw::ltError);
+    else
+        qSort (m_errors->begin(), m_errors->end(), conn::brw::gtError);
+    for (int i = 0; i < m_errors->size(); i++){
+    }
+    for (int i = startIndex; i < m_errors->size(); i++) {
+        const conn::brw::ErrorItem e = m_errors->at(i);
+        if (timeFrom <= e.i64DateTime && timeTo >= e.i64DateTime) {
+            if (items.size() < itemsCount){
+                items.append(e);
+            }
+            else
+                break;
+        }
+    }
     return conn::brw::EID_NO_ERROR;
+}
+
+
+void errorlogger::m_logError(conn::brw::ErrorItem item) {
+    m_errors->append(item);
+    emit onNewErrorItem(item);
 }
