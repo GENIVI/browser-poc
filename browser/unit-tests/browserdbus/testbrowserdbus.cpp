@@ -364,6 +364,8 @@ void TestBrowserDBus::testCanCloseSslDialog() {
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl("https://tv.eurosport.com/");
     QVERIFY(spy.wait(1000));
+    conn::brw::SslError error = spy.takeFirst().at(0).value<conn::brw::SslError>();
+    qDebug() << "SSL error is:" << error.strErrorMessage << ". code:" << error.sslError;
 
     m_bdb->closeSslErrorDialog(conn::brw::DR_OK, true);
 }

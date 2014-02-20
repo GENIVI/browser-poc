@@ -17,6 +17,71 @@
 #include <QAuthenticator>
 #include <QEventLoop>
 #include <QNetworkReply>
+#include <QSslError>
+
+conn::brw::SslError convertError(QSslError err, const QNetworkReply *rep)
+{
+    conn::brw::SslError data;
+    data.strUrl = rep->url().toString();
+    data.strErrorMessage = err.errorString();
+
+    switch (err.error()) {
+    case(QSslError::NoError):
+        {data.sslError = conn::brw::NoError; break;}
+    case(QSslError::UnableToGetIssuerCertificate):
+        {data.sslError = conn::brw::UnableToGetIssuerCertificate; break;}
+    case(QSslError::UnableToDecryptCertificateSignature):
+        {data.sslError = conn::brw::UnableToDecryptCertificateSignature; break;}
+    case(QSslError::UnableToDecodeIssuerPublicKey):
+        {data.sslError = conn::brw::UnableToDecodeIssuerPublicKey; break;}
+    case(QSslError::CertificateSignatureFailed):
+        {data.sslError = conn::brw::CertificateSignatureFailed; break;}
+    case(QSslError::CertificateNotYetValid):
+        {data.sslError = conn::brw::CertificateNotYetValid; break;}
+    case(QSslError::CertificateExpired):
+        {data.sslError = conn::brw::CertificateExpired; break;}
+    case(QSslError::InvalidNotBeforeField):
+        {data.sslError = conn::brw::InvalidNotBeforeField; break;}
+    case(QSslError::InvalidNotAfterField):
+        {data.sslError = conn::brw::InvalidNotAfterField; break;}
+    case(QSslError::SelfSignedCertificate):
+        {data.sslError = conn::brw::SelfSignedCertificate; break;}
+    case(QSslError::SelfSignedCertificateInChain):
+        {data.sslError = conn::brw::SelfSignedCertificateInChain; break;}
+    case(QSslError::UnableToGetLocalIssuerCertificate):
+        {data.sslError = conn::brw::UnableToGetLocalIssuerCertificate; break;}
+    case(QSslError::UnableToVerifyFirstCertificate):
+        {data.sslError = conn::brw::UnableToVerifyFirstCertificate; break;}
+    case(QSslError::CertificateRevoked):
+        {data.sslError = conn::brw::CertificateRevoked; break;}
+    case(QSslError::InvalidCaCertificate):
+        {data.sslError = conn::brw::InvalidCaCertificate; break;}
+    case(QSslError::PathLengthExceeded):
+        {data.sslError = conn::brw::PathLengthExceeded; break;}
+    case(QSslError::InvalidPurpose):
+        {data.sslError = conn::brw::InvalidPurpose; break;}
+    case(QSslError::CertificateUntrusted):
+        {data.sslError = conn::brw::CertificateUntrusted; break;}
+    case(QSslError::CertificateRejected):
+        {data.sslError = conn::brw::CertificateRejected; break;}
+    case(QSslError::SubjectIssuerMismatch):
+        {data.sslError = conn::brw::SubjectIssuerMismatch; break;}
+    case(QSslError::AuthorityIssuerSerialNumberMismatch):
+        {data.sslError = conn::brw::AuthorityIssuerSerialNumberMismatch; break;}
+    case(QSslError::NoPeerCertificate):
+        {data.sslError = conn::brw::NoPeerCertificate; break;}
+    case(QSslError::HostNameMismatch):
+        {data.sslError = conn::brw::HostNameMismatch; break;}
+    case(QSslError::UnspecifiedError):
+        {data.sslError = conn::brw::UnspecifiedError; break;}
+    case(QSslError::NoSslSupport):
+        {data.sslError = conn::brw::NoSslSupport; break;}
+    case(QSslError::CertificateBlacklisted):
+        {data.sslError = conn::brw::CertificateBlacklisted; break;}
+    }
+
+    return data;
+}
 
 networkmanager::networkmanager(QNetworkAccessManager *nam, QObject *parent) :
     QObject(parent), m_nam (nam)
@@ -61,20 +126,22 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
 
 void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & errors)
 {
-    conn::brw::SslError data;
-    data.sslError = conn::brw::UnableToGetIssuerCertificate; 
-    emit onSslErrorDialog(data);
-    qDebug() << "SSL error; action required";
-    QEventLoop loop;
-    connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), this, SLOT(closeSsl(bool, bool)));
-    connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), &loop, SLOT(quit()));
-    loop.exec();
-    qDebug() << "SSL error action provided: isOK" << m_isSslOk << "save cert:" << m_sslSaveCert;
+    for (int i = 0; i < errors.size(); i++) {
+        conn::brw::SslError data = convertError (errors.at(i), reply);
+        emit onSslErrorDialog(data);
+        qDebug() << "SSL error; action required";
+        QEventLoop loop;
+        connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), this, SLOT(closeSsl(bool, bool)));
+        connect (this, SIGNAL(doCloseSslErrorDialog(bool, bool)), &loop, SLOT(quit()));
+        loop.exec();
+        qDebug() << "SSL error action provided: isOK" << m_isSslOk << "save cert:" << m_sslSaveCert;
 
-    if (m_isSslOk) {
-        reply->ignoreSslErrors();
-        qDebug() << "Ignoring error";
-    } else {
-        qDebug() << "Halting on error";
+        if (m_isSslOk) {
+            reply->ignoreSslErrors();
+            qDebug() << "Ignoring error";
+        } else {
+            qDebug() << "Halting on error";
+        }
     }
 }
+
