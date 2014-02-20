@@ -19,9 +19,10 @@
 #include "../common/browserdefs.h"
 
 BrowserDbus::BrowserDbus(QObject *parent) :
-    QObject(parent), m_instanceId("1"), m_isconnected(false), bookmark(NULL),
+    QObject(parent), bookmark(NULL),
     userinput(NULL), webpagewindow(NULL), actualtab(NULL),
-    actualuserinput(NULL),browser(NULL), dbusservicename(NULL)
+    actualuserinput(NULL), networkmanager(NULL), browser(NULL), 
+    m_instanceId("1"), m_isconnected(false), dbusservicename(NULL)
 {
     qDebug() << __PRETTY_FUNCTION__;
 

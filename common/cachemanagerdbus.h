@@ -41,7 +41,7 @@ signals:
 private:
     QString m_instanceId;
     bool m_isconnected;
-    conn::brw::ICacheManager *m_cachemanager = NULL;
+    conn::brw::ICacheManager *m_cachemanager;
 
     void registertypes();
 };

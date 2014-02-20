@@ -109,6 +109,7 @@ conn::brw::ERROR_IDS networkmanager::closeSslErrorDialog(conn::brw::DIALOG_RESUL
 void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator)
 {
     conn::brw::AuthenticationData data;
+    data.strHost = reply->url().toString();
     emit onAuthenticationDialog(data);
     qDebug() << "Authentication required";
     QEventLoop loop;

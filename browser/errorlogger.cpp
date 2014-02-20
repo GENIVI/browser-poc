@@ -49,7 +49,7 @@ conn::brw::ERROR_IDS errorlogger::getItems(qlonglong timeFrom,
     for (int i = startIndex; i < m_errors->size(); i++) {
         const conn::brw::ErrorItem e = m_errors->at(i);
         if (timeFrom <= e.i64DateTime && timeTo >= e.i64DateTime) {
-            if (items.size() < itemsCount){
+            if (items.size() < (int)itemsCount){
                 items.append(e);
             }
             else

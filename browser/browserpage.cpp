@@ -20,6 +20,7 @@
 
 void BrowserPage::javaScriptAlert(QWebFrame *frame, const QString &message)
 {
+    Q_UNUSED(frame);
     emit onAlertDialog(message);
     QEventLoop loop;
     qDebug() << "Alert dialog opened:" << message;
@@ -30,6 +31,7 @@ void BrowserPage::javaScriptAlert(QWebFrame *frame, const QString &message)
 
 bool BrowserPage::javaScriptConfirm(QWebFrame *frame, const QString &message)
 {
+    Q_UNUSED(frame);
     emit onConfirmDialog(message);
     QEventLoop loop;
     qDebug() << "Confirm dialog opened:" << message;
@@ -37,16 +39,18 @@ bool BrowserPage::javaScriptConfirm(QWebFrame *frame, const QString &message)
     connect (m_userInput, SIGNAL(doCloseConfirmDialog(bool)), &loop, SLOT(quit()));
     loop.exec();
     qDebug() << "Confirm dialog closed:" << m_confirm;
+    return m_confirm;
 }
 bool BrowserPage::javaScriptPrompt(QWebFrame *frame, const QString &msg, const QString &defaultValue, QString *result )
 {
+    Q_UNUSED(frame);
     emit onPromptDialog(msg, defaultValue);
     QEventLoop loop;
     qDebug() << "Confirm dialog opened (default:" << defaultValue << ")";
     connect (m_userInput, SIGNAL(doClosePromptDialog(QString, bool)), this, SLOT(prompt(QString, bool)));
     connect (m_userInput, SIGNAL(doClosePromptDialog(QString, bool)), &loop, SLOT(quit()));
     loop.exec();
-    result = &m_promptStr;
+    *result = m_promptStr;
     qDebug() << "Confirm dialog closed:" << m_promptBool << m_promptStr;
     return m_promptBool;
 }

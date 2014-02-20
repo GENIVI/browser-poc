@@ -87,6 +87,7 @@ conn::brw::ERROR_IDS userinput::closePromptDialog(QString resultStr, conn::brw::
 
 conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputName, const QString &a_strInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputType, QStringList &a_oInputVariants)
 {
+    Q_UNUSED(a_strInputValue);
     for (int i = 0; i < m_inputHistory->size(); i++){
         struct inputStruct s = m_inputHistory->at(0);
         qDebug() << s.value;
@@ -100,4 +101,6 @@ conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputN
 }
 
 conn::brw::ERROR_IDS userinput::selectOption(const conn::brw::SelectableOptionList &a_oOptionList)
-{}
+{
+    return conn::brw::EID_NOT_IMPLEMENTED;
+}
