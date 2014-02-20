@@ -45,6 +45,8 @@ void BrowserDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::AuthenticationData>();
     qDBusRegisterMetaType<conn::brw::SSL_ERROR>();
     qDBusRegisterMetaType<conn::brw::SslError>();
+    qDBusRegisterMetaType<conn::brw::SelectableOptionList>();
+    qDBusRegisterMetaType<conn::brw::SelectableOption>();
 }
 
 void BrowserDbus::connectdbussession(QString id) {
@@ -221,7 +223,8 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
         connect(actualuserinput, SIGNAL(onConfirmDialog(QString)),       this, SIGNAL(onConfirmDialog(QString)));
         connect(actualuserinput, SIGNAL(onPromptDialog(QString,QString)),this, SIGNAL(onPromptDialog(QString,QString)));
         connect(actualuserinput, SIGNAL(onDialogCanceled(void)),         this, SIGNAL(onDialogCanceled()));
-        connect(actualuserinput, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)), this, SIGNAL (onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+        connect(actualuserinput, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)),
+                this,            SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
 
         if(!actualuserinput->isValid())
             qDebug() << "failed create object /Browser/IWebPageWindow*/IUserInput";
