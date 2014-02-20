@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2013, Pelagicore
+ * Copyright (C) 2014, Pelagicore
  *
  * Author: Jonatan Pålsson <jonatan.palsson@pelagicore.com>
  *
@@ -23,7 +23,7 @@
 cachemanager::cachemanager(QObject *parent) :
     QObject(parent)
 {
-    m_config = new BrowserConfig();
+    m_config = BrowserConfig::instance();
     m_manager = new QNetworkAccessManager();
     QNetworkDiskCache *cache = new QNetworkDiskCache();
     cache->setCacheDirectory ("/tmp/browserpoc_cache");

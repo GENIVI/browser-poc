@@ -21,19 +21,27 @@
 class BrowserConfig : public QObject{
 Q_OBJECT
 public:
-   enum BrowserConfigKey {CONFIG_CACHEPOLICY};
-   BrowserConfig();
+    enum BrowserConfigKey {CONFIG_CACHEPOLICY};
 
-   template<typename T>
-   T getValue(BrowserConfigKey);
+    static BrowserConfig* instance()  {
+        if (!BrowserConfig::m_config)
+            BrowserConfig::m_config = new BrowserConfig();
 
-   template<typename T>
-   void setValue(BrowserConfigKey, T);
+        return BrowserConfig::m_config;
+    }
 
-   bool contains(BrowserConfig::BrowserConfigKey key);
+    template<typename T>
+    T getValue(BrowserConfigKey);
+
+    template<typename T>
+    void setValue(BrowserConfigKey, T);
+
+    bool contains(BrowserConfig::BrowserConfigKey key);
 
 private:
-    QSettings *m_qsettings = NULL;
+    BrowserConfig();
+    QSettings *m_qsettings;
+    static BrowserConfig *m_config;
 };
 
 #endif /*BROWSERCONFIG_H*/

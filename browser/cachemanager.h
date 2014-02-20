@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2013, Pelagicore
+ * Copyright (C) 2014, Pelagicore
  *
  * Author: Jonatan Pålsson <jonatan.palsson@pelagicore.com>
  *

@@ -26,6 +26,8 @@ template qlonglong BrowserConfig::getValue<qlonglong>(BrowserConfig::BrowserConf
 template qulonglong BrowserConfig::getValue<qulonglong>(BrowserConfig::BrowserConfigKey);
 template conn::brw::CACHE_POLICY BrowserConfig::getValue<conn::brw::CACHE_POLICY>(BrowserConfig::BrowserConfigKey);
 
+BrowserConfig* BrowserConfig::m_config = NULL;
+
 BrowserConfig::BrowserConfig() {
     m_qsettings = new QSettings("browserpoc");
 }
