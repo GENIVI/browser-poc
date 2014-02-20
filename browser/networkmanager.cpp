@@ -18,6 +18,7 @@
 #include <QEventLoop>
 #include <QNetworkReply>
 #include <QSslError>
+#include <QSslSocket>
 
 conn::brw::SslError convertError(QSslError err, const QNetworkReply *rep)
 {
@@ -141,6 +142,13 @@ void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & 
             qDebug() << "Ignoring error";
         } else {
             qDebug() << "Halting on error";
+        }
+
+        if (m_sslSaveCert) {
+            qDebug() << "Saving certificate";
+            QSslSocket::addDefaultCaCertificate(errors.at(i).certificate());
+        } else {
+            qDebug() << "Not saving certificate";
         }
     }
 }
