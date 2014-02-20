@@ -277,3 +277,11 @@ void BrowserView::select() {
 void BrowserView::activate() {
     this->activateWindow();
 }
+
+void BrowserView::onSelectIndexes(QList<int> indexes) {
+    for (int i = 0; i < indexes.size(); i++) {
+        QString cmd = QString("document.activeElement.options[%1].selected = true").arg(
+                                QString::number(indexes.at(i)));
+        m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
+    }
+}

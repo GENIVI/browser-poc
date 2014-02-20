@@ -79,6 +79,7 @@ public:
     Q_INVOKABLE QStringList getPrevEnteredValues(QString name, QString value, conn::brw::INPUT_ELEMENT_TYPE type);
     Q_INVOKABLE void closeAuthenticationDialog(conn::brw::DIALOG_RESULT, const conn::brw::AuthenticationData&);
     Q_INVOKABLE void closeSslErrorDialog(conn::brw::DIALOG_RESULT, bool);
+    Q_INVOKABLE void selectOption(const conn::brw::SelectableOptionList&);
 
 
     QString title() { return m_title; }

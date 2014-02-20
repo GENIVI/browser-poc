@@ -139,6 +139,7 @@ protected slots:
     void linkClicked(QUrl);
     void scrollPositionChanged(uint x, uint y);
     void contentSizeChanged(const QSize&);
+    void onSelectIndexes(QList<int>);
 
 private:
     QGraphicsWebView m_webview;

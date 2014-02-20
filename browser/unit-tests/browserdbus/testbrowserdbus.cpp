@@ -330,6 +330,10 @@ void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
     QTest::qSleep(300);
     QProcess::execute("xdotool click 1");
     QVERIFY(spy.wait(1000));
+    conn::brw::SelectableOptionList options = spy.takeFirst().at(1).value<conn::brw::SelectableOptionList>();
+    for (int i = 0; i < options.size(); i++) {
+        qDebug() << options.at(i).strValue;
+    }
 }
 
 void TestBrowserDBus::testGetsNotifiedOnAuthDialog() {
@@ -390,6 +394,27 @@ void TestBrowserDBus::testCanCancelAuth() {
     conn::brw::AuthenticationData d;
     m_bdb->closeAuthenticationDialog(conn::brw::DR_CANCEL, d);
     QVERIFY(spy2.wait(1000));
+}
+
+void TestBrowserDBus::testCanSelectOptionsInSelectList() {
+    QSignalSpy spy (m_bdb, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QProcess::execute("xdotool mousemove 320 375");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    conn::brw::SelectableOptionList options = spy.takeFirst().at(1).value<conn::brw::SelectableOptionList>();
+    conn::brw::SelectableOption newOption = options.at(0);
+    conn::brw::SelectableOption newOption2 = options.at(1);
+    newOption.bSelected = true;
+    newOption2.bSelected = true;
+    options.replace(0, newOption);
+    options.replace(1, newOption2);
+    
+    m_bdb->selectOption(options);
 }
 
 QTEST_MAIN (TestBrowserDBus);

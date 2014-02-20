@@ -102,5 +102,13 @@ conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputN
 
 conn::brw::ERROR_IDS userinput::selectOption(const conn::brw::SelectableOptionList &a_oOptionList)
 {
-    return conn::brw::EID_NOT_IMPLEMENTED;
+    QList<int> indexes;
+    for (int i = 0; i < a_oOptionList.size(); i++) {
+        if (a_oOptionList.at(i).bSelected) {
+            indexes.append(i);
+        }
+    }
+
+    emit selectIndexes (indexes);
+    return conn::brw::EID_NO_ERROR;
 }

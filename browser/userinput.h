@@ -44,6 +44,7 @@ signals:
     void doCloseAlertDialog(void);
     void doCloseConfirmDialog(bool);
     void doClosePromptDialog(QString, bool);
+    void selectIndexes(QList<int>);
     
 public Q_SLOTS:
     conn::brw::ERROR_IDS inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue);

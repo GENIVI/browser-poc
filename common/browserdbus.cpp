@@ -776,9 +776,22 @@ void BrowserDbus::closeAuthenticationDialog(conn::brw::DIALOG_RESULT r, const co
 void BrowserDbus::closeSslErrorDialog(conn::brw::DIALOG_RESULT r, bool b)
 {
     qDebug() << __PRETTY_FUNCTION__;
-    QStringList list;
 
     QDBusReply<conn::brw::ERROR_IDS> reply = networkmanager->closeSslErrorDialog(r,b);
+    if(reply.isValid()) {
+        conn::brw::ERROR_IDS ret = reply.value();
+        qDebug() << "ERROR_IDS " << ret;
+    } else {
+        QDBusError error = reply.error();
+        qDebug() << "ERROR " << error.name() << error.message();
+    }
+}
+
+void BrowserDbus::selectOption(const conn::brw::SelectableOptionList &lst)
+{
+    qDebug() << __PRETTY_FUNCTION__;
+
+    QDBusReply<conn::brw::ERROR_IDS> reply = userinput->selectOption(lst);
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret = reply.value();
         qDebug() << "ERROR_IDS " << ret;

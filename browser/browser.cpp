@@ -59,9 +59,10 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(bvi, SIGNAL(onContentSizeChanged(uint, uint)),wpw,SIGNAL(onContentSizeChanged(uint,uint)));
     connect(bvi, SIGNAL(onFaviconReceived()),           wpw,  SIGNAL(onFaviconReceived()));
 
-    connect(m_userInput,  SIGNAL(inputText(QString)),   this, SLOT(inputText(QString)));
-    connect(bvi,          SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)),
-            m_userInput,  SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+    connect(m_userInput, SIGNAL(inputText(QString)),   this, SLOT(inputText(QString)));
+    connect(bvi,         SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)),
+            m_userInput, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
+    connect(m_userInput, SIGNAL(selectIndexes(QList<int>)), bvi, SLOT(onSelectIndexes(QList<int>)));
 
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
