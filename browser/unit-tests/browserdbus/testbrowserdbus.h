@@ -53,6 +53,8 @@ private slots:
     void testCanCloseAuthDialog();
     void testGetsNotifiedOnBadSSL();
     void testCanCloseSslDialog();
+    void testCanCancelSSL();
+    void testCanCancelAuth();
 
 private:
     QString testFileUrl() {

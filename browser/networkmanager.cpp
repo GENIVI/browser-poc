@@ -122,6 +122,7 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
         authenticator->setPassword(m_authData.strPassword);
     } else {
         qDebug() << "Action was cancelled";
+        emit onAuthenticationDialogCancel(data);
     }
 }
 
@@ -140,16 +141,18 @@ void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & 
         if (m_isSslOk) {
             reply->ignoreSslErrors();
             qDebug() << "Ignoring error";
+
+            if (m_sslSaveCert) {
+                qDebug() << "Saving certificate";
+                QSslSocket::addDefaultCaCertificate(errors.at(i).certificate());
+            } else {
+                qDebug() << "Not saving certificate";
+            }
         } else {
-            qDebug() << "Halting on error";
+            qDebug() << "Action was cancelled";
+            emit onSslErrorDialogCancel(data);
         }
 
-        if (m_sslSaveCert) {
-            qDebug() << "Saving certificate";
-            QSslSocket::addDefaultCaCertificate(errors.at(i).certificate());
-        } else {
-            qDebug() << "Not saving certificate";
-        }
     }
 }
 

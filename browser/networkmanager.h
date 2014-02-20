@@ -31,7 +31,7 @@ public:
 
 signals:
     void onAuthenticationDialog(const conn::brw::AuthenticationData &);
-    void onAuthenticationDialogCancel(conn::brw::AuthenticationData &);
+    void onAuthenticationDialogCancel(const conn::brw::AuthenticationData &);
     void onSslErrorDialog(const conn::brw::SslError &);
     void onSslErrorDialogCancel(const conn::brw::SslError &);
 

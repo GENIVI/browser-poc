@@ -370,4 +370,26 @@ void TestBrowserDBus::testCanCloseSslDialog() {
     m_bdb->closeSslErrorDialog(conn::brw::DR_OK, true);
 }
 
+void TestBrowserDBus::testCanCancelSSL() {
+    QSignalSpy spy (m_bdb, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
+    QSignalSpy spy2 (m_bdb, SIGNAL(onSslErrorDialogCancel(const conn::brw::SslError&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("https://tv.eurosport.com/");
+    QVERIFY(spy.wait(1000));
+    m_bdb->closeSslErrorDialog(conn::brw::DR_CANCEL, false);
+    QVERIFY(spy2.wait());
+}
+
+void TestBrowserDBus::testCanCancelAuth() {
+    QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
+    QSignalSpy spy2 (m_bdb, SIGNAL(onAuthenticationDialogCancel(const conn::brw::AuthenticationData&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
+    QVERIFY(spy.wait(1000));
+
+    conn::brw::AuthenticationData d;
+    m_bdb->closeAuthenticationDialog(conn::brw::DR_CANCEL, d);
+    QVERIFY(spy2.wait(1000));
+}
+
 QTEST_MAIN (TestBrowserDBus);

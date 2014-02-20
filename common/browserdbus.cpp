@@ -236,6 +236,10 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
                 this, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
         connect(networkmanager, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)),
                 this, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
+        connect(networkmanager, SIGNAL(onSslErrorDialogCancel(const conn::brw::SslError&)),
+                this, SIGNAL(onSslErrorDialogCancel(const conn::brw::SslError&)));
+        connect(networkmanager, SIGNAL(onAuthenticationDialogCancel(const conn::brw::AuthenticationData&)),
+                this, SIGNAL(onAuthenticationDialogCancel(const conn::brw::AuthenticationData&)));
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();

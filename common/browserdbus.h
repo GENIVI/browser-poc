@@ -116,6 +116,8 @@ signals:
     void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
     void onAuthenticationDialog(const conn::brw::AuthenticationData&);
     void onSslErrorDialog(const conn::brw::SslError&);
+    void onSslErrorDialogCancel(const conn::brw::SslError&);
+    void onAuthenticationDialogCancel(const conn::brw::AuthenticationData&);
 
 public slots:
     void pageloadingstarted();
