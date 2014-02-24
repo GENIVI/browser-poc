@@ -21,7 +21,10 @@
 class BrowserConfig : public QObject{
 Q_OBJECT
 public:
-    enum BrowserConfigKey {CONFIG_CACHEPOLICY};
+    enum BrowserConfigKey {
+        CONFIG_CACHEPOLICY,
+        CONFIG_STARTPAGE
+    };
 
     static BrowserConfig* instance()  {
         if (!BrowserConfig::m_config)

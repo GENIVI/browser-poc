@@ -24,10 +24,12 @@
 #include "../common/browserdefs.h"
 #include "browserpage.h"
 #include "userinput.h"
+#include "browserconfig.h"
 
 BrowserView::BrowserView(cachemanager *cm, userinput *uip)
     : m_cacheManager (cm)
 {
+    QString startPage;
     m_cacheManager = cm;
     if (!this->scene()) {
         this->setScene(new QGraphicsScene());
@@ -40,7 +42,11 @@ BrowserView::BrowserView(cachemanager *cm, userinput *uip)
 
     m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
 
-    this->load("http://www.bmw.com");
+    startPage = BrowserConfig::instance()->getValue<QString>(BrowserConfig::CONFIG_STARTPAGE);
+    if (startPage.compare("") == 0)
+        startPage = "http://www.bmw.com";
+
+    this->load(startPage);
 
     this->installEventFilter(this);
 
@@ -78,6 +84,8 @@ bool BrowserView::load(const QString &a_Url)
         qDebug() << "No cacheManager present, defaulting to load(url)";
         m_webview.load(a_Url);
     }
+
+    BrowserConfig::instance()->setValue<QString>(BrowserConfig::CONFIG_STARTPAGE, a_Url);
     return true;
 }
 
