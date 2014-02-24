@@ -27,7 +27,7 @@ my_dbus_browser_adaptors.header_flags = -i browser.h -i ../common/browserdefs.h 
 my_dbus_browser_adaptors.source_flags = -l browser
 
 my_dbus_networkmanager_adaptors.files += ../common/INetworkManager.xml
-my_dbus_networkmanager_adaptors.header_flags = -i networkmanager.h -i ../common/networkmanager.h -l networkmanager
+my_dbus_networkmanager_adaptors.header_flags = -i networkmanager.h -i ../common/browserdefs.h -l networkmanager
 my_dbus_networkmanager_adaptors.source_flags = -l networkmanager
 
 DBUS_ADAPTORS += my_dbus_bookmark_adaptors \
