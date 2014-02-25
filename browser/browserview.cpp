@@ -120,19 +120,24 @@ void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYP
     int stepSize = 50;
     int xMultiplier = 0;
     int yMultiplier = 0;
+    Qt::Key key(Qt::Key_Tab);
 
     switch (dir) {
     case conn::brw::SD_TOP:
         yMultiplier = -1;
+        key = Qt::Key_Backtab;
         break;
     case conn::brw::SD_BOTTOM:
         yMultiplier = 1;
+        key = Qt::Key_Tab;
         break;
     case conn::brw::SD_RIGHT:
         xMultiplier = 1;
+        key = Qt::Key_Tab;
         break;
     case conn::brw::SD_LEFT:
         xMultiplier = -1;
+        key = Qt::Key_Backtab;
         break;
     default:
         qDebug() << "Invalid direction";
@@ -142,9 +147,14 @@ void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYP
     if (type == conn::brw::ST_PAGE)
         stepSize= this->height();
 
-    if (m_webview.page() && m_webview.page()->mainFrame())
-        m_webview.page()->mainFrame()->scroll(stepSize*xMultiplier,
-                                              stepSize*yMultiplier);
+    if (type == conn::brw::ST_LINK) {
+        QKeyEvent event(QEvent::KeyPress, key, Qt::NoModifier);
+        QCoreApplication::sendEvent(m_webview.page(), &event);
+    } else {
+        if (m_webview.page() && m_webview.page()->mainFrame())
+            m_webview.page()->mainFrame()->scroll(stepSize*xMultiplier,
+                                                  stepSize*yMultiplier);
+    }
 }
 
 void BrowserView::inputText (QString input)
