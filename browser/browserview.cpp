@@ -280,10 +280,11 @@ void BrowserView::contentSizeChanged(const QSize &size) {
 }
 
 void BrowserView::select() {
-    this->setFocus(Qt::OtherFocusReason);
+    QKeyEvent event(QEvent::KeyPress, Qt::Key_Return, Qt::NoModifier);
+    QCoreApplication::sendEvent(m_webview.page(), &event);
 }
 void BrowserView::activate() {
-    this->activateWindow();
+    this->setVisible(true);
 }
 
 void BrowserView::onSelectIndexes(QList<int> indexes) {
