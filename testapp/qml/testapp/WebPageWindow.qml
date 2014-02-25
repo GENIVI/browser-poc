@@ -393,6 +393,20 @@ Item {
             anchors.top: scrolltype.bottom
             anchors.left: scrolltype.left
         }
+
+        Button {
+            id: buttonSelect
+            text: "Click"
+            anchors.top: buttonup.bottom
+            anchors.topMargin: 0
+            anchors.bottom: buttondown.top
+            anchors.bottomMargin: 0
+            anchors.right: buttonright.left
+            anchors.rightMargin: 0
+            anchors.left: buttonleft.right
+            anchors.leftMargin: 0
+            onClicked: browserinterface.select();
+        }
     }
 
     GroupBox {
