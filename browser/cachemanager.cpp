@@ -84,6 +84,7 @@ conn::brw::ERROR_IDS cachemanager::setCachePolicy(conn::brw::CACHE_POLICY pol)
     qDebug() << "Setting cache policy:" << pol;
     m_config->setValue(BrowserConfig::CONFIG_CACHEPOLICY, pol);
     m_policy = pol;
+    emit onCachePolicyChanged(pol);
     return conn::brw::EID_NO_ERROR;
 }
 

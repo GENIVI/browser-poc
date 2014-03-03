@@ -32,6 +32,8 @@ public:
 
 signals:
     void cacheChanged();
+    void onCachePolicyChanged(conn::brw::CACHE_POLICY);
+    void onClearCache(void);
 
 public Q_SLOTS:
     qulonglong getCacheSize();

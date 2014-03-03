@@ -80,11 +80,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
     new IWebPageWindowAdaptor(wpw);
     br->wpw = wpw;
 
-    connect(cm, SIGNAL(onCachePolicyChanged(conn::brw::CACHE_POLICY)),
-            br, SLOT  (cachePolicyChanged  (conn::brw::CACHE_POLICY)));
-    connect(cm, SIGNAL(onClearCache(void)),
-            br, SLOT  (clearCache  (void)));
-
     connect(wpw, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
     connect(ui, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
 }
