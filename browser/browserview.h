@@ -42,6 +42,10 @@ public slots:
         emit onScroll ((uint)x,(uint)y);
     }
     void setCurrentFocus (const QWebElement &elem) {
+        // Check whether this element was already selected
+        if (elem == m_elem)
+            return;
+
         if (elem.tagName().compare("INPUT", Qt::CaseInsensitive) == 0){
             emit onInputText (elem.attribute("name"), elem.attribute("value"),
                               elem.attribute("type", "0").toInt(),
@@ -69,8 +73,9 @@ public slots:
             qDebug() << "Options:" << options.size();
             emit onSelect(elem.attribute("name", ""), options, true);
         }
+        m_elem = elem;
     }
-    const QWebElement *currentFocus () { return m_elem; }
+    const QWebElement currentFocus () { return m_elem; }
 
 signals:
     void onInputText(QString name, QString value, int type, int maxlength,
@@ -79,7 +84,7 @@ signals:
     void onSelect(const QString &, const conn::brw::SelectableOptionList &, bool);
 
 private:
-    QWebElement *m_elem;
+    QWebElement m_elem;
 };
 
 class BrowserView : public QGraphicsView

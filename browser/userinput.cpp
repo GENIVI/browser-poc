@@ -26,14 +26,29 @@ conn::brw::ERROR_IDS userinput::inputText(conn::brw::DIALOG_RESULT a_eResult, co
 
     emit setOutputWebview(message().path());
 
-    if(a_eResult == conn::brw::DR_OK)
-        emit inputText(a_strInputValue);
+    if(a_eResult == conn::brw::DR_OK) {
+            emit inputText(a_strInputValue);
 
-    struct inputStruct is;
-    is.name = m_currentInput.name;
-    is.type = m_currentInput.type;
-    is.value = a_strInputValue;
-    m_inputHistory->append(is);
+        struct inputStruct is;
+        is.name = m_currentInput.name;
+        is.type = m_currentInput.type;
+        is.value = a_strInputValue;
+        bool shouldAdd = true;
+
+        for (int i = 0; i < m_inputHistory->size(); i++) {
+            if (m_inputHistory->at(i).value.compare(is.value) == 0 &&
+                m_inputHistory->at(i).type == is.type              &&
+                m_inputHistory->at(i).name == is.name) {
+                shouldAdd = false;
+                break;
+            }
+        }
+
+        qDebug() << "Should add " << is.value << "?" << shouldAdd;
+
+        if (shouldAdd)
+            m_inputHistory->append(is);
+    }
 
     return conn::brw::EID_NO_ERROR;
 }
@@ -89,10 +104,13 @@ conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputN
 {
     Q_UNUSED(a_strInputValue);
     for (int i = 0; i < m_inputHistory->size(); i++){
-        struct inputStruct s = m_inputHistory->at(0);
+        struct inputStruct s = m_inputHistory->at(i);
         qDebug() << s.value;
-        if (s.type == a_i32InputType &&
-                s.name.compare(a_strInputName) == 0) {
+        if (s.type == a_i32InputType            &&
+            s.name.compare(a_strInputName) == 0 &&
+            s.value.contains(a_strInputValue, 
+                             Qt::CaseInsensitive))
+        {
             a_oInputVariants.append(s.value);
         }
     }
