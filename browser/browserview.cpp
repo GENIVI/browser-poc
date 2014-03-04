@@ -103,9 +103,19 @@ void BrowserView::loadFinished(bool ok)
     m_webview.page()->mainFrame()->addToJavaScriptWindowObject("inputHandler", &m_inputHandler);
 
     m_webview.page()->mainFrame()->evaluateJavaScript(
-    "document.addEventListener('focus', function(e){"
-    "    window.inputHandler.setCurrentFocus(e.target);"
-    "}, true);");
+    "(function() {"
+        "var pocCurrentElement = null;"
+        "document.addEventListener('focus', function(e){"
+        "    if (pocCurrentElement != e.target) {"
+        "       window.inputHandler.setCurrentFocus(e.target);"
+        "       pocCurrentElement = e.target;"
+        "    }"
+        "}, true);"
+        "document.addEventListener('focusout', function(e){"
+        "    pocCurrentElement = e.relatedTarget;"
+        "}, true);"
+    "})()"
+    );
 
     m_webview.page()->mainFrame()->evaluateJavaScript(
     "document.addEventListener('scroll', function(){"

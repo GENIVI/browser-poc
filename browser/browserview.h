@@ -37,16 +37,23 @@ public:
 
 class InputHandler : public QObject {
 Q_OBJECT
+public:
+    InputHandler () : m_textElements (new QStringList()) {
+        *m_textElements << "date" << "datetime" << "datetime-local" << "email"
+        << "month" << "number" << "password" << "range" << "tel" << "text"
+        << "time" << "url" << "week";
+    }
 public slots:
     void setScrollPosition (const int &x, const int &y) {
         emit onScroll ((uint)x,(uint)y);
     }
     void setCurrentFocus (const QWebElement &elem) {
-        // Check whether this element was already selected
-        if (elem == m_elem)
-            return;
-
-        if (elem.tagName().compare("INPUT", Qt::CaseInsensitive) == 0){
+        QString attrType = elem.attribute("type", "text");
+        if ((elem.tagName().compare("INPUT", Qt::CaseInsensitive) == 0 &&
+                m_textElements->contains(attrType))
+            ||
+            elem.tagName().compare("TEXTAREA", Qt::CaseInsensitive) == 0)
+        {
             emit onInputText (elem.attribute("name"), elem.attribute("value"),
                               elem.attribute("type", "0").toInt(),
                               elem.attribute("maxlength", "0").toInt(),
@@ -85,6 +92,7 @@ signals:
 
 private:
     QWebElement m_elem;
+    QStringList *m_textElements;
 };
 
 class BrowserView : public QGraphicsView
