@@ -27,7 +27,7 @@
 #include "browserconfig.h"
 
 BrowserView::BrowserView(cachemanager *cm, userinput *uip)
-    : m_cacheManager (cm)
+    : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm)
 {
     QString startPage;
     m_cacheManager = cm;
