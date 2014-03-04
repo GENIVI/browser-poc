@@ -19,12 +19,14 @@ template void      BrowserConfig::setValue<QString>(BrowserConfig::BrowserConfig
 template void      BrowserConfig::setValue<qlonglong>(BrowserConfig::BrowserConfigKey, qlonglong);
 template void      BrowserConfig::setValue<qulonglong>(BrowserConfig::BrowserConfigKey, qulonglong);
 template void      BrowserConfig::setValue<conn::brw::CACHE_POLICY>(BrowserConfig::BrowserConfigKey, conn::brw::CACHE_POLICY);
+template void      BrowserConfig::setValue<bool>(BrowserConfig::BrowserConfigKey, bool);
 
 template int       BrowserConfig::getValue<int>(BrowserConfig::BrowserConfigKey);
 template QString   BrowserConfig::getValue<QString>(BrowserConfig::BrowserConfigKey);
 template qlonglong BrowserConfig::getValue<qlonglong>(BrowserConfig::BrowserConfigKey);
 template qulonglong BrowserConfig::getValue<qulonglong>(BrowserConfig::BrowserConfigKey);
 template conn::brw::CACHE_POLICY BrowserConfig::getValue<conn::brw::CACHE_POLICY>(BrowserConfig::BrowserConfigKey);
+template bool       BrowserConfig::getValue<bool>(BrowserConfig::BrowserConfigKey);
 
 BrowserConfig* BrowserConfig::m_config = NULL;
 

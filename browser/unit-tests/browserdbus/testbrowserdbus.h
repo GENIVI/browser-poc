@@ -49,12 +49,12 @@ private slots:
     void testAlertDialog();
     void testGetPrevEnteredValues();
     void testGetsNotifiedWhenSelectIsSelected();
-    void testGetsNotifiedOnAuthDialog();
-    void testCanCloseAuthDialog();
-    void testGetsNotifiedOnBadSSL();
-    void testCanCloseSslDialog();
+//    void testGetsNotifiedOnAuthDialog();
+//    void testGetsNotifiedOnBadSSL();
     void testCanCancelSSL();
+    void testCanCloseSslDialog();
     void testCanCancelAuth();
+    void testCanCloseAuthDialog();
     void testCanSelectOptionsInSelectList();
 
 private:

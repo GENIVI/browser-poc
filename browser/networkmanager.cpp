@@ -130,6 +130,7 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
 void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & errors)
 {
     for (int i = 0; i < errors.size(); i++) {
+        m_isSslOk = false;
         conn::brw::SslError data = convertError (errors.at(i), reply);
         emit onSslErrorDialog(data);
         qDebug() << "SSL error; action required";

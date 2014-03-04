@@ -47,6 +47,7 @@ void TestBrowserDBus::testCallUninitialized() {
 void TestBrowserDBus::testGetTitle() {
     QSignalSpy spy (m_bdb, SIGNAL (pageloadingChanged(void)));
     m_bdb->createPageWindow(1,0,0,10,10);
+    m_bdb->loadurl(testFileUrl());
     spy.wait(1000);
     QVERIFY (m_bdb->getTitle().compare("") != 0);
 }
@@ -238,14 +239,12 @@ void TestBrowserDBus::testSelect() {
     QTest::qSleep(300);
     m_bdb->select();
     QTest::qSleep(300);
-    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
 }
 void TestBrowserDBus::testActivate() {
     m_bdb->createPageWindow(1,0,0,800,600);
     QTest::qSleep(300);
     m_bdb->activate();
     QTest::qSleep(300);
-    QProcess::execute("xdotool getwindowname `xdotool getwindowfocus`");
 }
 
 void TestBrowserDBus::testConfirmDialog() {
@@ -311,13 +310,16 @@ void TestBrowserDBus::testGetPrevEnteredValues() {
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
     QTest::qSleep(300);
-    QProcess::execute("xdotool mousemove 200 375");
+    QProcess::execute("xdotool mousemove 200 350");
     QProcess::execute("xdotool click 1");
     QTest::qSleep(300);
     m_bdb->inputText(conn::brw::DR_OK, "Hello world");
     QTest::qSleep(300);
     QStringList list = m_bdb->getPrevEnteredValues("input", "", conn::brw::IET_TEXT);
     QVERIFY(list.contains("Hello world"));
+
+    QStringList list2 = m_bdb->getPrevEnteredValues("input", "ello", conn::brw::IET_TEXT);
+    QVERIFY(list2.contains("Hello world"));
 }
 
 void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
@@ -335,25 +337,12 @@ void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
         qDebug() << options.at(i).strValue;
     }
 }
-
+/*
 void TestBrowserDBus::testGetsNotifiedOnAuthDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
     QVERIFY(spy.wait(1000));
-}
-
-void TestBrowserDBus::testCanCloseAuthDialog() {
-    QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
-    m_bdb->createPageWindow(1,0,0,800,600);
-    m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
-    QVERIFY(spy.wait(1000));
-
-    conn::brw::AuthenticationData d;
-    d.strUserName = "httpwatch";
-    d.strPassword = QString(qrand());
-    qDebug() << ": user" << d.strUserName << "password:" << d.strPassword;
-    m_bdb->closeAuthenticationDialog(conn::brw::DR_OK, d);
 }
 
 void TestBrowserDBus::testGetsNotifiedOnBadSSL() {
@@ -362,7 +351,7 @@ void TestBrowserDBus::testGetsNotifiedOnBadSSL() {
     m_bdb->loadurl("https://tv.eurosport.com/");
     QVERIFY(spy.wait(1000));
 }
-
+*/
 void TestBrowserDBus::testCanCloseSslDialog() {
     QSignalSpy spy (m_bdb, SIGNAL(onSslErrorDialog(const conn::brw::SslError&)));
     m_bdb->createPageWindow(1,0,0,800,600);
@@ -379,9 +368,9 @@ void TestBrowserDBus::testCanCancelSSL() {
     QSignalSpy spy2 (m_bdb, SIGNAL(onSslErrorDialogCancel(const conn::brw::SslError&)));
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl("https://tv.eurosport.com/");
-    QVERIFY(spy.wait(1000));
+    QVERIFY(spy.wait(3000));
     m_bdb->closeSslErrorDialog(conn::brw::DR_CANCEL, false);
-    QVERIFY(spy2.wait());
+    QVERIFY(spy2.wait(1000));
 }
 
 void TestBrowserDBus::testCanCancelAuth() {
@@ -394,6 +383,19 @@ void TestBrowserDBus::testCanCancelAuth() {
     conn::brw::AuthenticationData d;
     m_bdb->closeAuthenticationDialog(conn::brw::DR_CANCEL, d);
     QVERIFY(spy2.wait(1000));
+}
+
+void TestBrowserDBus::testCanCloseAuthDialog() {
+    QSignalSpy spy (m_bdb, SIGNAL(onAuthenticationDialog(const conn::brw::AuthenticationData&)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl("http://www.httpwatch.com/httpgallery/authentication/authenticatedimage/default.aspx");
+    QVERIFY(spy.wait(1000));
+
+    conn::brw::AuthenticationData d;
+    d.strUserName = "httpwatch";
+    d.strPassword = QString(qrand());
+    qDebug() << ": user" << d.strUserName << "password:" << d.strPassword;
+    m_bdb->closeAuthenticationDialog(conn::brw::DR_OK, d);
 }
 
 void TestBrowserDBus::testCanSelectOptionsInSelectList() {

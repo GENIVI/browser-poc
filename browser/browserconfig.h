@@ -23,7 +23,7 @@ Q_OBJECT
 public:
     enum BrowserConfigKey {
         CONFIG_CACHEPOLICY,
-        CONFIG_STARTPAGE
+        CONFIG_STARTPAGE,
     };
 
     static BrowserConfig* instance()  {
