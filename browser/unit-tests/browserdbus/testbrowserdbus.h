@@ -28,7 +28,7 @@ private slots:
     void testGetsNotifiedOnUrlChange();
     void testGetsNotifiedOnTitleChange();
     void testGetsNotifiedWhenLinkIsClicked();
-    void testGetsNotifiedWhenLinkIsHovered();
+//    void testGetsNotifiedWhenLinkIsHovered();
     void testGetsNotifiedWhenSelectionChanges();
     void testGetsNotifiedWhenStatusBarChanges();
     void testGetsNotifiedWhenVisibilityChanges();
