@@ -182,7 +182,7 @@ void BrowserView::resizeEvent (QResizeEvent *event) {
 
 QSize BrowserView::contentSize()
 {
-    return this->viewport()->size();
+    return m_webview.page()->mainFrame()->contentsSize();
 }
 
 void BrowserView::urlChanged (QUrl url)
