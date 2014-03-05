@@ -25,6 +25,7 @@
 #include "browserpage.h"
 #include "userinput.h"
 #include "browserconfig.h"
+#include "errorlogger.h"
 
 BrowserView::BrowserView(cachemanager *cm, userinput *uip)
     : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm)
@@ -43,8 +44,12 @@ BrowserView::BrowserView(cachemanager *cm, userinput *uip)
     m_webview.page()->setNetworkAccessManager(cm->getNetworkAccessManager());
 
     startPage = BrowserConfig::instance()->getValue<QString>(BrowserConfig::CONFIG_STARTPAGE);
-    if (startPage.compare("") == 0)
+    if (startPage.compare("") == 0) {
         startPage = "http://www.bmw.com";
+        errorlogger::logError("Using default start page");
+    } else {
+        errorlogger::logError("Using stored start page");
+    }
 
     this->load(startPage);
 

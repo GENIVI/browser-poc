@@ -76,8 +76,7 @@ model: errorsModel;
                 anchors.leftMargin: 8
                 anchors.right: parent.right
         onClicked: {
-            var list = errorloggerinterface.getItems(0, Math.round(new Date().getTime() / 1000), 0, 0, 100);
-    console.log(list.at(0));
+            errorloggerinterface.getItems(0, Math.round(new Date().getTime()), 0, 0, 100);
 }
             }
         }

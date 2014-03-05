@@ -51,7 +51,7 @@ public:
     static void logError(QString error)
     {
         errorlogger::logError(
-                QDateTime::currentDateTime().toTime_t(),
+                QDateTime::currentMSecsSinceEpoch(),
                 "Unknown",
                 "Unknown",
                 "Unknown",
@@ -61,7 +61,7 @@ public:
 
     static void logError(conn::brw::ErrorItem item)
     {
-        m_instance->m_logError(item);
+        instance()->m_logError(item);
     }
 
     void clearErrors()

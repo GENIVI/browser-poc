@@ -31,6 +31,7 @@ void ErrorLoggerDbus::registertypes() {
     qDBusRegisterMetaType<conn::brw::ErrorItemList>();
     qDBusRegisterMetaType<conn::brw::ErrorItem>();
     qDBusRegisterMetaType<conn::brw::ERROR_SORT_TYPE>();
+    qDBusRegisterMetaType<conn::brw::ERROR_IDS>();
 }
 
 void ErrorLoggerDbus::connectdbussession(QString id) {
@@ -85,17 +86,19 @@ conn::brw::ErrorItemList ErrorLoggerDbus::getItems(qlonglong timeFrom,
         return list;
     }
 
-    QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::ErrorItemList> reply = 
-        m_errorlogger->getItems(timeFrom, timeTo, type, startIndex, itemsCount);
+    QDBusReply<conn::brw::ERROR_IDS> reply = 
+        m_errorlogger->getItems(timeFrom, timeTo, type, startIndex, itemsCount, list);
 
     if(reply.isValid()) {
         conn::brw::ERROR_IDS ret;
         ret = reply.value();
-        list = reply.argumentAt<1>();
         qDebug() << "ERROR_IDS " << ret;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
+    }
+    for (int i = 0; i < list.size(); i++) {
+        qDebug() << "Error item:" << list.at(i).strDescription;
     }
     return list;
 }

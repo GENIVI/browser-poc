@@ -106,5 +106,8 @@ void browserhelper::registertypes() {
     qDBusRegisterMetaType<conn::brw::SelectableOption>();
     qDBusRegisterMetaType<conn::brw::SelectableOptionList>();
     qDBusRegisterMetaType<conn::brw::SslError>();
+    qDBusRegisterMetaType<conn::brw::ErrorItemList>();
+    qDBusRegisterMetaType<conn::brw::ErrorItem>();
+    qDBusRegisterMetaType<conn::brw::ERROR_SORT_TYPE>();
 }
 

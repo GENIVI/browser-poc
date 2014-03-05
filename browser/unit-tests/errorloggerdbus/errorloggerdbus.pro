@@ -10,6 +10,7 @@ DBUS_INTERFACES += my_dbus_interfaces
 
 dbus_adaptors.files += ../../../common/IErrorLogger.xml
 dbus_adaptors.header_flags = -l errorlogger -i ../../../common/browserdefs.h -i ../../errorlogger.h
+dbus_adaptors.source_flags = -l errorlogger
 DBUS_ADAPTORS += dbus_adaptors
 
 # Input

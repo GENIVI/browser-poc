@@ -47,6 +47,7 @@ conn::brw::ERROR_IDS errorlogger::getItems(qlonglong timeFrom,
     for (int i = 0; i < m_errors->size(); i++){
     }
     for (int i = startIndex; i < m_errors->size(); i++) {
+        qDebug() << m_errors->at(i).i64DateTime;
         const conn::brw::ErrorItem e = m_errors->at(i);
         if (timeFrom <= e.i64DateTime && timeTo >= e.i64DateTime) {
             if (items.size() < (int)itemsCount){
