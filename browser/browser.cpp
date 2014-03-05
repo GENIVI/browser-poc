@@ -64,12 +64,13 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
             m_userInput, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
     connect(m_userInput, SIGNAL(selectIndexes(QList<int>)), bvi, SLOT(onSelectIndexes(QList<int>)));
 
+    QDBusConnection conn = connection();
+
     QString *webpagewindowservice = new QString("/Browser/IWebPageWindow" + QString::number(a_hPageWindowHandle));
     qDebug() << *webpagewindowservice;
 
     webviewhash.insert(*webpagewindowservice, bvi);
 
-    QDBusConnection conn = connection();
     if(!conn.registerObject(*webpagewindowservice, wpw)) {
         qDebug() << "failed register object IWebPageWindow";
         exit(1);
@@ -79,13 +80,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     qDebug() << *userinputservice;
     if(!conn.registerObject(*userinputservice, m_userInput)) {
         qDebug() << "failed register object IUserInput";
-        exit(1);
-    }
-
-    QString *networkmanagerservice = new QString( *webpagewindowservice + "/INetworkManager");
-    qDebug() << *networkmanagerservice;
-    if(!conn.registerObject(*networkmanagerservice, m_networkManager)) {
-        qDebug() << "failed register object INetworkManager";
         exit(1);
     }
 

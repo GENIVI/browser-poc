@@ -231,7 +231,7 @@ void BrowserDbus::createPageWindow(int deviceid, int x, int y, int width, int he
 
         connect(actualuserinput, SIGNAL(onInputText(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)), this, SLOT(InputTextReceived(QString,QString,conn::brw::INPUT_ELEMENT_TYPE,int,int,int,int)));
 
-        QString *networkmanagerservice = new QString(*webpagewindowservice + "/INetworkManager");
+        QString *networkmanagerservice = new QString("/Browser/INetworkManager");
 
         networkmanager = new conn::brw::INetworkManager(*dbusservicename, *networkmanagerservice,
                                               QDBusConnection::sessionBus(), this);

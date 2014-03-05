@@ -61,6 +61,10 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
 
     networkmanager *nm = new networkmanager(cm->getNetworkAccessManager());
     new INetworkManagerAdaptor(nm);
+    if(!connection->registerObject("/Browser/INetworkManager", nm)) {
+        qDebug() << "failed register object INetworkManager";
+        exit(1);
+    }
 
     browser *br = new browser(cm, ui, nm);
     new IBrowserAdaptor(br);
