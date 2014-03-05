@@ -47,15 +47,15 @@ void TestErrorLoggerDBus::initTestCase() {
     QString *dbusservicename = new QString("genivi.poc.browser1");
     qDebug() << *dbusservicename;
 
-//    if(!m_connection->registerService(*dbusservicename)) {
-//        qDebug() << "failed register service " << *dbusservicename;
-//        exit(1);
-//    }
-//
+    if(!m_connection->registerService(*dbusservicename)) {
+        qDebug() << "failed register service " << *dbusservicename;
+        exit(1);
+    }
+
     m_err = errorlogger::instance();
-//    new IErrorLoggerAdaptor(m_err);
-//    if(!m_connection->registerObject("/Browser/IErrorLogger", m_err))
-//        QFAIL("failed register object IErrorLogger");
+    new IErrorLoggerAdaptor(m_err);
+    if(!m_connection->registerObject("/Browser/IErrorLogger", m_err))
+        QFAIL("failed register object IErrorLogger");
 
     m_eld = new ErrorLoggerDbus();
     m_eld->connectdbussession("1");
@@ -67,11 +67,11 @@ void TestErrorLoggerDBus::cleanup()
 
 void TestErrorLoggerDBus::canLogMessage()
 {
-    qlonglong date = QDateTime::currentDateTime().toTime_t();
+    qlonglong date = QDateTime::currentMSecsSinceEpoch();
     errorlogger* el = errorlogger::instance();
     el->logError("Error!");
     el->logError("Error2!");
-//    QVERIFY(m_eld->getItemsCount(date - 10, date + 10) == 2);
+    QVERIFY(m_eld->getItemsCount(date - 10, date + 10) == 2);
     conn::brw::ErrorItemList items = m_eld->getItems(date - 10,
         date + 10, conn::brw::EST_DATE_DESCENDING, 0, 100);
     QVERIFY(items.size() == 2);
@@ -79,13 +79,13 @@ void TestErrorLoggerDBus::canLogMessage()
 
 void TestErrorLoggerDBus::canGetSorted()
 {
-    qlonglong date = QDateTime::currentDateTime().toTime_t();
+    qlonglong date = QDateTime::currentMSecsSinceEpoch();
     errorlogger* el = errorlogger::instance();
     el->logError("Error!");
     QTest::qSleep(1000);
     el->logError("Error2!");
-    conn::brw::ErrorItemList items = m_eld->getItems(date - 10,
-        date + 10, conn::brw::EST_DATE_ASCENDING, 0, 100);
+    conn::brw::ErrorItemList items = m_eld->getItems(date - 10000,
+        date + 10000, conn::brw::EST_DATE_ASCENDING, 0, 100);
     qDebug() << items.size();
     qDebug() << items.at(0).strDescription;
     qDebug() << items.at(1).strDescription;
