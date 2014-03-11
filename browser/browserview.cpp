@@ -71,7 +71,7 @@ BrowserView::BrowserView(cachemanager *cm, userinput *uip)
     connect(m_webview.page()->mainFrame(), SIGNAL (contentsSizeChanged(const QSize &)), this, SLOT (contentSizeChanged(const QSize&)));
     connect(&m_webview, SIGNAL (iconChanged()),             this, SIGNAL (onFaviconReceived()));
 
-    connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)), 
+    connect(&m_inputHandler, SIGNAL (onInputText(QString, QString, int, int, int, int, int)),
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
     connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SLOT(scrollPositionChanged(uint,uint)));
     connect(&m_inputHandler, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)), this, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
@@ -251,32 +251,23 @@ void BrowserView::getScrollPosition(uint &x, uint &y)
     y = m_scrollPositionY;
 }
 
-QString BrowserView::createScreenshot(QString url) {
-    WebPageWaiter waiter;
-    QWebPage wp;
-    QSize renderSize(640,480);
+QString BrowserView::createScreenshot(QString directory) {
+    m_webview.page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
+    m_webview.page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
 
-    connect(&wp, SIGNAL(loadFinished(bool)), &waiter, SLOT (loadFinished(void)));
-
-    wp.mainFrame()->load(QUrl(url));
-    wp.setViewportSize(renderSize);
-    wp.mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAlwaysOff);
-    wp.mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAlwaysOff);
-
-    for (int i = 0; i < 100; i++) {
-        waiter.finishedSem.tryAcquire(1,10);
-        QCoreApplication::processEvents();
-    }
-
-    QImage *image = new QImage(renderSize,
+    QImage *image = new QImage(m_webview.page()->viewportSize(),
                                QImage::Format_ARGB32);
     QPainter *painter = new QPainter(image);
-    QTemporaryFile outFile("XXXXXX.png");
+    QTemporaryFile outFile(directory + "/XXXXXX.png");
     outFile.setAutoRemove(false);
     outFile.open();
-    wp.mainFrame()->render(painter);
+    m_webview.page()->mainFrame()->render(painter);
 
     painter->end();
+
+    m_webview.page()->mainFrame()->setScrollBarPolicy(Qt::Vertical, Qt::ScrollBarAsNeeded);
+    m_webview.page()->mainFrame()->setScrollBarPolicy(Qt::Horizontal, Qt::ScrollBarAsNeeded);
+
     image->save(&outFile, "PNG");
     outFile.close();
     return outFile.fileName();

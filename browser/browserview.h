@@ -27,14 +27,6 @@
 #include "browserpage.h"
 #include "userinput.h"
 
-class WebPageWaiter : public QObject {
-Q_OBJECT
-public slots:
-    void loadFinished() { finishedSem.release(1); }
-public:
-    QSemaphore finishedSem;
-};
-
 class InputHandler : public QObject {
 Q_OBJECT
 public:

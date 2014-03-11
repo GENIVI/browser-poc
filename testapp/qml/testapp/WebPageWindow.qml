@@ -482,7 +482,7 @@ Item {
             anchors.bottom: parent.bottom
             anchors.bottomMargin: 0
         onClicked: {
-        pageiconimage.source = browserinterface.getPageIcon(browserinterface.getUrl());
+        pageiconimage.source = browserinterface.getPageIcon("/tmp/");
 }
         }
     }
