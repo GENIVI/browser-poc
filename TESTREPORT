@@ -1,0 +1,103 @@
+********* Start testing of TestBrowserDBus *********
+Config: Using QtTest library 5.1.0, Qt 5.1.0
+QDEBUG : TestBrowserDBus::initTestCase() BrowserDbus::BrowserDbus(QObject*) 
+QDEBUG : TestBrowserDBus::initTestCase() void BrowserDbus::connectdbussession(QString) "1" 
+PASS   : TestBrowserDBus::initTestCase()
+QSYSTEM: TestBrowserDBus::testCallUninitialized() Maximum amount of warnings exceeded. Use -maxwarnings to override.
+PASS   : TestBrowserDBus::testCallUninitialized()
+PASS   : TestBrowserDBus::testGetTitle()
+PASS   : TestBrowserDBus::testGetsNotifiedOnUrlChange()
+PASS   : TestBrowserDBus::testGetsNotifiedOnTitleChange()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenLinkIsClicked()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenSelectionChanges()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenStatusBarChanges()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenVisibilityChanges()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenScrollingChanges()
+PASS   : TestBrowserDBus::testCanSetAndGetZoomFactor()
+PASS   : TestBrowserDBus::testCanSetAndGetScrollPosition()
+PASS   : TestBrowserDBus::testCanGeneratePageIcon()
+FAIL!  : TestBrowserDBus::testCanGetFavicon() 'iconPath.compare(QString("")) != 0' returned FALSE. ()
+   Loc: [testbrowserdbus.cpp(216)]
+PASS   : TestBrowserDBus::testOnActionStateChanged()
+PASS   : TestBrowserDBus::testOnContentSizeChanged()
+PASS   : TestBrowserDBus::testOnFaviconReceived()
+PASS   : TestBrowserDBus::testSelect()
+PASS   : TestBrowserDBus::testActivate()
+PASS   : TestBrowserDBus::testConfirmDialog()
+PASS   : TestBrowserDBus::testCancelConfirmDialog()
+PASS   : TestBrowserDBus::testPromptDialog()
+PASS   : TestBrowserDBus::testCancelPromptDialog()
+PASS   : TestBrowserDBus::testAlertDialog()
+PASS   : TestBrowserDBus::testGetPrevEnteredValues()
+PASS   : TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected()
+PASS   : TestBrowserDBus::testCanCancelSSL()
+PASS   : TestBrowserDBus::testCanCloseSslDialog()
+PASS   : TestBrowserDBus::testCanCancelAuth()
+PASS   : TestBrowserDBus::testCanCloseAuthDialog()
+PASS   : TestBrowserDBus::testCanSelectOptionsInSelectList()
+PASS   : TestBrowserDBus::cleanupTestCase()
+Totals: 31 passed, 1 failed, 0 skipped
+********* Finished testing of TestBrowserDBus *********
+
+********* Start testing of TestCacheManagerDBus *********
+Config: Using QtTest library 5.1.0, Qt 5.1.0
+QDEBUG : TestCacheManagerDBus::initTestCase() CacheManagerDbus::CacheManagerDbus(QObject*) 
+QDEBUG : TestCacheManagerDBus::initTestCase() void CacheManagerDbus::connectdbussession(QString) "1" 
+QWARN  : TestCacheManagerDBus::initTestCase() QObject::connect: No such slot CacheManagerDbus::cacheChanged(void) in ../../../common/cachemanagerdbus.cpp:48
+PASS   : TestCacheManagerDBus::initTestCase()
+QDEBUG : TestCacheManagerDBus::testSetGetCacheSize() qulonglong CacheManagerDbus::getCacheSize() 
+QDEBUG : TestCacheManagerDBus::testSetGetCacheSize() ERROR_IDS  7518917 
+PASS   : TestCacheManagerDBus::testSetGetCacheSize()
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() void CacheManagerDbus::setCachePolicy(conn::brw::CACHE_POLICY) 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() ERROR_IDS  0 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() conn::brw::CACHE_POLICY CacheManagerDbus::getCachePolicy() 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() ERROR_IDS  1 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() void CacheManagerDbus::setCachePolicy(conn::brw::CACHE_POLICY) 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() ERROR_IDS  0 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() conn::brw::CACHE_POLICY CacheManagerDbus::getCachePolicy() 
+QDEBUG : TestCacheManagerDBus::testSetGetCachePolicy() ERROR_IDS  2 
+PASS   : TestCacheManagerDBus::testSetGetCachePolicy()
+QDEBUG : TestCacheManagerDBus::testGetMaximumCacheSize() qulonglong CacheManagerDbus::getMaximumCacheSize() 
+QDEBUG : TestCacheManagerDBus::testGetMaximumCacheSize() ERROR_IDS  52428800 
+PASS   : TestCacheManagerDBus::testGetMaximumCacheSize()
+QDEBUG : TestCacheManagerDBus::testCanClearCache() qulonglong CacheManagerDbus::getCacheSize() 
+QDEBUG : TestCacheManagerDBus::testCanClearCache() ERROR_IDS  7518917 
+QDEBUG : TestCacheManagerDBus::testCanClearCache() void CacheManagerDbus::clearCache() 
+QDEBUG : TestCacheManagerDBus::testCanClearCache() ERROR_IDS  0 
+QDEBUG : TestCacheManagerDBus::testCanClearCache() qulonglong CacheManagerDbus::getCacheSize() 
+QDEBUG : TestCacheManagerDBus::testCanClearCache() ERROR_IDS  0 
+PASS   : TestCacheManagerDBus::testCanClearCache()
+PASS   : TestCacheManagerDBus::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped
+********* Finished testing of TestCacheManagerDBus *********
+
+********* Start testing of TestErrorLoggerDBus *********
+Config: Using QtTest library 5.1.0, Qt 5.1.0
+QDEBUG : TestErrorLoggerDBus::initTestCase() "genivi.poc.browser1" 
+QDEBUG : TestErrorLoggerDBus::initTestCase() ErrorLoggerDbus::ErrorLoggerDbus(QObject*) 
+QDEBUG : TestErrorLoggerDBus::initTestCase() void ErrorLoggerDbus::connectdbussession(QString) "1" 
+PASS   : TestErrorLoggerDBus::initTestCase()
+QDEBUG : TestErrorLoggerDBus::canLogMessage() uint ErrorLoggerDbus::getItemsCount(qlonglong, qlonglong) 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() ERROR_IDS  2 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() conn::brw::ErrorItemList ErrorLoggerDbus::getItems(qlonglong, qlonglong, conn::brw::ERROR_SORT_TYPE, uint, uint) 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() 1394525602318 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() 1394525602317 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() ERROR_IDS  0 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() Error item: "Error2!" 
+QDEBUG : TestErrorLoggerDBus::canLogMessage() Error item: "Error!" 
+PASS   : TestErrorLoggerDBus::canLogMessage()
+QDEBUG : TestErrorLoggerDBus::canGetSorted() conn::brw::ErrorItemList ErrorLoggerDbus::getItems(qlonglong, qlonglong, conn::brw::ERROR_SORT_TYPE, uint, uint) 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() 1394525602319 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() 1394525603319 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() ERROR_IDS  0 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() Error item: "Error!" 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() Error item: "Error2!" 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() 2 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() "Error!" 
+QDEBUG : TestErrorLoggerDBus::canGetSorted() "Error2!" 
+PASS   : TestErrorLoggerDBus::canGetSorted()
+PASS   : TestErrorLoggerDBus::isNotifiedOnNewItem()
+PASS   : TestErrorLoggerDBus::isNotifiedWhenListChanges()
+PASS   : TestErrorLoggerDBus::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped
+********* Finished testing of TestErrorLoggerDBus *********
