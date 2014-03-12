@@ -79,6 +79,9 @@ The NW-EG defined the following requirements:
     SW-BRW-POC-006 & Qt Webkit 1 implementation &
         The Browser PoC application must use the Qt5 Webkit1 implementation.\\
     \hline
+    SW-BRW-POC-007 & QtWebview &
+        The Browser POC must use QGraphicsWebView instead of QML webview.\\
+    \hline
 \end{tabularx}
 
 \subsection{Browser Interfaces}
@@ -87,9 +90,18 @@ The NW-EG defined the following requirements:
     \rowcolor{blue}
     \bf ID & \bf Requirement & \bf Description \\
     \hline
-    SW-BRW-POC-007 & D-Bus API & The Browser PoC shall implement the specified
+    SW-BRW-POC-008 & D-Bus API & The Browser PoC shall implement the specified
                                  APIs as handed over in xml-form (see
                                  interfaces section)\\
+    \hline
+    SW-BRW-POC-009 & Qt Webkit Bridge & The Qt Webkit bridge should be useable
+                                        in the Browser POC \\
+    \hline
+    SW-BRW-POC-010 & Netscape Plugin API (NPAPI) &
+        The Browser POC should support the Netscape Plugin API (NPAPI) \\
+    \hline
+    SW-BRW-POC-011 & Configuration & The browser POC should implement a basic
+                                     configuration mechanism for the browser\\
     \hline
 \end{tabularx}
 
@@ -101,6 +113,11 @@ The following D-Bus interfaces files were provided as input to the project:
     \item IWebPageWindow.xml
     \item IUserInput.xml
     \item IBookmarkManager.xml
+    \item IUserInput.xml
+    \item INetworkManager.xml
+    \item IErrorLogger.xml
+    \item IWebPageWindow.xml
+    \item ICacheManager.xml
 \end{enumerate}
 
 These interfaces represent a subset of the GENIVI APIs defined by NW-EG and
@@ -124,6 +141,7 @@ separate folders in the repository:
     \item A browser application
     \item A test user-interface application (testUI)
     \item A demo user-interface application (demoUI)
+    \item A set of automated tests ({\tt browser/unit-tests/*})
     \item A folder with common components
 \end{itemize}
 
@@ -135,7 +153,8 @@ a look at the group's wiki page
 (\url{https://collab.genivi.org/wiki/display/genivi/Networking+Expert+Group}).
 
 For instructions, how to build all applications or only a single application,
-refer to the file {\tt BUILDINSTRUCTIONS} in the repository.
+refer to the file {\tt BUILDINSTRUCTIONS}, or {\tt
+Build.instructions.Ubuntu.txt}  in the repository.
 
 \section {Common part}
 here is a common part in the project, which contains files, which are shared by
@@ -157,9 +176,9 @@ can call remote objects in the server via D-Bus.
 \section{Browser Application}
 \subsection{Introduction}
 The Browser application is the core part of the PoC. It is responsible for
-rendering and displaying a webpage with the qml webview element. It also
-implements the defined server side interfaces for {\tt IBrowser, IUserInput,
-IWebPageWindow} and {\tt IBookmarkManager}. The bookmark manager includes also
+rendering and displaying a webpage with the QML webview element. It also
+implements the defined server side interfaces for \texttt{IBrowser}, {\tt IUserInput},
+{\tt IWebPageWindow}, {\tt ICacheManager}, {\tt IErrorLogger}, {\tt INetworkManager} and {\tt IBookmarkManager}. The bookmark manager includes also
 logic for persistent bookmark storage in the system.
 
 \subsection{Usage}
@@ -177,29 +196,22 @@ The source code of the browser application can to be found in the {\tt
 \\\\
 \begin{tabular}{l l}
     *.cpp, *.h         & source and header files \\
-    browser.pro        & Qt project file \\
-    {\tt qml/browser/} & main.qml file
+    browser.pro        & Qt project file
 \end{tabular}
 
 \subsection{Implementation}
 The browser application is implemented using Qt Quick 1 and Qt Webkit 1. Qt
 Quick 1 needed to be used, because of the requirement to use Qt Webkit 1.
 
-The main.qml file provides a Qt Webkit 1 webview element (wrapped in a
-Flickable to be able to scroll a page). The main task is the definition of
-interfaces (functions, properties, signals) to communicate with the C++ part of
-the application. From a UI perspective, the main.qml doesn’t provide a lot of
-UI features, except for the webview itself.
-
 There is one class available for each defined interface group (XML file)
 implementing the functions for the defined interfaces on server side. These
-functions interact with the interfaces provided by the qml file.
+functions interact with the interfaces provided by the QML file.
 
 As a central class the browserhelper class creates the connection to D-Bus on
 the session bus and registers a service name on the D-Bus server. The default
-service name for the GENIVI browser PoC is genivi.poc.browser + instance id,
-e.g. genivi.poc.browser23. The default instance id is 1, if no parameter is
-given, or the parameter given at application start.
+service name for the GENIVI browser PoC is {\tt genivi.poc.browser + instance
+id}, e.g. {\tt genivi.poc.browser23}. The default instance id is 1, if no
+parameter is given, or the parameter given at application start.
 
 The class also creates all interface objects and D-Bus interface adaptors,
 registers needed types with the D-Bus system and registers the browser and
@@ -208,20 +220,31 @@ bookmark interface class with the D-Bus connection under an object path
 webpagewindow and userinput will be registered, when a new page is actually
 created.
 
-Bookmarkmanager.h|cpp implements the IBookmarkManager interfaces and manages
+bookmarkmanager.h|cpp implements the IBookmarkManager interfaces and manages
 persistent storage of bookmarks.
 
-Userinput.h|cpp implements the IUserInput interfaces.
+userinput.h|cpp implements the IUserInput interfaces.
 
-Browser.h|cpp implements the IBrowser interfaces, creates and set up a
-declarative view with the main qml file (the webview) and registers
+browser.h|cpp implements the IBrowser interfaces, creates and set up a
+declarative view with the main QML file (the webview) and registers
 webpagewindow and userinput objects under a unique object path
-(/Browser/IWebPageWindow + window handle resp.
+(/Browser/IWebPageWindow + window handle resp. \\/Browser/IWebPageWindow + window
+handle/IUserInput). This is needed to control different webpages or tabs
+(created by the createPageWindow interface) with the testUI application. That
+means e.g. routing a reload command to the right webpage window.
 
-/Browser/IWebPageWindow + window handle/IUserInput). This is needed to control
-different webpages or tabs (created by the createPageWindow interface) with the
-testUI application. That means e.g. routing a reload command to the right
-webpage window.
+browserconfig.h|cpp handles persistant storage of configuration values and
+provides a singleton for any part of the browser to access and set these
+values.
+
+browserpage.h|cpp is a subclass of QWebPage allowing BrowserView to intercept
+dialog boxes and prompts.
+
+cachemanager.h|cpp handles caching policies using {\tt
+QNetworkConnectionManager}.
+
+errorlogger.h|cpp handles error logging to an in-memory storage, and allows
+D-Bus clients to query the error log.
 
 \section{Test Application}
 \subsection{Introduction}
@@ -248,10 +271,10 @@ correct instance id and press the connect button. The instance id is defined
 with the browser application start, either 1 as default or the number given as
 parameter at browser start.
 
-The testUI application shows four tabs, representing the four interface groups
+The testUI application shows tabs representing the four interface groups
 ({\tt IBook\-mark\-Manager}, {\tt IBrowser}, {\tt IUserInput}, {\tt
-IWebPageWindow}). To navigate between the groups, just press on the tab
-header.
+IWebPageWindow}, {\tt ICacheManager} and {\tt IErrorLogger}). To navigate
+between the groups, just press on the tab header.
 
 On each page (or tab) each defined interface with its parameter is visually
 grouped within a small frame. Each group consists of a button and optional
@@ -275,7 +298,7 @@ The source code of the test user-interface application can to be found in the
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp            & mainsource file \\
     testapp.pro         & Qt project file \\
-    {\tt qml/testapp/*} & QML files for user interface \\
+    {\tt QML/testapp/*} & QML files for user interface \\
     {\tt images/*}      & Images used in implementation (icons taken from KDE
                           oxygen theme 4.10.3)
 \end{tabularx}
@@ -285,24 +308,17 @@ The source code of the test user-interface application can to be found in the
 The testUI application supports all interfaces described in the XML files.
 
 The testUI application is implemented as a Qt Quick 2 application. The
-user-interface is described with qml using Qt Quick Controls (reusable UI
-controls provided by Qt 5.1).  Besides the main.qml file, which describes the
-main view with all tabs, each interface group is described in a separate qml
+user-interface is described with QML using Qt Quick Controls (reusable UI
+controls provided by Qt 5.1).  Besides the main.QML file, which describes the
+main view with all tabs, each interface group is described in a separate QML
 file. The backend logic of the testUI application is written in C++. The main
-task of the C++ part is to set up the view for qml, load the qml file and
-register custom C++ type in the qml system (bookmark and browserdbus classes).
+task of the C++ part is to set up the view for QML, load the QML file and
+register custom C++ type in the QML system (bookmark and browserdbus classes).
 The browserdbus class represents the D-Bus interface for the client. It creates
 the D-Bus channel connections, registers custom types with the QtDBustype system
 and defines and calls all D-Bus interfaces and handles the return values. The
 output of all return values, resulting from D-Bus remote object calls, is logged
 onto the console.
-
-A new D-Bus interface method {\tt getCurrentUrlAndTitle} was added to the
-IWebPageWindow group. This method returns the current url and title of a web
-page to the calling client. That was needed to store the url and title for a
-bookmark and show the correct url in the input field of a user-interface
-application. According to the NW-EG that interface is already defined, but was
-stripped out of the delivered XML files for this Browser PoC project.
 
 \section{Demo User-Interface}
 \subsection {Introduction}
@@ -339,7 +355,7 @@ started. With the start of the demoUI application, also the browser application
 becomes visible. The two applications (browser and demoUI) are arranged in a
 seamless way, to represent the look of only one application.
 
-he icons in the demoUI are hopefully self-explaining and known from other web
+The icons in the demoUI are hopefully self-explaining and known from other web
 browser user-interfaces. To load an URL type the URL in the input field on the
 top and press the enter key on an attached keyboard. The two top-right icons
 represent `add bookmark to bookmark list' and `show bookmark list'
@@ -360,7 +376,7 @@ The source code of the demo user-interface application can to be found in the
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp                    & mainsource file \\
     demoui.pro                  & Qt project file \\
-    {\tt qml/demoui/*}          & QML files for user interface \\
+    {\tt QML/demoui/*}          & QML files for user interface \\
     {\tt qtquick2application/*} & Classes for displaying a QtQuick UI \\
     {\tt images/*}              & Images used in implementation (icons taken
                                   from KDE oxygen theme 4.10.3)
@@ -396,21 +412,14 @@ The demoUI supports the following D-Bus interfaces:
 \end{itemize}
 
 The demoUI is implemented as Qt Quick 2 application. The user-interface is
-described with qml. The backend logic of the demoUI is done in C++. Main task
-of the C++ part is to set up the view for qml, load the qml file, register
-custom C++ type in the qml system (bookmark and browserdbus classes). The
+described with QML. The backend logic of the demoUI is done in C++. Main task
+of the C++ part is to set up the view for QML, load the QML file, register
+custom C++ type in the QML system (bookmark and browserdbus classes). The
 browserdbus class represents the D-Bus interface for the client. It creates the
 D-Bus channel connections, registers custom types with the QtDBustype system
 and defines and calls all D-Bus interfaces and handles the return values. The
 output of all return values, resulting from D-Bus remote object calls, is logged
 onto the console.
-
-A new D-Bus interface method {\tt getCurrentUrlAndTitle} was added to the
-IWebPageWindow group. This method returns the current url and title of a web
-page to the calling client. That was needed to store the url and title for a
-bookmark and show the correct url in the input field of a user-interface
-application. According to the NW-EG that interface is already defined, but was
-stripped out for this Browser PoC project.
 
 If the bookmark pane is open, the demoUI application (geometry) is resized. The
 height of the application is changed. This resize is needed, to show the pane,
