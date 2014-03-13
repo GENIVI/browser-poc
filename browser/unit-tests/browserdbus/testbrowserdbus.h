@@ -58,6 +58,7 @@ private slots:
     void testCanSelectOptionsInSelectList();
     void testGetOldInputText();
     void testNewTextReplacesOldText();
+    void testDoesntNeedUnfocusToTriggerInputSignal();
 
 
 private:
