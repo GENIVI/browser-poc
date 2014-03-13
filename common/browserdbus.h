@@ -119,6 +119,7 @@ signals:
     void onSslErrorDialog(const conn::brw::SslError&);
     void onSslErrorDialogCancel(const conn::brw::SslError&);
     void onAuthenticationDialogCancel(const conn::brw::AuthenticationData&);
+    void onInputTextReceived(QString a_strInputName, QString a_strDefaultInputValue, conn::brw::INPUT_ELEMENT_TYPE a_i32InputValueType, int a_s32MaxLength, int a_s32Max, int a_s32Min, int a_s32Step);
 
 public slots:
     void pageloadingstarted();

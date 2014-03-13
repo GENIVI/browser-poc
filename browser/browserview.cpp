@@ -112,6 +112,7 @@ void BrowserView::loadFinished(bool ok)
         "var pocCurrentElement = null;"
         "document.addEventListener('focus', function(e){"
         "    if (pocCurrentElement != e.target) {"
+        "       e.target.setAttribute('value', e.target.value);"
         "       window.inputHandler.setCurrentFocus(e.target);"
         "       pocCurrentElement = e.target;"
         "    }"

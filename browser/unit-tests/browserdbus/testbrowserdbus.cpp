@@ -419,4 +419,24 @@ void TestBrowserDBus::testCanSelectOptionsInSelectList() {
     m_bdb->selectOption(options);
 }
 
+void TestBrowserDBus::testGetOldInputText() {
+    QSignalSpy spy (m_bdb, SIGNAL (onInputTextReceived(QString, QString, conn::brw::INPUT_ELEMENT_TYPE, int, int, int, int)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(300);
+    QProcess::execute("xdotool mousemove 200 350");
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    m_bdb->inputText(conn::brw::DR_OK, "Hello world");
+    QTest::qSleep(300);
+    QProcess::execute("xdotool mousemove 200 300");
+    QProcess::execute("xdotool click 1");
+    QTest::qSleep(300);
+    QProcess::execute("xdotool mousemove 200 350");
+    QProcess::execute("xdotool click 1");
+    QVERIFY(spy.wait(1000));
+    QString prevValue = spy.last().at(1).value<QString>();
+    QVERIFY(prevValue == "Hello world");
+}
+
 QTEST_MAIN (TestBrowserDBus);

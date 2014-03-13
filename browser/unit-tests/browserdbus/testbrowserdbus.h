@@ -56,6 +56,7 @@ private slots:
     void testCanCancelAuth();
     void testCanCloseAuthDialog();
     void testCanSelectOptionsInSelectList();
+    void testGetOldInputText();
 
 private:
     QString testFileUrl() {
