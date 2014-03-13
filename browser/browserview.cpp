@@ -175,9 +175,8 @@ void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYP
 
 void BrowserView::inputText (QString input)
 {
-    QInputMethodEvent event;
-    event.setCommitString(input);
-    QCoreApplication::sendEvent(m_webview.page(), &event);
+    QString entryStr = "window.document.activeElement.value = '" + input + "';";
+    m_webview.page()->mainFrame()->evaluateJavaScript(entryStr);
 }
 
 void BrowserView::resizeEvent (QResizeEvent *event) {
