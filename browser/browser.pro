@@ -85,3 +85,8 @@ system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i networkmanager.h\
                                                -l networkmanager\
                                                -a inetworkmanager_adaptor\
                                                ../common/INetworkManager.xml")
+
+system("$$[QT_INSTALL_PREFIX]/bin/qdbusxml2cpp -i webpagewindow.h\
+                                               -l webpagewindow\
+                                               -a iwebpagewindow_adaptor\
+                                               ../common/IWebPageWindow.xml")

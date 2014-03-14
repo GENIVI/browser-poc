@@ -15,8 +15,6 @@
 
 #include "browserhelper.h"
 #include "ibookmarkmanager_adaptor.h"
-#include "iuserinput_adaptor.h"
-#include "iwebpagewindow_adaptor.h"
 #include "ibrowser_adaptor.h"
 #include "icachemanager_adaptor.h"
 #include "ierrorlogger_adaptor.h"
@@ -49,9 +47,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    userinput *ui = new userinput();
-    new IUserInputAdaptor(ui);
-
     cachemanager *cm = new cachemanager();
     new ICacheManagerAdaptor(cm);
     if(!connection->registerObject("/Browser/ICacheManager", cm)) {
@@ -66,7 +61,7 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         exit(1);
     }
 
-    browser *br = new browser(cm, ui, nm);
+    browser *br = new browser(cm, nm);
     new IBrowserAdaptor(br);
     if(!connection->registerObject("/Browser/IBrowser", br)) {
         qDebug() << "failed register object IBrowser";
@@ -79,13 +74,6 @@ browserhelper::browserhelper(QString instanceId, QObject *parent) :
         qDebug() << "failed register object IBookmarkManager";
         exit(1);
     }
-
-    wpw = new webpagewindow();
-    new IWebPageWindowAdaptor(wpw);
-    br->wpw = wpw;
-
-    connect(wpw, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
-    connect(ui, SIGNAL(setOutputWebview(QString)), br, SLOT(setView(QString)));
 }
 
 void browserhelper::registertypes() {

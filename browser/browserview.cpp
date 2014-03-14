@@ -75,7 +75,6 @@ BrowserView::BrowserView(cachemanager *cm, userinput *uip)
         this, SIGNAL (onInputText(QString, QString, int, int, int, int, int)));
     connect(&m_inputHandler, SIGNAL(onScroll(uint,uint)), this, SLOT(scrollPositionChanged(uint,uint)));
     connect(&m_inputHandler, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)), this, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
-
 }
 
 bool BrowserView::load(const QString &a_Url)
@@ -181,6 +180,7 @@ void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYP
 void BrowserView::inputText (QString input)
 {
     QString entryStr = "window.document.activeElement.value = '" + input + "';";
+    qDebug() << "About to input:" << input;
     m_webview.page()->mainFrame()->evaluateJavaScript(entryStr);
 }
 

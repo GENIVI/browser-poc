@@ -29,7 +29,7 @@ class browser : public QObject, protected QDBusContext
 {
     Q_OBJECT
 public:
-    explicit browser(cachemanager *, userinput *, networkmanager *, QObject *parent = 0);
+    explicit browser(cachemanager *, networkmanager *, QObject *parent = 0);
 
     webpagewindow *wpw;
 
@@ -42,9 +42,6 @@ public Q_SLOTS:
                                           conn::brw::OBJECT_HANDLE &a_hPageWindowHandle);
     conn::brw::ERROR_IDS destroyPageWindow(qlonglong a_hPageWindowHandle);
     conn::brw::ERROR_IDS getPageWindows(conn::brw::ObjectHandleList &a_oPageWindowIds);
-
-    void inputText(QString input);
-    void setView(QString viewpath);
 
 private:
     QHash<conn::brw::OBJECT_HANDLE, QWidget*> windowhash;

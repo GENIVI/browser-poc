@@ -101,7 +101,6 @@ public:
     void pageReload() { m_webview.reload(); }
     void pageStop() { m_webview.stop(); }
     void scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type);
-    void inputText (QString input);
     QSize contentSize();
     void setZoomFactor(double);
     double getZoomFactor();
@@ -145,6 +144,7 @@ protected slots:
     void scrollPositionChanged(uint x, uint y);
     void contentSizeChanged(const QSize&);
     void onSelectIndexes(QList<int>);
+    void inputText (QString input);
 
 private:
     QGraphicsWebView m_webview;

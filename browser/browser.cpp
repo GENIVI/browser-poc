@@ -19,9 +19,11 @@
 #include "browserview.h"
 #include "userinput.h"
 #include "networkmanager.h"
+#include "iwebpagewindow_adaptor.h"
+#include "iuserinput_adaptor.h"
 
-browser::browser(cachemanager *manager, userinput *uip, networkmanager *nm, QObject *parent) :
-    QObject(parent), m_cacheManager (manager), m_userInput (uip), m_networkManager(nm)
+browser::browser(cachemanager *manager, networkmanager *nm, QObject *parent) :
+    QObject(parent), m_cacheManager (manager), m_networkManager(nm)
 {
     qDebug() << __PRETTY_FUNCTION__;
 }
@@ -30,6 +32,12 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     qDebug() << __PRETTY_FUNCTION__;
 
     Q_UNUSED(a_eDeviceId);
+
+    userinput *m_userInput = new userinput();
+    new IUserInputAdaptor(m_userInput);
+
+    webpagewindow *wpw = new webpagewindow();
+    new IWebPageWindowAdaptor(wpw);
 
     BrowserView *bvi = new BrowserView(m_cacheManager, m_userInput);
 
@@ -59,7 +67,7 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
     connect(bvi, SIGNAL(onContentSizeChanged(uint, uint)),wpw,SIGNAL(onContentSizeChanged(uint,uint)));
     connect(bvi, SIGNAL(onFaviconReceived()),           wpw,  SIGNAL(onFaviconReceived()));
 
-    connect(m_userInput, SIGNAL(inputText(QString)),   this, SLOT(inputText(QString)));
+    connect(m_userInput, SIGNAL(inputText(QString)),   bvi, SLOT(inputText(QString)));
     connect(bvi,         SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)),
             m_userInput, SIGNAL(onSelect(const QString &, const conn::brw::SelectableOptionList &, bool)));
     connect(m_userInput, SIGNAL(selectIndexes(QList<int>)), bvi, SLOT(onSelectIndexes(QList<int>)));
@@ -85,21 +93,6 @@ conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw:
 
     emit onPageWindowCreated(a_hPageWindowHandle, conn::brw::EID_NO_ERROR);
     return conn::brw::EID_NO_ERROR;
-}
-
-void browser::setView(QString viewpath) {
-    qDebug() << __PRETTY_FUNCTION__ << viewpath;
-
-    if(viewpath.contains("/IUserInput"))
-        wpw->webitem = webviewhash.value(viewpath.remove("/IUserInput"));
-    else
-        wpw->webitem = webviewhash.value(viewpath);
-}
-
-void browser::inputText(QString input) {
-    qDebug() << __PRETTY_FUNCTION__ << input;
-
-    wpw->webitem->inputText(input);
 }
 
 conn::brw::ERROR_IDS browser::destroyPageWindow(conn::brw::OBJECT_HANDLE a_hPageWindowHandle) {

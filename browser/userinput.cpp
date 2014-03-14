@@ -24,8 +24,6 @@ userinput::userinput(QObject *parent) :
 conn::brw::ERROR_IDS userinput::inputText(conn::brw::DIALOG_RESULT a_eResult, const QString &a_strInputValue) {
     qDebug() << __PRETTY_FUNCTION__ << a_eResult << a_strInputValue;
 
-    emit setOutputWebview(message().path());
-
     if(a_eResult == conn::brw::DR_OK) {
             emit inputText(a_strInputValue);
 
