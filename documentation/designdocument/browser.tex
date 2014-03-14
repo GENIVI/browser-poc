@@ -42,7 +42,7 @@ The NW-EG defined a set of D-Bus APIs between the browser application and the
 HMI.  These D-Bus APIs were provided as XML files. In addition, a header with
 definitions of specific types and structures were provided prior to project
 start.
-\\\\
+
 The NW-EG defined the following requirements:
 
 \subsection{General Requirements}
@@ -65,6 +65,7 @@ The NW-EG defined the following requirements:
     \hline
 \end{tabularx}
 
+
 \subsection{Architecture}
 \begin{tabularx}{\textwidth}{|p{4em} | p{6.5em} | X |}
     \hline
@@ -78,7 +79,7 @@ The NW-EG defined the following requirements:
     SW-BRW-POC-005 & Test-HMI as Separate Process &
         The provided test-HMI application will run as an independent process.\\
     \hline
-    SW-BRW-POC-006 & Qt Webkit 1 implementation &
+    SW-BRW-POC-006 & QtWebkit1 implementation &
         The Browser PoC application must use the Qt5 Webkit1 implementation.\\
     \hline
     SW-BRW-POC-007 & QtWebview &
@@ -129,11 +130,11 @@ interfaces were defined, you can have a look at the files in the repository.
 
 \section{Overview}
 Following the requirements, the GENIVI Browser PoC is implemented with Qt 5 and
-Qt Webkit 1. Although existing projects like the snowshoe browser were taken
+\mbox{QtWebkit1}. Although existing projects like the snowshoe browser were taken
 into account, a `from scratch' approach was chosen. The specific requirements
 of the project made a re-use of an existing project not appropriate, as a
 reduction of efforts was not expected.
-\\\\
+
 The GENIVI Browser PoC consists of following components, which are also represented in
 separate folders in the repository:
 
@@ -177,7 +178,8 @@ can call remote objects in the server via D-Bus.
 The Browser application is the core part of the PoC. It is responsible for
 rendering and displaying a webpage with the QML webview element. It also
 implements the defined server side interfaces for \texttt{IBrowser}, {\tt IUserInput},
-{\tt IWebPageWindow}, {\tt ICacheManager}, {\tt IErrorLogger}, {\tt INetworkManager} and {\tt IBookmarkManager}. The bookmark manager includes also
+{\tt IWebPageWindow}, {\tt ICacheManager}, {\tt IErrorLogger}, {\tt
+INetworkManager} and {\tt IBookmarkManager}. The bookmark manager includes also
 logic for persistent bookmark storage in the system.
 
 \subsection{Usage}
@@ -192,18 +194,19 @@ is given, a default instance id 1 is used.
 \subsection{Structure}
 The source code of the browser application can to be found in the {\tt
 /browser} folder in the repository:
-\\\\
+
 \begin{tabular}{l l}
     *.cpp, *.h         & source and header files \\
-    browser.pro        & Qt project file
+    browser.pro        & Qt project file \\
+    unit-tests/*       & sub-directories containing tests \\
 \end{tabular}
 
 \subsection{Implementation}
-The browser application is implemented using QGraphicsWebView and Qt Webkit 1.
+The browser application is implemented using QGraphicsWebView and QtWebkit1.
 
 There is one class available for each defined interface group (XML file)
 implementing the functions for the defined interfaces on server side. These
-functions interact with the interfaces provided by the QML file.
+functions interact with the QGraphicsWebView APIs.
 
 As a central class the browserhelper class creates the connection to D-Bus on
 the session bus and registers a service name on the D-Bus server. The default
@@ -302,7 +305,7 @@ press button 3 and then the reload button on the IWebPageWindow tab.
 \subsection{Structure}
 The source code of the test user-interface application can to be found in the
 {\tt /testapp} folder in the repository:
-\\\\
+
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp            & mainsource file \\
     testapp.pro         & Qt project file \\
@@ -310,7 +313,6 @@ The source code of the test user-interface application can to be found in the
     {\tt images/*}      & Images used in implementation (icons taken from KDE
                           oxygen theme 4.10.3)
 \end{tabularx}
-\\\\
 
 \subsection{Implementation}
 The testUI application supports all interfaces described in the XML files.
@@ -327,31 +329,6 @@ the D-Bus channel connections, registers custom types with the QtDBustype system
 and defines and calls all D-Bus interfaces and handles the return values. The
 output of all return values, resulting from D-Bus remote object calls, is logged
 onto the console.
-
-\section{Automated tests}
-The projects ships with an automated test suite, located under {\tt
-browser/unit-tests}. The tests are divided into different sub-groups, each
-placed in its own directory. The test directories ending with "dbus"
-communicate with the browser over D-Bus.
-
-The {\tt browserdbus} directry contains tests for the {\tt browser} component
-and sub-components. These tests will interact with a Webkit surface using mouse
-and keyboard input over D-Bus. For mouse input, the {\tt
-xdotool}\footnote{http://www.semicomplete.com/projects/xdotool/} is used, and
-this tool is required to be installed in {\tt \$PATH} run these tests. These
-tests also require the actual browser to be running.
-
-The {\tt browserview} directory contains tests of the {\tt browserview}
-component, these tests do not run over D-Bus.
-
-The {\tt cachemanagerdbus} directory contains D-Bus tests for the {\tt
-cachemanager}. These tests require the browser to be running.
-
-The {\tt errorloggerdbus} directory contains D-Bus tests for the error logger
-component. The tests will launch the neccessary browser components itself, and
-does not require the browser to be running. The tests will use the same D-Bus
-name space as the browser component, so running the browser during these tests
-will result in an error.
 
 \section{Demo User-Interface}
 \subsection {Introduction}
@@ -405,7 +382,7 @@ actions are not handled over a D-Bus interface.
 \subsection{Structure}
 The source code of the demo user-interface application can to be found in the
 {\tt /demoui} folder in the repository:
-\\\\
+
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp                    & mainsource file \\
     demoui.pro                  & Qt project file \\
@@ -414,7 +391,6 @@ The source code of the demo user-interface application can to be found in the
     {\tt images/*}              & Images used in implementation (icons taken
                                   from KDE oxygen theme 4.10.3)
 \end{tabularx}
-\\\\
 
 \subsection{Implementation}
 The demoUI supports the following D-Bus interfaces:
@@ -461,5 +437,44 @@ access to the browser window (e.g. pressing on links on the browser window).
 Otherwise the above lying application with the focus (even if parts of the
 application are transparent) would get all mouse and key events and it wouldn’t
 be possible to click on links on a web page.
+
+\section{Automated tests}
+\subsection{Introduction}
+The projects ships with an automated test suite, located under {\tt
+browser/unit-tests}. The tests are divided into different sub-groups, each
+placed in its own directory. The test directories ending with "dbus"
+communicate with the browser over D-Bus.
+
+The {\tt browserdbus} directry contains tests for the {\tt browser} component
+and sub-components. These tests will interact with a Webkit surface using mouse
+and keyboard input over D-Bus. For mouse input, the {\tt
+xdotool}\footnote{http://www.semicomplete.com/projects/xdotool/} is used, and
+this tool is required to be installed in {\tt \$PATH} run these tests. These
+tests also require the actual browser to be running.
+
+The {\tt browserview} directory contains tests of the {\tt browserview}
+component, these tests do not run over D-Bus.
+
+The {\tt cachemanagerdbus} directory contains D-Bus tests for the {\tt
+cachemanager}. These tests require the browser to be running.
+
+The {\tt errorloggerdbus} directory contains D-Bus tests for the error logger
+component. The tests will launch the neccessary browser components itself, and
+does not require the browser to be running. The tests will use the same D-Bus
+name space as the browser component, so running the browser during these tests
+will result in an error.
+
+\subsection{Usage}
+The tests are implemented using the QTest framework, which is shipped with Qt.
+Each test needs to be built separately, but issuing {\tt qmake} in the
+directory containing the test.
+The test binaries accept the standard QTest parameters, which can be listed by
+passing {\tt ---help} to the test binary.
+
+Of particular interest is the {\tt -maxwarnings 1} option, which limits the
+qDebug output produced by the unit tests, listing only the name of each test
+case and the status of the test (pass or fail).
+
+Example: {\tt ./browserdbus-tests -maxwarnings 1}
 
 \end{document}
