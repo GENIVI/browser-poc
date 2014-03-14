@@ -9,12 +9,14 @@ Development platform is Linux.
 To build all applications, it's required to use Qt 5.1 (or later).
 See http://qt-project.org/downloads#qt-lib for download.
 
-For the browser application and the demoUI application Qt 5.0 would be sufficient.
-The testapp application requires Qt 5.1, because of the use of Qt Quick Controls 
+For the browser application and the demoUI application Qt 5.0 would be
+sufficient.  The testapp application requires Qt 5.1, because of the use of Qt
+Quick Controls
 (http://qt-project.org/doc/qt-5.1/qtquickcontrols/qtquickcontrols-index.html).
 
-If building Qt from source, all Qt Essential modules and the Qt Declarative module are necessary
-(see http://qt-project.org/doc/qt-5.1/qtdoc/qtmodules.html).
+If building Qt from source, all Qt Essential modules and the Qt Declarative
+module are necessary (see
+http://qt-project.org/doc/qt-5.1/qtdoc/qtmodules.html).
 
 
 Build
@@ -34,8 +36,67 @@ To build the separate applications on its own, run
 Run
 ---
 
-Always start the browser application first, then start the demoUI or test application. 
+Always start the browser application first, then start the demoUI or test
+application.
 
-For more detailed information about usage and overview, see documentation on the Genivi wiki.
+For more detailed information about usage and overview, see documentation on
+the Genivi wiki.
 
+Testing
+-------
 
+There are automated tests in browser/unit-tests/. In order to build these,
+enter the subdirecory of the respective test you'd like to build and issue
+<path_to_qt_installation>/bin/qmake.
+
+Each test will produce a binary of its test suite, which is run using
+./<name of test>.
+
+browserdbus requires the browser to be running, and also requires the
+xdotool[1] to be installed in $PATH.
+
+browserview has no external requirements.
+
+cachemanagerdbus requires the browser to be running.
+
+errorloggerdbus requires the browser to NOT be running
+
+Installing Qt 5 on Ubuntu 12.04
+-------------------------------
+
+If your target is to build GENIVI's Browser Proof-of-Concept on Ubuntu
+12.04 LTS, then these instructions may help you through the build
+process. The build process is slightly different if you're using
+Ubuntu's version of Qt 5.
+
+System requirements
+-------------------
+
+Ubuntu 12.04 LTS
+
+To get a later version of Qt on Ubuntu 12.04, which was released
+nearly two years ago, you can use the Ubuntu provided SDK for Qt
+available as a PPA.[2] The easiest way to do this is to add to
+/etc/apt/sources.list these two lines;
+
+ deb http://ppa.launchpad.net/ubuntu-sdk-team/ppa/ubuntu precise main
+ deb-src http://ppa.launchpad.net/ubuntu-sdk-team/ppa/ubuntu precise main
+
+Alternatively Ubuntu puts PPAs in the sources.list.d directory so you
+can put those two lines in a file called
+/etc/apt/sources.list.d/ubuntu-sdk-team-ppa-precise.list
+and then run;
+
+$ sudo apt-get update
+$ sudo apt-get install qtdeclarative5-dev
+
+The above commands install the headers / libraries necessary for
+development with Qt and QML.
+
+See also: http://askubuntu.com/questions/279421/how-can-i-install-qt-5-x-on-12-04-lts
+
+References
+----------
+
+[1] http://www.semicomplete.com/projects/xdotool/
+[2] https://launchpad.net/~ubuntu-sdk-team/+archive/ppa

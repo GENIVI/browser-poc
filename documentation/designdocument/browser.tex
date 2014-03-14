@@ -20,6 +20,8 @@
 \maketitle
 \tableofcontents \clearpage
 
+\hyphenation{Webkit}
+
 \section{Introduction and project background}
 The GENIVI Networking Expert Group (NW-EG) would like to exercise a D-Bus-based
 software component to test the usability and quality of a web browser that uses
@@ -109,15 +111,13 @@ The NW-EG defined the following requirements:
 The following D-Bus interfaces files were provided as input to the project:
 
 \begin{enumerate}
-    \item IBrowser.xml
-    \item IWebPageWindow.xml
-    \item IUserInput.xml
     \item IBookmarkManager.xml
-    \item IUserInput.xml
-    \item INetworkManager.xml
-    \item IErrorLogger.xml
-    \item IWebPageWindow.xml
+    \item IBrowser.xml
     \item ICacheManager.xml
+    \item IErrorLogger.xml
+    \item INetworkManager.xml
+    \item IUserInput.xml
+    \item IWebPageWindow.xml
 \end{enumerate}
 
 These interfaces represent a subset of the GENIVI APIs defined by NW-EG and
@@ -153,8 +153,7 @@ a look at the group's wiki page
 (\url{https://collab.genivi.org/wiki/display/genivi/Networking+Expert+Group}).
 
 For instructions, how to build all applications or only a single application,
-refer to the file {\tt BUILDINSTRUCTIONS}, or {\tt
-Build.instructions.Ubuntu.txt}  in the repository.
+refer to the file {\tt BUILDINSTRUCTIONS}.
 
 \section {Common part}
 here is a common part in the project, which contains files, which are shared by
@@ -163,9 +162,9 @@ folder {\tt /common}:
 
 \begin{itemize}
     \item The XML files describing the interfaces
-    \item A class defining a bookmark object (bookmark.h|cpp)
+    \item A class defining a bookmark object (bookmark.h and bookmark.cpp)
     \item A class defining the D-Bus interfaces on client side (demoUI and test
-          application) (browserdbus.h|cpp)
+          application) (browserdbus.h and browserdbus.cpp)
     \item A header file defining common types and structures (browserdefs.h)
 \end{itemize}
 
@@ -200,8 +199,7 @@ The source code of the browser application can to be found in the {\tt
 \end{tabular}
 
 \subsection{Implementation}
-The browser application is implemented using Qt Quick 1 and Qt Webkit 1. Qt
-Quick 1 needed to be used, because of the requirement to use Qt Webkit 1.
+The browser application is implemented using QGraphicsWebView and Qt Webkit 1.
 
 There is one class available for each defined interface group (XML file)
 implementing the functions for the defined interfaces on server side. These
@@ -220,12 +218,16 @@ bookmark interface class with the D-Bus connection under an object path
 webpagewindow and userinput will be registered, when a new page is actually
 created.
 
-bookmarkmanager.h|cpp implements the IBookmarkManager interfaces and manages
+Each class is implemented in one header file and one cpp file, with the
+extensions .h and .cpp respectively. Each .cpp file mentioned below also has an
+associated .h file containing the class definition.
+
+bookmarkmanager.cpp implements the IBookmarkManager interfaces and manages
 persistent storage of bookmarks.
 
-userinput.h|cpp implements the IUserInput interfaces.
+userinput.cpp implements the IUserInput interfaces.
 
-browser.h|cpp implements the IBrowser interfaces, creates and set up a
+browser.cpp implements the IBrowser interfaces, creates and set up a
 declarative view with the main QML file (the webview) and registers
 webpagewindow and userinput objects under a unique object path
 (/Browser/IWebPageWindow + window handle resp. \\/Browser/IWebPageWindow + window
@@ -233,18 +235,24 @@ handle/IUserInput). This is needed to control different webpages or tabs
 (created by the createPageWindow interface) with the testUI application. That
 means e.g. routing a reload command to the right webpage window.
 
-browserconfig.h|cpp handles persistant storage of configuration values and
+browserconfig.cpp handles persistant storage of configuration values and
 provides a singleton for any part of the browser to access and set these
 values.
 
-browserpage.h|cpp is a subclass of QWebPage allowing BrowserView to intercept
+browserpage.cpp is a subclass of QWebPage allowing BrowserView to intercept
 dialog boxes and prompts.
 
-cachemanager.h|cpp handles caching policies using {\tt
+cachemanager.cpp handles caching policies using {\tt
 QNetworkConnectionManager}.
 
-errorlogger.h|cpp handles error logging to an in-memory storage, and allows
+errorlogger.cpp handles error logging to an in-memory storage, and allows
 D-Bus clients to query the error log.
+
+browser/unit-tests/ contains the following: {\tt browserdbus} for D-Bus tests
+of the browser and sub-components (webpageview, browserview, browserpage, etc),
+{\tt browserview} for non-D-Bus tests of the broweserview, {\tt
+cachemanagerdbus} and {\tt errorloggerdbus} for D-bus tests of {\tt
+cachemanager} and {\tt errorloggerdbus} respectively.
 
 \section{Test Application}
 \subsection{Introduction}
@@ -271,7 +279,7 @@ correct instance id and press the connect button. The instance id is defined
 with the browser application start, either 1 as default or the number given as
 parameter at browser start.
 
-The testUI application shows tabs representing the four interface groups
+The testUI application shows tabs representing the six interface groups
 ({\tt IBook\-mark\-Manager}, {\tt IBrowser}, {\tt IUserInput}, {\tt
 IWebPageWindow}, {\tt ICacheManager} and {\tt IErrorLogger}). To navigate
 between the groups, just press on the tab header.
@@ -298,7 +306,7 @@ The source code of the test user-interface application can to be found in the
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp            & mainsource file \\
     testapp.pro         & Qt project file \\
-    {\tt QML/testapp/*} & QML files for user interface \\
+    {\tt qml/testapp/*} & QML files for user interface \\
     {\tt images/*}      & Images used in implementation (icons taken from KDE
                           oxygen theme 4.10.3)
 \end{tabularx}
@@ -319,6 +327,31 @@ the D-Bus channel connections, registers custom types with the QtDBustype system
 and defines and calls all D-Bus interfaces and handles the return values. The
 output of all return values, resulting from D-Bus remote object calls, is logged
 onto the console.
+
+\section{Automated tests}
+The projects ships with an automated test suite, located under {\tt
+browser/unit-tests}. The tests are divided into different sub-groups, each
+placed in its own directory. The test directories ending with "dbus"
+communicate with the browser over D-Bus.
+
+The {\tt browserdbus} directry contains tests for the {\tt browser} component
+and sub-components. These tests will interact with a Webkit surface using mouse
+and keyboard input over D-Bus. For mouse input, the {\tt
+xdotool}\footnote{http://www.semicomplete.com/projects/xdotool/} is used, and
+this tool is required to be installed in {\tt \$PATH} run these tests. These
+tests also require the actual browser to be running.
+
+The {\tt browserview} directory contains tests of the {\tt browserview}
+component, these tests do not run over D-Bus.
+
+The {\tt cachemanagerdbus} directory contains D-Bus tests for the {\tt
+cachemanager}. These tests require the browser to be running.
+
+The {\tt errorloggerdbus} directory contains D-Bus tests for the error logger
+component. The tests will launch the neccessary browser components itself, and
+does not require the browser to be running. The tests will use the same D-Bus
+name space as the browser component, so running the browser during these tests
+will result in an error.
 
 \section{Demo User-Interface}
 \subsection {Introduction}
@@ -376,7 +409,7 @@ The source code of the demo user-interface application can to be found in the
 \begin{tabularx}{0.9\textwidth}{l X}
     main.cpp                    & mainsource file \\
     demoui.pro                  & Qt project file \\
-    {\tt QML/demoui/*}          & QML files for user interface \\
+    {\tt qml/demoui/*}          & QML files for user interface \\
     {\tt qtquick2application/*} & Classes for displaying a QtQuick UI \\
     {\tt images/*}              & Images used in implementation (icons taken
                                   from KDE oxygen theme 4.10.3)
