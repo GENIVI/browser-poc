@@ -14,6 +14,7 @@
 #include <QDebug>
 #include <QDBusConnection>
 #include <QFile>
+#include <QWebSettings>
 
 #include "browser.h"
 #include "browserview.h"
@@ -26,6 +27,9 @@ browser::browser(cachemanager *manager, networkmanager *nm, QObject *parent) :
     QObject(parent), m_cacheManager (manager), m_networkManager(nm)
 {
     qDebug() << __PRETTY_FUNCTION__;
+
+    QWebSettings::globalSettings()->
+        setAttribute(QWebSettings::PluginsEnabled, true);
 }
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
