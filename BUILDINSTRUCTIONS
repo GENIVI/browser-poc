@@ -61,8 +61,15 @@ cachemanagerdbus requires the browser to be running.
 
 errorloggerdbus requires the browser to NOT be running
 
+
+Documentation
+-------------
+For building the design documentation, see README in /documentation/designdocument/
+
+
+
 Installing Qt 5 on Ubuntu 12.04
--------------------------------
+===============================
 
 If your target is to build GENIVI's Browser Proof-of-Concept on Ubuntu
 12.04 LTS, then these instructions may help you through the build

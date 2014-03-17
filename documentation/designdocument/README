@@ -9,4 +9,6 @@ The document should then build with:
 
 make
 
+(run twice to update number of pages and TOC accordingly)
+
 All GENIVI logos are owned and copyrighted by GENIVI
