@@ -2,7 +2,8 @@ In order to build this documentation, the Pelagicore LaTeX class is expected to
 be provided in the cls/ subdirectory. An easy way to obtain and install this
 class is to initialize it as a git submodule:
 
-git submodule add git@github.com:Pelagicore/Pelagicore-LaTeX-Class.git cls
+git submodule init
+git submodule update
 
 The document should then build with:
 
