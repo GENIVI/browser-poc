@@ -1,9 +1,3 @@
-[submodule "documentation/designdocument/Pelagicore-LaTeX-Class"]
-	path = documentation/designdocument/Pelagicore-LaTeX-Class
-	url = git@github.com:Pelagicore/Pelagicore-LaTeX-Class.git
-[submodule "documentation/designdocument/--name"]
-	path = documentation/designdocument/--name
-	url = git@github.com:Pelagicore/Pelagicore-LaTeX-Class.git
 [submodule "documentation/designdocument/cls"]
 	path = documentation/designdocument/cls
 	url = git@github.com:Pelagicore/Pelagicore-LaTeX-Class.git
