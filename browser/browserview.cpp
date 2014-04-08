@@ -124,6 +124,15 @@ void BrowserView::loadFinished(bool ok)
         "document.addEventListener('focusout', function(e){"
         "    pocCurrentElement = e.relatedTarget;"
         "}, true);"
+        "var elems = document.querySelectorAll('select:not([multiple])');"
+        "for (var i = 0; i < elems.length; i++) {"
+        "   elem = elems[i];"
+        "   elem.addEventListener('mousedown', function(e) {"
+        "       e.target.setAttribute('value', e.target.value);"
+        "       window.inputHandler.setCurrentFocus(e.target);"
+        "       pocCurrentElement = e.target;"
+        "   }, true);"
+        "}"
     "})()"
     );
 
@@ -309,8 +318,14 @@ void BrowserView::activate() {
 }
 
 void BrowserView::onSelectIndexes(QList<int> indexes) {
+    m_webview.page()->mainFrame()->evaluateJavaScript(
+        "for (var i = 0; i < document.activeElement.options.length; i++){"
+        "    document.activeElement.options[i].selected = false;"
+        "}"
+    );
     for (int i = 0; i < indexes.size(); i++) {
-        QString cmd = QString("document.activeElement.options[%1].selected = true").arg(
+        QString cmd = QString(
+            "document.activeElement.options[%1].selected = true;").arg(
                                 QString::number(indexes.at(i)));
         m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
     }

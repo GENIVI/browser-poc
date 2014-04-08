@@ -52,27 +52,37 @@ public slots:
                               elem.attribute("max", "0").toInt(),
                               elem.attribute("min","0").toInt(),
                               elem.attribute("step","0").toInt());
+        } else if (elem.tagName().compare("OPTION", Qt::CaseInsensitive) == 0){
+            handleSelectElement(elem.parent());
         } else if (elem.tagName().compare("SELECT", Qt::CaseInsensitive) == 0){
-            conn::brw::SelectableOptionList options;
-            QList<QWebElement> elems;
-            QWebElement first = elem.firstChild();
-            QWebElement last  = elem.lastChild();
-
-            conn::brw::SelectableOption o;
-            o.strValue = first.toPlainText();
-            options.append(o);
-            elems.append(first);
-            while (elems.last() != last) {
-                conn::brw::SelectableOption o;
-                o.strValue = elems.last().toPlainText();
-                elems.append(elems.last().nextSibling());
-                options.append(o);
+            if (elem.hasAttribute("multiple")) {
+                return;
             }
-
-            qDebug() << "Options:" << options.size();
-            emit onSelect(elem.attribute("name", ""), options, true);
+            handleSelectElement(elem);
         }
         m_elem = elem;
+    }
+
+    void handleSelectElement(const QWebElement &elem) {
+        conn::brw::SelectableOptionList options;
+        QList<QWebElement> elems;
+        QWebElement first = elem.firstChild();
+        QWebElement last  = elem.lastChild();
+
+        conn::brw::SelectableOption o;
+        o.strValue = first.toPlainText();
+        options.append(o);
+        elems.append(first);
+        while (elems.last() != last) {
+            conn::brw::SelectableOption o;
+            o.strValue = elems.last().toPlainText();
+            elems.append(elems.last().nextSibling());
+            options.append(o);
+        }
+
+        qDebug() << "Options:" << options.size();
+        emit onSelect(elem.attribute("name", ""), options, true);
+
     }
     const QWebElement currentFocus () { return m_elem; }
 

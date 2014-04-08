@@ -106,7 +106,7 @@ conn::brw::ERROR_IDS userinput::getPrevEnteredValues (const QString &a_strInputN
         qDebug() << s.value;
         if (s.type == a_i32InputType            &&
             s.name.compare(a_strInputName) == 0 &&
-            s.value.contains(a_strInputValue, 
+            s.value.contains(a_strInputValue,
                              Qt::CaseInsensitive))
         {
             a_oInputVariants.append(s.value);
