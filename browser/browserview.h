@@ -65,18 +65,20 @@ public slots:
 
     void handleSelectElement(const QWebElement &elem) {
         conn::brw::SelectableOptionList options;
-        QList<QWebElement> elems;
         QWebElement first = elem.firstChild();
         QWebElement last  = elem.lastChild();
+        QWebElement iter  = first;
 
-        conn::brw::SelectableOption o;
-        o.strValue = first.toPlainText();
-        options.append(o);
-        elems.append(first);
-        while (elems.last() != last) {
+        while (iter != last) {
             conn::brw::SelectableOption o;
-            o.strValue = elems.last().toPlainText();
-            elems.append(elems.last().nextSibling());
+            o.strValue = iter.toPlainText();
+            options.append(o);
+            iter = iter.nextSibling();
+        }
+
+        if (iter == last) {
+            conn::brw::SelectableOption o;
+            o.strValue = iter.toPlainText();
             options.append(o);
         }
 
