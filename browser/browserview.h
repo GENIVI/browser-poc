@@ -53,17 +53,17 @@ public slots:
                               elem.attribute("min","0").toInt(),
                               elem.attribute("step","0").toInt());
         } else if (elem.tagName().compare("OPTION", Qt::CaseInsensitive) == 0){
-            handleSelectElement(elem.parent());
+            handleSelectElement(elem.parent(), elem.parent().hasAttribute("multiple"));
         } else if (elem.tagName().compare("SELECT", Qt::CaseInsensitive) == 0){
             if (elem.hasAttribute("multiple")) {
                 return;
             }
-            handleSelectElement(elem);
+            handleSelectElement(elem, false);
         }
         m_elem = elem;
     }
 
-    void handleSelectElement(const QWebElement &elem) {
+    void handleSelectElement(const QWebElement &elem, bool multiSelect) {
         conn::brw::SelectableOptionList options;
         QWebElement first = elem.firstChild();
         QWebElement last  = elem.lastChild();
@@ -83,7 +83,7 @@ public slots:
         }
 
         qDebug() << "Options:" << options.size();
-        emit onSelect(elem.attribute("name", ""), options, true);
+        emit onSelect(elem.attribute("name", ""), options, multiSelect);
 
     }
     const QWebElement currentFocus () { return m_elem; }
