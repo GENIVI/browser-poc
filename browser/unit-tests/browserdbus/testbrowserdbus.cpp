@@ -327,7 +327,7 @@ void TestBrowserDBus::testGetsNotifiedWhenSelectIsSelected() {
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
     QTest::qSleep(300);
-    QProcess::execute("xdotool mousemove 320 375");
+    QProcess::execute("xdotool mousemove 310 375");
     QProcess::execute("xdotool click 1");
     QTest::qSleep(300);
     QProcess::execute("xdotool click 1");
@@ -403,7 +403,7 @@ void TestBrowserDBus::testCanSelectOptionsInSelectList() {
     m_bdb->createPageWindow(1,0,0,800,600);
     m_bdb->loadurl(testFileUrl());
     QTest::qSleep(300);
-    QProcess::execute("xdotool mousemove 320 375");
+    QProcess::execute("xdotool mousemove 310 375");
     QProcess::execute("xdotool click 1");
     QTest::qSleep(300);
     QProcess::execute("xdotool click 1");
