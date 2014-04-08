@@ -232,8 +232,8 @@ namespace conn {
                 */
         //## type DIALOG_RESULT
         enum DIALOG_RESULT {
-            DR_OK,
-            DR_CANCEL
+            DR_CANCEL = 0,
+            DR_OK = 1
         };
 
         inline const QDBusArgument &operator>>(const QDBusArgument &argument, conn::brw::DIALOG_RESULT &dialogresult)
