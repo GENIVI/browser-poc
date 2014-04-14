@@ -253,7 +253,7 @@ void BrowserView::scrollPositionChanged(uint x, uint y)
 
 void BrowserView::setScrollPosition(uint x, uint y)
 {
-    QString cmd = QString("window.scrollTo(%1,%2);").arg(QString::number(x), QString::number(y));
+    QString cmd = QString("window.scroll(%1,%2);").arg(QString::number(x), QString::number(y));
     m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
     m_scrollPositionX = x;
     m_scrollPositionY = y;
