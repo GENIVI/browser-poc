@@ -369,8 +369,9 @@ void BrowserDbus::InputTextReceived(QString a_strInputName, QString a_strDefault
 }
 
 // IWebPageWindow
-void BrowserDbus::getBrowserActionState() {
+conn::brw::BrowserActions BrowserDbus::getBrowserActionState() {
     qDebug() << __PRETTY_FUNCTION__;
+    conn::brw::BrowserActions ba;
 
     QDBusPendingReply<conn::brw::ERROR_IDS, conn::brw::BrowserActions> reply = actualtab->getBrowserActionsState();
     reply.waitForFinished();
@@ -380,10 +381,13 @@ void BrowserDbus::getBrowserActionState() {
 
         qDebug() << "ERROR_IDS " << ret << actions.u8Back << actions.u8Forward <<
                     actions.u8Reload << actions.u8Stop << actions.u8LoadUrl << actions.u8Select;
+        ba = actions;
     } else {
         QDBusError error = reply.error();
         qDebug() << "ERROR " << error.name() << error.message();
     }
+
+    return ba;
 }
 
 void BrowserDbus::getContentSize() {

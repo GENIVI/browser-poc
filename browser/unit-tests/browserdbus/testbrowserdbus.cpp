@@ -486,4 +486,28 @@ void TestBrowserDBus::testDoesntNeedUnfocusToTriggerInputSignal() {
     QVERIFY(prevValue == "Hello world");
 }
 
+void TestBrowserDBus::testCorrectlySetsBackBrowserActionState() {
+    QSignalSpy spy (m_bdb, SIGNAL (onActionStateChanged(uint)));
+    m_bdb->createPageWindow(1,0,0,800,600);
+    m_bdb->loadurl(testFileUrl());
+    QTest::qSleep(1000);
+    m_bdb->loadurl("http://google.com");
+    QTest::qSleep(1000);
+    m_bdb->loadurl("http://amazon.com");
+    QTest::qSleep(1000);
+    QVERIFY(spy.wait(1000));
+    qDebug() << spy;
+
+    conn::brw::BrowserActions ba = m_bdb->getBrowserActionState();
+    QVERIFY(ba.u8Back);
+    QVERIFY(!ba.u8Forward);
+
+    m_bdb->goBack();
+    QVERIFY(spy.wait(1000));
+    QVERIFY(spy.wait(1000));
+    ba = m_bdb->getBrowserActionState();
+    QVERIFY(ba.u8Back);
+    QVERIFY(ba.u8Forward);
+    qDebug() << spy;
+}
 QTEST_MAIN (TestBrowserDBus);

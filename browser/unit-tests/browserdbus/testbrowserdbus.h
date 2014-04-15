@@ -59,7 +59,7 @@ private slots:
     void testGetOldInputText();
     void testNewTextReplacesOldText();
     void testDoesntNeedUnfocusToTriggerInputSignal();
-
+    void testCorrectlySetsBackBrowserActionState();
 
 private:
     QString testFileUrl() {

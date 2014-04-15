@@ -56,7 +56,7 @@ public:
     Q_INVOKABLE void getGeometry();
     Q_INVOKABLE void setGeometry(int x, int y, int width, int height);
     Q_INVOKABLE void getContentSize();
-    Q_INVOKABLE void getBrowserActionState();
+    Q_INVOKABLE conn::brw::BrowserActions getBrowserActionState();
     Q_INVOKABLE void createPageWindow(int deviceid, int x, int y, int width, int height);
     Q_INVOKABLE void destroyPageWindow(qlonglong windowhandle);
     Q_INVOKABLE void getPageWindows();

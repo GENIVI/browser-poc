@@ -122,6 +122,8 @@ public:
     QString getFaviconFilePath(QString url);
     void activate();
     void select();
+    bool canGoBack();
+    bool canGoForward();
 
 signals:
     void pageLoadStarted();

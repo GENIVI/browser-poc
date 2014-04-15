@@ -18,6 +18,7 @@
 #include <QTemporaryFile>
 #include <QSemaphore>
 #include <QWebSettings>
+#include <QWebHistory>
 
 #include "browserview.h"
 #include "cachemanager.h"
@@ -142,6 +143,15 @@ void BrowserView::loadFinished(bool ok)
     "}, true);");
 
     emit pageLoadFinished (ok);
+
+    unsigned int changes = 0;
+    changes |= canGoBack() ? 0x1 : 0;
+    changes |= canGoForward() ? 0x2 : 0;
+
+    if (changes) {
+        qDebug() << "Emitting signal onActionStateChanged";
+        emit onActionStateChanged(changes);
+    }
 }
 
 void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type)
@@ -329,4 +339,12 @@ void BrowserView::onSelectIndexes(QList<int> indexes) {
                                 QString::number(indexes.at(i)));
         m_webview.page()->mainFrame()->evaluateJavaScript(cmd);
     }
+}
+
+bool BrowserView::canGoBack() {
+    return m_webview.history()->canGoBack();
+}
+
+bool BrowserView::canGoForward() {
+    return m_webview.history()->canGoForward();
 }
