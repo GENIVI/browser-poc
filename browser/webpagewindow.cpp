@@ -109,8 +109,8 @@ conn::brw::ERROR_IDS webpagewindow::getBrowserActionsState(conn::brw::BrowserAct
     temp_scrolldirections->u8Bottom = 1;
 
     conn::brw::BrowserActions *temp_browseractions = new conn::brw::BrowserActions();
-    temp_browseractions->u8Back = 0x03;
-    temp_browseractions->u8Forward = 0x03;
+    temp_browseractions->u8Back = webitem->canGoBack() ? 0x03 : 0x0;
+    temp_browseractions->u8Forward = webitem->canGoForward() ? 0x03 : 0x0;
     temp_browseractions->u8Reload = 0x03;
     temp_browseractions->u8Stop = 0x03;
     temp_browseractions->u8LoadUrl = 0x03;
