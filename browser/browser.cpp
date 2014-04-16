@@ -15,6 +15,7 @@
 #include <QDBusConnection>
 #include <QFile>
 #include <QWebSettings>
+#include <QNetworkProxy>
 
 #include "browser.h"
 #include "browserview.h"
@@ -22,6 +23,9 @@
 #include "networkmanager.h"
 #include "iwebpagewindow_adaptor.h"
 #include "iuserinput_adaptor.h"
+#include "browserconfig.h"
+
+bool restoreSavedProxyConfig();
 
 browser::browser(cachemanager *manager, networkmanager *nm, QObject *parent) :
     QObject(parent), m_cacheManager (manager), m_networkManager(nm)
@@ -30,6 +34,8 @@ browser::browser(cachemanager *manager, networkmanager *nm, QObject *parent) :
 
     QWebSettings::globalSettings()->
         setAttribute(QWebSettings::PluginsEnabled, true);
+
+    restoreSavedProxyConfig();
 }
 
 conn::brw::ERROR_IDS browser::createPageWindow(int a_eDeviceId, const conn::brw::Rect & a_oGeometry, conn::brw::OBJECT_HANDLE &a_hPageWindowHandle) {
@@ -127,4 +133,52 @@ conn::brw::ERROR_IDS browser::getPageWindows(conn::brw::ObjectHandleList &a_oPag
         ret =  conn::brw::EID_NO_ERROR;
     }
     return ret;
+}
+
+bool restoreSavedProxyConfig() {
+    QString proxyHost;
+    int proxyPort;
+    QString proxyUsername;
+    QString proxyPassword;
+    BrowserConfig *bc = BrowserConfig::instance();
+
+    if (bc->contains(BrowserConfig::CONFIG_PROXY_HOST))
+        proxyHost = bc->getValue<QString>(BrowserConfig::CONFIG_PROXY_HOST);
+    else
+        return false;
+
+    if (bc->contains(BrowserConfig::CONFIG_PROXY_PORT)) {
+        proxyPort = bc->getValue<int>(BrowserConfig::CONFIG_PROXY_PORT);
+    }
+    else {
+        qDebug("Found partial proxy configuration; CONFIG_PROXY_PORT missing");
+        return false;
+    }
+
+    if (bc->contains(BrowserConfig::CONFIG_PROXY_USERNAME)) {
+        proxyUsername = bc->getValue<QString>(BrowserConfig::CONFIG_PROXY_USERNAME);
+    }
+    else {
+        qDebug("Found partial proxy configuration; CONFIG_PROXY_USERNAME missing");
+        return false;
+    }
+
+    if (bc->contains(BrowserConfig::CONFIG_PROXY_PASSWORD)) {
+        proxyPassword = bc->getValue<QString>(BrowserConfig::CONFIG_PROXY_PASSWORD);
+    }
+    else {
+        qDebug("Found partial proxy configuration; CONFIG_PROXY_PASSWORD missing");
+        return false;
+    }
+
+    // All properties found, let's set up the proxy
+
+    QNetworkProxy proxy;
+    proxy.setType(QNetworkProxy::HttpProxy);
+    proxy.setHostName(proxyHost);
+    proxy.setPort(proxyPort);
+    proxy.setUser(proxyUsername);
+    proxy.setPassword(proxyPassword);
+    QNetworkProxy::setApplicationProxy(proxy);
+
 }

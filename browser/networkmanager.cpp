@@ -17,6 +17,7 @@
 #include <QAuthenticator>
 #include <QEventLoop>
 #include <QNetworkReply>
+#include <QNetworkProxy>
 #include <QSslError>
 #include <QSslSocket>
 
@@ -93,6 +94,9 @@ networkmanager::networkmanager(QNetworkAccessManager *nam, QObject *parent) :
             this,SLOT  (onAuthenticationRequired(QNetworkReply *, QAuthenticator *)));
     connect(nam, SIGNAL(sslErrors(QNetworkReply *, const QList<QSslError> &)),
             this,SLOT  (onSslErrors(QNetworkReply *, const QList<QSslError> &)));
+    connect(nam, SIGNAL(proxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)),
+            this,SLOT  (onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *)));
+
 }
 
 conn::brw::ERROR_IDS networkmanager::closeAuthenticationDialog(conn::brw::DIALOG_RESULT res, const conn::brw::AuthenticationData& data)
@@ -113,12 +117,12 @@ void networkmanager::onAuthenticationRequired(QNetworkReply *reply, QAuthenticat
     emit onAuthenticationDialog(data);
     qDebug() << "Authentication required";
     QEventLoop loop;
-    connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), this, SLOT(authenticate(bool, const conn::brw::AuthenticationData)));
+    connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), this, SLOT(authenticateProxy(bool, const conn::brw::AuthenticationData)));
     connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), &loop, SLOT(quit()));
     loop.exec();
     qDebug() << "Authentication provided: user" << m_authData.strUserName << "password:" << m_authData.strPassword;
 
-    if (m_authBool) {
+    if (m_authBoolProxy) {
         authenticator->setUser(m_authData.strUserName);
         authenticator->setPassword(m_authData.strPassword);
     } else {
@@ -155,6 +159,27 @@ void networkmanager::onSslErrors(QNetworkReply *reply, const QList<QSslError> & 
             emit onSslErrorDialogCancel(data);
         }
 
+    }
+}
+
+void networkmanager::onProxyAuthenticationRequired(const QNetworkProxy &proxy, QAuthenticator *authenticator)
+{
+    conn::brw::AuthenticationData data;
+    data.strHost = proxy.hostName();
+    emit onAuthenticationDialog(data);
+    qDebug() << "Proxy authentication required";
+    QEventLoop loop;
+    connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), this, SLOT(authenticate(bool, const conn::brw::AuthenticationData)));
+    connect (this, SIGNAL(doCloseAuthenticationDialog(bool, const conn::brw::AuthenticationData)), &loop, SLOT(quit()));
+    loop.exec();
+    qDebug() << "Proxy authentication provided: user" << m_authData.strUserName << "password:" << m_authData.strPassword;
+
+    if (m_authBool) {
+        authenticator->setUser(m_authData.strUserName);
+        authenticator->setPassword(m_authData.strPassword);
+    } else {
+        qDebug() << "Action was cancelled";
+        emit onAuthenticationDialogCancel(data);
     }
 }
 

@@ -24,6 +24,10 @@ public:
     enum BrowserConfigKey {
         CONFIG_CACHEPOLICY,
         CONFIG_STARTPAGE,
+        CONFIG_PROXY_HOST,
+        CONFIG_PROXY_PORT,
+        CONFIG_PROXY_USERNAME,
+        CONFIG_PROXY_PASSWORD
     };
 
     static BrowserConfig* instance()  {
