@@ -29,8 +29,7 @@
 #include "errorlogger.h"
 
 BrowserView::BrowserView(cachemanager *cm, userinput *uip)
-    : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm),
-      m_previousCacheSize(0)
+    : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm)
 {
     QString startPage;
     m_cacheManager = cm;
