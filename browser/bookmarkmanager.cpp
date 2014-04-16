@@ -158,7 +158,7 @@ conn::brw::ERROR_IDS bookmarkmanager::getItems(const QString &path, int type, co
     uint found = 0;
 
     for (int i = 0; i < bookmarklist.size(); ++i) {
-        if (bookmarklist.at(i)->folderpath() == path && bookmarklist.at(i)->type() == type && added < count) {
+        if (bookmarklist.at(i)->folderpath() == path && bookmarklist.at(i)->type() & type && added < count) {
 
             found++;
             if(found >= index) {
