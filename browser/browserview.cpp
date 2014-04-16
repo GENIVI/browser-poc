@@ -29,7 +29,8 @@
 #include "errorlogger.h"
 
 BrowserView::BrowserView(cachemanager *cm, userinput *uip)
-    : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm)
+    : m_scrollPositionX(0), m_scrollPositionY (0), m_cacheManager (cm),
+      m_previousCacheSize(0)
 {
     QString startPage;
     m_cacheManager = cm;
@@ -152,6 +153,8 @@ void BrowserView::loadFinished(bool ok)
         qDebug() << "Emitting signal onActionStateChanged";
         emit onActionStateChanged(changes);
     }
+
+    m_cacheManager->checkForChanges();
 }
 
 void BrowserView::scroll (conn::brw::SCROLL_DIRECTION dir, conn::brw::SCROLL_TYPE type)

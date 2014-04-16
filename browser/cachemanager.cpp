@@ -113,3 +113,13 @@ QNetworkRequest::CacheLoadControl cachemanager::getCacheLoadControl()
             return QNetworkRequest::PreferCache;
     }
 }
+
+void cachemanager::checkForChanges()
+{
+    if (m_previousCacheSize != getCacheSize()) {
+        m_previousCacheSize = getCacheSize();
+        qDebug() << "Emitting onCacheChanged";
+        emit onCacheChanged();
+    }
+    qDebug() << "No changes detected. Not emitting onCacheChanged";
+}

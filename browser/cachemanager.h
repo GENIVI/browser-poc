@@ -29,9 +29,10 @@ public:
     cachemanager(QObject *parent = 0);
     QNetworkAccessManager *getNetworkAccessManager();
     QNetworkRequest::CacheLoadControl getCacheLoadControl();
+    void checkForChanges();
 
 signals:
-    void cacheChanged();
+    void onCacheChanged();
     void onCachePolicyChanged(conn::brw::CACHE_POLICY);
     void onClearCache(void);
 
@@ -46,6 +47,7 @@ private:
     BrowserConfig *m_config;
     conn::brw::CACHE_POLICY m_policy;
     QNetworkAccessManager *m_manager;
+    qint64 m_previousCacheSize;
 };
 
 #endif // CACHEMANAGER_H
