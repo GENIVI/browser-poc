@@ -46,10 +46,16 @@ public Q_SLOTS:
     // Internal
     void onAuthenticationRequired(QNetworkReply *reply, QAuthenticator *authenticator);
     void onSslErrors(QNetworkReply *reply, const QList<QSslError> & errors);
+    void onProxyAuthenticationRequired(const QNetworkProxy &, QAuthenticator *);
     void authenticate(bool b, const conn::brw::AuthenticationData ad)
     {
         m_authBool = b;
         m_authData = ad;
+    }
+    void authenticateProxy(bool b, const conn::brw::AuthenticationData ad)
+    {
+        m_authBoolProxy = b;
+        m_authDataProxy = ad;
     }
     void closeSsl(bool isOK, bool saveCert)
     {
@@ -58,8 +64,8 @@ public Q_SLOTS:
     }
 private:
     QNetworkAccessManager *m_nam;
-    bool m_authBool, m_isSslOk, m_sslSaveCert;
-    conn::brw::AuthenticationData m_authData;
+    bool m_authBool, m_authBoolProxy, m_isSslOk, m_sslSaveCert;
+    conn::brw::AuthenticationData m_authData, m_authDataProxy;
 };
 
 #endif // NETWORKMAMAGER_H
