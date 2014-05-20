@@ -122,7 +122,6 @@ Item {
             anchors.rightMargin: 1
             imagesource: "../../images/bookmarks.png"
             onButtonClicked: {
-                browserinterface.getCurrentUrlAndTitle()
                 browserinterface.addBookmark(1, "", browserinterface.title, browserinterface.url, "", "")
             }
         }
