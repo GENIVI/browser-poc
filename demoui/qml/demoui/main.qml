@@ -40,8 +40,8 @@ Item {
         Rectangle {
             id: bg
             width: parent.width
-            color: "transparent"
-            height: 80
+            color: "black"
+            height: parent.height
         }
         Button {
             id: backbutton
