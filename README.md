@@ -5,4 +5,5 @@ This component is a web browser built with the Qt framework and is designed as e
 
 # Copyright and license
 Copyright (C) 2014 GENIVI Alliance 
+
 Licensed with the Mozilla Public License 2.0
